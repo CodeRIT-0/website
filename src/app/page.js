@@ -38,6 +38,13 @@ import Image from "next/image";
 const Intro = () => {
   return (
     <div id="intro" className="flex flex-col items-center">
+        <div className="announcement" >
+        <a href="https://linktr.ee/Code_rit" style={{ animation: 'blinker 1s linear infinite', color: '#f00' }}>
+          <p>Link Tree Of CodeRit</p>
+        </a>
+                
+        
+      </div>
       <div className="container ">
         <img
           src="./Intro Video.gif"
