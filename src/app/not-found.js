@@ -7,7 +7,7 @@ const notFound = () => {
     <div id="intro" className="flex flex-col items-center">
       <div id="intro-text">
         <center>
-        <img src="./404.png" alt="404"  />
+        <Image src="./404.png" alt="404"  />
           <h1 id="intro-head">Oops! Wrong Page</h1>
         </center>
        </div>

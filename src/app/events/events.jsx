@@ -5,7 +5,7 @@ const eventData = [
         "Name": "CP WORKSHOP",
         "Year": "2019-20",
         "Date": "8th Feb",
-        "Description": "The workshop involved concepts about algorithms and data structures required to solve competitive programming questions efficiently.",
+        "Description": "The workshop involved concepts about algorithms and data structures required to solve competitive programming questions efficiently. The workshop involved concepts about algorithms and data structures required to solve competitive programming questions efficiently.",
         "img": "/Events/cp.jpg"
     },
     {
