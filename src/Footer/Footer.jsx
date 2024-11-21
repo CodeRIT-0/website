@@ -75,7 +75,7 @@ export default function Footer() {
             className="mx-auto"
           />
         </a>
-        <a href="https://chat.whatsapp.com/He9eoOHo26rDAXFiUQul9E" target="_blank">
+        <a href="https://chat.whatsapp.com/FeFzoAe63rpAaZPrTCYjyx" target="_blank">
           <Image
             src={whatsapp}
             width={25}

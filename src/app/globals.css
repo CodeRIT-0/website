@@ -1,4 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@layer utilities {
+    .perspective {
+      perspective: 1000px;
+    }
+  
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .scrollbar-default {
+      scrollbar-width: none;  
+    }
+    
+    .scrollbar-default::-webkit-scrollbar {
+      width: 1px; 
+    }
+    
+    .scrollbar-default::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    .scrollbar-default::-webkit-scrollbar-thumb {
+      background-color: rgba(99, 102, 241, 0.3);
+    }
+    
+    .scrollbar-default::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(99, 102, 241, 0.5);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+  }
