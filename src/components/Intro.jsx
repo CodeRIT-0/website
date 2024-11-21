@@ -140,14 +140,14 @@ const Intro = () => {
             transition={{ duration: 0.3 }}
           />
           <br />
-          <motion.a
+          {/* <motion.a
             href="/registration"
             className="inline-block px-6 py-3 mt-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-md transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Register Now
-          </motion.a>
+          </motion.a> */}
         </motion.div>
       </motion.div>
     </div>

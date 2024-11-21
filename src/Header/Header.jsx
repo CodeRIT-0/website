@@ -42,7 +42,9 @@ export default function Navbar() {
     { path: '/', label: 'Home' },
     { path: '/events', label: 'Events' },
     { path: '/team', label: 'Team' },
-    { path: '/registration', label: 'Ice-Breaker 2024', special: true }
+    { path: '/interview-experience', label: 'Interview Experience' },
+    // { path: '/registration', label: 'Ice-Breaker 2024', special: true }
+    { path: '', label: 'Ice-Breaker 2024', special: true }
   ];
 
   return (
