@@ -10,13 +10,13 @@ export async function connect(){
         });
         const connection=mongoose.connection;
         connection.on('connected',()=>{
-            // console.log("MongoDB connected beautifully");
+            console.log("MongoDB connected beautifully");
         })
         connection.on('error',(err)=>{
             process.exit();
         })
     }
     catch(err){
-        // console.log("Something has gone wrong");
+        console.log("Something has gone wrong");
     }
 }
