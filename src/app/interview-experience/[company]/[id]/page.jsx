@@ -48,13 +48,15 @@ export default function InterviewExperiencePage({ params }) {
       <div className="container mx-auto px-4 py-8 mt-20">
         <div className="max-w-4xl mx-auto">
          
-        <Link 
-  href={`/interview-experience/${company}`}
-  className="absolute left-0 inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 mb-6 group"
->
-  <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
-  Back to {decodedCompany} Interviews
-</Link>
+        <div className="flex items-center mb-6">
+            <Link 
+              href={`/interview-experience/${company}`}
+              className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 group"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+              Back to {decodedCompany} Interviews
+            </Link>
+          </div>
 
           <Card className="transform transition-all duration-300 hover:shadow-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
             <CardHeader className="py-6 px-8">
