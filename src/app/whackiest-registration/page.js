@@ -51,63 +51,82 @@ export default function TeamRegistration() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Validate required fields based on team size
-    const teamSizeInt = parseInt(team.teamSize);
-    const requiredMembers = teamSizeInt === 3 ? ['captain', 'member1', 'member2'] 
-                           : ['captain', 'member1', 'member2', 'member3'];
-    
-    const missingFields = requiredMembers.some(member => 
-      !team[member].name || 
-      !team[member].usn || 
-      !team[member].year || 
-      !team[member].branch
-    );
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    if (!team.teamName || !team.teamSize || missingFields) {
-      setShowMsg(true);
-      setMessage({ text: "Please fill all required fields", color: "text-red-400" });
+      
+      const teamSizeInt = parseInt(team.teamSize);
+      const requiredMembers =
+        teamSizeInt === 3
+          ? ["captain", "member1", "member2"]
+          : ["captain", "member1", "member2", "member3"];
 
-      setTimeout(() => {
-        setShowMsg(false);
-        setMessage({ text: "", color: "" });
-      }, 1000);
-      return;
-    }
+      const missingFields = requiredMembers.some(
+        (member) =>
+          !team[member].name ||
+          !team[member].usn ||
+          !team[member].year ||
+          !team[member].branch
+      );
 
-    setLoad(true); // Show loading state
+      if (!team.teamName || !team.teamSize || missingFields) {
+        setShowMsg(true);
+        setMessage({ text: "Please fill all required fields", color: "text-red-400" });
 
-    try {
-      const response = await fetch('/api/whackiest-team-registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(team),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage({ text: "Team registered successfully!", color: "text-green-400" });
-      } else {
-        setMessage({ text: data.message || "Failed to register the team", color: "text-red-400" });
+        setTimeout(() => {
+          setShowMsg(false);
+          setMessage({ text: "", color: "" });
+        }, 5000);
+        return;
       }
-    } catch (error) {
-      console.error("Error submitting team:", error);
-      setMessage({ text: "An error occurred. Please try again.", color: "text-red-400" });
-    } finally {
-      setLoad(false);
-      setShowWindow(true);
-      window.scrollTo({
-        top: document.documentElement.scrollHeight / 2 - window.innerHeight / 2,
-        behavior: 'smooth'
-      });
-      setTimeout(() => setShowMsg(false), 2000);
-    }
-  };
+
+      setLoad(true); 
+
+      try {
+        const response = await fetch("/api/whackiest-team-registration", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(team),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setMessage({ text: "Team registered successfully!", color: "text-green-400" });
+          setShowWindow(true);
+          window.scrollTo({
+            top: document.documentElement.scrollHeight / 2 - window.innerHeight / 2,
+            behavior: "smooth",
+          });
+        } else {
+          setMessage({
+            text: data.message || "Failed to register the team",
+            color: "text-red-400",
+          });
+          setShowMsg(true);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }
+      } catch (error) {
+        console.error("Error submitting team:", error);
+        setMessage({
+          text: "An error occurred. Please try again.",
+          color: "text-red-400",
+        });
+        setShowMsg(true);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      } finally {
+        setLoad(false); 
+        setTimeout(() => setShowMsg(false), 5000);
+      }
+    };
 
   return (
     <>

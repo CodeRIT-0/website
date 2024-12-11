@@ -34,6 +34,7 @@ export async function POST(request) {
 
     const { teamName, teamSize, topic, captain, member1, member2, member3 } = reqBody;
 
+    // Validate required fields
     if (!teamName || !teamSize || !topic || !captain || !member1 || !member2 || (teamSize === 4 && !member3)) {
       console.error("Missing required fields");
       return NextResponse.json(
@@ -42,7 +43,7 @@ export async function POST(request) {
       );
     }
 
-
+    // Prepare the new team document
     const newTeam = new whackiestTeam({
       teamName,
       teamSize,
@@ -50,10 +51,10 @@ export async function POST(request) {
       captain,
       member1,
       member2,
-      member3: teamSize === 4 ? member3 : undefined, // Explicitly set undefined if teamSize is 3
+      member3: teamSize === 4 ? member3 : undefined,
     });
 
-
+    // Save the new team
     const savedTeam = await newTeam.save();
     console.log("Team saved successfully:", savedTeam);
 
@@ -64,10 +65,23 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error("Error in POST handler:", error.message);
+
+    if (error.code === 11000) {
+      return NextResponse.json(
+        {
+          message: "Team Name or USN already exists",
+          success: false,
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
       { message: error.message, success: false },
       { status: 500 }
     );
   }
 }
+
+
 
