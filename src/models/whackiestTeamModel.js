@@ -29,6 +29,10 @@ const whackiestTeamSchema = new mongoose.Schema({
     required: [true, "Team Size is required"],
     enum: [3, 4], // Restrict to 3 or 4 members
   },
+  topic: {
+    type: String,
+    required: [true, "Topic is required"],
+  },
   captain: {
     type: memberSchema,
     required: [true, "Team Captain details are required"],

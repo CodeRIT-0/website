@@ -3,64 +3,31 @@
 import { useState } from "react";
 
 const branches = [
-  "ARCH",
-  "BIOTECH", 
-  "CHE",
-  "CHEM",
-  "CIVIL",
-  "CSE",
-  "CSE (CY)",
-  "CSE (AI/ML)",
-  "AI/ML",
-  "AI/DS",
-  "ECE",
-  "EIE",
-  "EEE",
-  "ETC",
-  "HUM",
-  "IEM",
-  "ISE",
-  "MATH",
-  "MCA",
-  "MBA",
-  "MECH",
-  "MED ELEC",
-  "PHYS",
+  "ARCH", "BIOTECH", "CHE", "CHEM", "CIVIL", "CSE", "CSE (CY)", 
+  "CSE (AI/ML)", "AI/ML", "AI/DS", "ECE", "EIE", "EEE", "ETC", 
+  "HUM", "IEM", "ISE", "MATH", "MCA", "MBA", "MECH", "MED ELEC", 
+  "PHYS"
 ];
+
+const topics = [
+  "A", "B", "C", "D", "E", "F", "G"
+];
+
 const years = [1, 2, 3, 4];
 
 export default function TeamRegistration() {
   const [message, setMessage] = useState({ text: "", color: "" });
   const [showMsg, setShowMsg] = useState(false);
-  const [showWindow, setShowWindow] = useState(false);
-  const [load, setLoad] = useState(true);
+  const [showWindow, setShowWindow] = useState(false); // Show window modal
+  const [load, setLoad] = useState(false); // Loading state
   const [team, setTeam] = useState({
     teamName: "",
     teamSize: "",
-    captain: {
-      name: "",
-      usn: "",
-      year: "",
-      branch: "",
-    },
-    member1: {
-      name: "",
-      usn: "",
-      year: "",
-      branch: "",
-    },
-    member2: {
-      name: "",
-      usn: "",
-      year: "",
-      branch: "",
-    },
-    member3: {
-      name: "",
-      usn: "",
-      year: "",
-      branch: "",
-    }
+    topic: "",
+    captain: { name: "", usn: "", year: "", branch: "" },
+    member1: { name: "", usn: "", year: "", branch: "" },
+    member2: { name: "", usn: "", year: "", branch: "" },
+    member3: { name: "", usn: "", year: "", branch: "" }
   });
 
   const handleChange = (e, memberType = null) => {
@@ -107,37 +74,40 @@ export default function TeamRegistration() {
         setShowMsg(false);
         setMessage({ text: "", color: "" });
       }, 1000);
-
-
-
       return;
     }
 
-      try {
-        const response = await fetch('/api/whackiest-team-registration', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(team),
-        });
+    setLoad(true); // Show loading state
 
-        const data = await response.json();
+    try {
+      const response = await fetch('/api/whackiest-team-registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(team),
+      });
 
-        if (response.ok) {
-          setMessage({ text: "Team registered successfully!", color: "text-green-400" });
-        } else {
-          setMessage({ text: data.message || "Failed to register the team", color: "text-red-400" });
-        }
-      } catch (error) {
-        console.error("Error submitting team:", error);
-        setMessage({ text: "An error occurred. Please try again.", color: "text-red-400" });
-      } finally {
-        setShowMsg(true);
-        setTimeout(() => setShowMsg(false), 2000);
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage({ text: "Team registered successfully!", color: "text-green-400" });
+      } else {
+        setMessage({ text: data.message || "Failed to register the team", color: "text-red-400" });
       }
-    };
-
+    } catch (error) {
+      console.error("Error submitting team:", error);
+      setMessage({ text: "An error occurred. Please try again.", color: "text-red-400" });
+    } finally {
+      setLoad(false);
+      setShowWindow(true);
+      window.scrollTo({
+        top: document.documentElement.scrollHeight / 2 - window.innerHeight / 2,
+        behavior: 'smooth'
+      });
+      setTimeout(() => setShowMsg(false), 2000);
+    }
+  };
 
   return (
     <>
@@ -199,65 +169,81 @@ export default function TeamRegistration() {
                   </label>
                 </div>
 
+                <div className="relative">
+                  <select
+                    onChange={handleChange}
+                    value={team.topic}
+                    name="topic"
+                    id="topic"
+                    className="w-full h-12 text-gray-900 dark:text-gray-400 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
+                    required
+                  >
+                    <option value="" disabled>Select your topic</option>
+                    {topics.map((topic) => (
+                      <option key={topic} value={topic} className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">
+                        {topic}
+                      </option>
+                    ))}
+                  </select>
+                  <label
+                    htmlFor="topic"
+                    className="absolute left-0 -top-3.5 text-sm text-gray-600 dark:text-gray-400"
+                  >
+                    Topic
+                  </label>
+                </div>
+
                 {/* Error Message */}
-                <div
-                  className={`${
-                    showMsg ? "" : "hidden"
-                  } w-full text-center`}
-                >
+                <div className={`${showMsg ? "" : "hidden"} w-full text-center`}>
                   <p className={`text-xl font-semibold ${message.color} animate-pulse`}>
                     {message.text}
                   </p>
                 </div>
 
-                {/* ... (Team Leader, Member 1, Member 2, Member 3 sections) ... */}
-
-
                 {/* Dynamic Member Forms */}
-                {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
-                  <div key={member} className="border-b-2 pb-4 mb-4">
-                    <h4 className="text-xl font-semibold text-center mb-4 text-gray-700 dark:text-gray-300">
-                      {index === 0 ? "Team Leader" : `Member ${index}`} Details
-                    </h4>
-                    {Object.keys(team[member]).map((field) => (
-                      <div key={field} className="relative mb-4">
-                        {field === "year" || field === "branch" ? (
-                          <select
-                            onChange={(e) => handleChange(e, member)}
-                            value={team[member][field]}
-                            name={field}
-                            id={`${member}${field}`}
-                            className="w-full h-12 text-gray-900 dark:text-gray-400 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
-                            required
-                          >
-                            <option value="" disabled>{`Select ${field.charAt(0).toUpperCase() + field.slice(1)}`}</option>
-                            {(field === "year" ? years : branches).map((option) => (
-                              <option
-                                key={option}
-                                value={option}
-                                className="text-gray-900 dark:text-white bg-white dark:bg-gray-700"
+                {team.teamSize && (
+                  <div>
+                    {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
+                      <div key={member} className="border-b-2 pb-4 mb-4">
+                        <h4 className="text-xl font-semibold text-center mb-4 text-gray-700 dark:text-gray-300">
+                          {index === 0 ? "Team Leader" : `Member ${index}`} Details
+                        </h4>
+                        {Object.keys(team[member]).map((field) => (
+                          <div key={field} className="relative mb-4">
+                            {field === "year" || field === "branch" ? (
+                              <select
+                                onChange={(e) => handleChange(e, member)}
+                                value={team[member][field]}
+                                name={field}
+                                id={`${member}${field}`}
+                                className="w-full h-12 text-gray-900 dark:text-gray-400 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
+                                required
                               >
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            onChange={(e) => handleChange(e, member)}
-                            value={team[member][field]}
-                            type="text"
-                            name={field}
-                            id={`${member}${field}`}
-                            className="w-full h-12 text-gray-900 dark:text-white placeholder-gray-400 peer border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
-                            placeholder={`${index === 0 ? "Team Leader" : `Member ${index}`} ${field.charAt(0).toUpperCase() + field.slice(1)}`}
-                            required
-                          />
-                        )}
+                                <option value="" disabled>{`Select ${field.charAt(0).toUpperCase() + field.slice(1)}`}</option>
+                                {(field === "year" ? years : branches).map((option) => (
+                                  <option key={option} value={option} className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">
+                                    {option}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <input
+                                onChange={(e) => handleChange(e, member)}
+                                value={team[member][field]}
+                                type="text"
+                                name={field}
+                                id={`${member}${field}`}
+                                className="w-full h-12 text-gray-900 dark:text-white placeholder-gray-400 peer border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
+                                placeholder={`${index === 0 ? "Team Leader" : `Member ${index}`} ${field.charAt(0).toUpperCase() + field.slice(1)}`}
+                                required
+                              />
+                            )}
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
-                ))}
-
+                )}
 
                 <button
                   type="submit"
@@ -275,9 +261,7 @@ export default function TeamRegistration() {
               >
                 {load ? (
                   <div className="w-full h-full flex justify-center items-center">
-                    <div className="w-16 h-16 sm:w-24 sm:h-24">
-                      Loading...
-                    </div>
+                    <div className="w-16 h-16 sm:w-24 sm:h-24">Loading...</div>
                   </div>
                 ) : (
                   <div className="w-full h-full flex flex-col py-8 px-6 justify-evenly bg-gray-800 rounded-2xl shadow-2xl">
