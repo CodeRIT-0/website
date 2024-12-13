@@ -232,7 +232,7 @@ export default function TeamRegistration() {
                     {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
                       <div key={member} className="border-b-2 pb-4 mb-4">
                         <h4 className="text-xl font-semibold text-center mb-4 text-gray-700 dark:text-gray-300">
-                          {index === 0 ? "Team Leader" : `Member ${index}`} Details
+                          {index === 0 ? "Team Leader" : `Member ${index + 1}`} Details
                         </h4>
                         {Object.keys(team[member]).map((field) => (
                           <div key={field} className="relative mb-4">
