@@ -34,7 +34,7 @@ export async function GET(request){
             }, { status: 404 });
         }
 
-        console.log("Found company with interviews:", company);
+        // console.log("Found company with interviews:", company);
 
         return NextResponse.json({
             message: "Fetched Company successfully", 

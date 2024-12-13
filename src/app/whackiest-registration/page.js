@@ -9,9 +9,9 @@ const branches = [
   "PHYS"
 ];
 
-const topics = [
-  "A", "B", "C", "D", "E", "F", "G"
-];
+// const topics = [
+//   "A", "B", "C", "D", "E", "F", "G"
+// ];
 
 const years = [1, 2, 3, 4];
 
@@ -31,11 +31,16 @@ export default function TeamRegistration() {
   });
 
   const handleChange = (e, memberType = null) => {
-    e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
 
-    if (memberType) {
+    if (name === "teamSize") {
+      setTeam(prevTeam => ({
+        ...prevTeam,
+        teamSize: value,
+        member3: { name: "", usn: "", year: "", branch: "" }
+      }));
+    } else if (memberType) {
       setTeam(prevTeam => ({
         ...prevTeam,
         [memberType]: {
@@ -164,31 +169,33 @@ export default function TeamRegistration() {
 
                 {/* Team Size */}
                 <div className="flex justify-center space-x-6 mb-6">
-                  <label className="inline-flex items-center">
+                  <label className="inline-flex items-center cursor-pointer">
                     <input
                       type="radio"
                       name="teamSize"
                       value="3"
                       checked={team.teamSize === "3"}
                       onChange={handleChange}
-                      className="form-radio h-5 w-5 text-blue-600"
+                      className="form-radio h-5 w-5 text-blue-600 cursor-pointer 
+                        checked:bg-blue-600 checked:border-transparen"
                     />
-                    <span className="ml-2 text-gray-700 dark:text-gray-300">3 Members</span>
+                    <span className="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">3 Members</span>
                   </label>
-                  <label className="inline-flex items-center">
+                  <label className="inline-flex items-center cursor-pointer">
                     <input
                       type="radio"
                       name="teamSize"
                       value="4"
                       checked={team.teamSize === "4"}
                       onChange={handleChange}
-                      className="form-radio h-5 w-5 text-blue-600"
+                      className="form-radio h-5 w-5 text-blue-600 cursor-pointer 
+                        checked:bg-blue-600 checked:border-transparent"
                     />
-                    <span className="ml-2 text-gray-700 dark:text-gray-300">4 Members</span>
+                    <span className="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">4 Members</span>
                   </label>
                 </div>
 
-                <div className="relative">
+                {/* <div className="relative">
                   <select
                     onChange={handleChange}
                     value={team.topic}
@@ -210,7 +217,7 @@ export default function TeamRegistration() {
                   >
                     Topic
                   </label>
-                </div>
+                </div> */}
 
                 {/* Error Message */}
                 <div className={`${showMsg ? "" : "hidden"} w-full text-center`}>
