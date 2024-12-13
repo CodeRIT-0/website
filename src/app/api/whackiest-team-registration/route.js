@@ -32,10 +32,10 @@ export async function POST(request) {
     const reqBody = await request.json();
     console.log("Request Body:", reqBody);
 
-    const { teamName, teamSize, topic, captain, member1, member2, member3 } = reqBody;
+    const { teamName, teamSize, captain, member1, member2, member3 } = reqBody;
 
     // Validate required fields
-    if (!teamName || !teamSize || !topic || !captain || !member1 || !member2 || (teamSize === 4 && !member3)) {
+    if (!teamName || !teamSize || !captain || !member1 || !member2 || (teamSize === 4 && !member3)) {
       console.error("Missing required fields");
       return NextResponse.json(
         { message: "Missing required fields", success: false },
@@ -47,7 +47,6 @@ export async function POST(request) {
     const newTeam = new whackiestTeam({
       teamName,
       teamSize,
-      topic,
       captain,
       member1,
       member2,

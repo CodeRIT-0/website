@@ -32,10 +32,10 @@ const whackiestTeamSchema = new mongoose.Schema({
     required: [true, "Team Size is required"],
     enum: [3, 4],
   },
-  topic: {
-    type: String,
-    required: [true, "Topic is required"],
-  },
+  // topic: {
+  //   type: String,
+  //   required: [true, "Topic is required"],
+  // },
   captain: {
     type: memberSchema,
     required: [true, "Team Captain details are required"],
