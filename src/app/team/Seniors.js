@@ -62,7 +62,7 @@ const Seniors=[
     {
         "name":"Meena Kumari",
         "src":"/Seniors/Meena.jpg",
-        "url":"https://www.linkedin.com/in/shreyansh-narayan-878b09222/",
+        "url":"https://www.linkedin.com/in/meena-kumari-/",
         "desc":"We are the Senior core member of this prestigious club of Ramaiah"
     },
     {

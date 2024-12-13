@@ -44,7 +44,7 @@ export default function Navbar() {
     { path: '/team', label: 'Team' },
     { path: '/interview-experience', label: 'Interview Experience' },
     // { path: '/registration', label: 'Ice-Breaker 2024', special: true }
-    { path: '', label: 'Ice-Breaker 2024', special: true }
+    { path: '/whackiest', label: 'Whackiest-24', special: true }
   ];
 
   return (
