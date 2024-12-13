@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/card";
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
