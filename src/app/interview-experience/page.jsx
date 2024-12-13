@@ -35,24 +35,24 @@ export default function InterviewExperiencePage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="container mt-20 mx-auto px-4 py-16"
+      className="container mt-24 sm:mt-28 md:mt-32 lg:mt-20 mx-auto px-4 py-8 sm:py-12 md:py-16"
     >
       <motion.div
         initial={{ y: -20 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-16"
+        className="text-center mb-10 sm:mb-12 md:mb-16"
       >
-        <h1 className="text-6xl font-extrabold mb-6 text-center bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-5 md:mb-6 text-center bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
           Interview Experiences
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-8 font-medium max-w-3xl mx-auto">
+        <p className="text-base sm:text-lg md:text-xl text-gray-400 text-center mb-6 sm:mb-7 md:mb-8 font-medium max-w-xl md:max-w-2xl lg:max-w-3xl mx-auto">
           Learn from the interview experiences of successful candidates at top tech companies
         </p>
-        <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+        <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-full sm:max-w-xl md:max-w-4xl lg:max-w-7xl mx-auto px-2 sm:px-4">
         {companies.length > 0 ? (
           companies.map((company, index) => (
             <motion.div
@@ -71,7 +71,7 @@ export default function InterviewExperiencePage() {
             </motion.div>
           ))
         ) : (
-          <p className="text-center col-span-3 text-gray-500 dark:text-gray-400">
+          <p className="text-center col-span-1 sm:col-span-2 lg:col-span-3 text-gray-500 text-sm sm:text-base">
             No companies found
           </p>
         )}
