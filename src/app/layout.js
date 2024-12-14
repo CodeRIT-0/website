@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
-
+import VoiceflowScript from './VoiceflowScript';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -47,6 +47,7 @@ export default function RootLayout({ children }) {
         <Header/>
         {children}
         <Footer/>
+        <VoiceflowScript />
       </body>
     </html>
   )
