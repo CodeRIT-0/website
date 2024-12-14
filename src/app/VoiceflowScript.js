@@ -1,17 +1,18 @@
-'use client'; 
+'use client';
 
 import { useEffect } from 'react';
 
 const VoiceflowScript = () => {
   useEffect(() => {
+    
+    const v = document.createElement('script');
+    const s = document.getElementsByTagName('script')[0];
+    
+    v.type = 'text/javascript';
+    v.src = 'https://cdn.voiceflow.com/widget/bundle.mjs';
 
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-
-
-    script.src = 'https://cdn.voiceflow.com/widget/bundle.mjs';
-    script.onload = () => {
-
+    
+    v.onload = () => {
       window.voiceflow.chat.load({
         verify: { projectID: '675939de24f74cc5f29aef1a' },
         url: 'https://general-runtime.voiceflow.com',
@@ -19,15 +20,12 @@ const VoiceflowScript = () => {
       });
     };
 
+    
+    s.parentNode.insertBefore(v, s);
 
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-
-
-    firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
-
-
+   
     return () => {
-      script.remove();
+      v.remove();
     };
   }, []); 
 
