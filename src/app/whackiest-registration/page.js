@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 
 const ButtonSpinner = ({ className = '' }) => (
-  <Loader2 
-    className={`animate-spin mr-2 ${className}`} 
+  <Loader2
+    className={`animate-spin mr-2 ${className}`}
   />
 );
 
@@ -89,7 +89,7 @@ export default function TeamRegistration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const teamSizeInt = parseInt(team.teamSize);
     const requiredMembers =
       teamSizeInt === 3
@@ -109,7 +109,7 @@ export default function TeamRegistration() {
       return;
     }
 
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/whackiest-team-registration", {
@@ -290,23 +290,23 @@ export default function TeamRegistration() {
               </div>
             )}
 
-<button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full flex justify-center items-center space-x-3 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <>
-              <ButtonSpinner className="text-white" />
-              <span>Submitting...</span>
-            </>
-          ) : (
-            <>
-              <span>Submit Registration</span>
-              <ArrowRight className="w-6 h-6" />
-            </>
-          )}
-        </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full flex justify-center items-center space-x-3 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <>
+                  <ButtonSpinner className="text-white" />
+                  <span>Submitting...</span>
+                </>
+              ) : (
+                <>
+                  <span>Submit Registration</span>
+                  <ArrowRight className="w-6 h-6" />
+                </>
+              )}
+            </button>
           </form>
         </div>
       </motion.div>

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    await connect();   
+    await connect();
     const whackiestTeams = await whackiestTeam.find();
 
     return NextResponse.json({
@@ -32,7 +32,7 @@ export async function POST(request) {
     const { teamName, captain, member1, member2, member3 } = reqBody;
     let { teamSize } = reqBody;
 
-  
+
     teamSize = parseInt(teamSize, 10);
     console.log("Parsed Team Size:", teamSize, "Type:", typeof teamSize);
 
@@ -60,14 +60,14 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-  
+
     const newTeam = new whackiestTeam({
       teamName,
       teamSize,
       captain,
       member1,
       member2,
-      ...(teamSize === 4 && { member3 }), 
+      ...(teamSize === 4 && { member3 }),
     });
 
     const savedTeam = await newTeam.save();
@@ -80,7 +80,7 @@ export async function POST(request) {
         id: savedTeam._id,
         teamName: savedTeam.teamName,
         teamSize: savedTeam.teamSize,
-      }, 
+      },
     });
   } catch (error) {
     console.error("Error in POST handler:", error.message);
