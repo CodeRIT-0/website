@@ -32,10 +32,32 @@ export async function POST(request) {
     const reqBody = await request.json();
     console.log("Request Body:", reqBody);
 
-    const { teamName, teamSize, captain, member1, member2, member3 } = reqBody;
+    const { teamName, captain, member1, member2, member3 } = reqBody;
+    let { teamSize } = reqBody;
+
+    // Parse teamSize as a number
+    teamSize = parseInt(teamSize, 10);
+    console.log("Parsed Team Size:", teamSize, "Type:", typeof teamSize);
+
+    // Validate teamSize
+    const validTeamSizes = [3, 4];
+    if (!validTeamSizes.includes(teamSize)) {
+      console.error("Invalid team size");
+      return NextResponse.json(
+        { message: "Invalid team size", success: false },
+        { status: 400 }
+      );
+    }
 
     // Validate required fields
-    if (!teamName || !teamSize || !captain || !member1 || !member2 || (teamSize === 4 && !member3)) {
+    if (
+      !teamName ||
+      !teamSize ||
+      !captain?.usn ||
+      !member1?.usn ||
+      !member2?.usn ||
+      (teamSize === 4 && !member3?.usn)
+    ) {
       console.error("Missing required fields");
       return NextResponse.json(
         { message: "Missing required fields", success: false },
@@ -50,7 +72,7 @@ export async function POST(request) {
       captain,
       member1,
       member2,
-      member3: teamSize === 4 ? member3 : undefined,
+      ...(teamSize === 4 && { member3 }), // Include member3 only if teamSize is 4
     });
 
     // Save the new team
@@ -60,17 +82,18 @@ export async function POST(request) {
     return NextResponse.json({
       message: "Team registered successfully",
       success: true,
-      savedTeam,
+      team: {
+        id: savedTeam._id,
+        teamName: savedTeam.teamName,
+        teamSize: savedTeam.teamSize,
+      }, // Exclude sensitive data like full team details
     });
   } catch (error) {
     console.error("Error in POST handler:", error.message);
 
     if (error.code === 11000) {
       return NextResponse.json(
-        {
-          message: "Team Name or USN already exists",
-          success: false,
-        },
+        { message: "Team Name or USN already exists", success: false },
         { status: 400 }
       );
     }

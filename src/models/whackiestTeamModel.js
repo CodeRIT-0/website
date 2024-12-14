@@ -44,14 +44,18 @@ const whackiestTeamSchema = new mongoose.Schema({
   member2: memberSchema,
   member3: {
     type: memberSchema,
+    required: function () {
+      return this.teamSize === 4;
+    },
     validate: {
-      validator: function () {
-        return this.teamSize === 4 ? !!this.member3 : true;
+      validator: function (value) {
+        return this.teamSize === 4 ? !!value : true;
       },
       message: "Member3 is required if teamSize is 4",
     },
   },
 });
+
 
 whackiestTeamSchema.pre("save", async function (next) {
   try {
@@ -61,20 +65,26 @@ whackiestTeamSchema.pre("save", async function (next) {
       return next(new Error("Team Name already exists"));
     }
 
-    // Validate unique USNs
+    // Collect USNs from team members
     const usns = [
-      this.captain.usn,
-      this.member1.usn,
-      this.member2.usn,
-      ...(this.teamSize === 4 ? [this.member3.usn] : []),
-    ];
+      this.captain?.usn,
+      this.member1?.usn,
+      this.member2?.usn,
+      ...(this.teamSize === 4 && this.member3 ? [this.member3.usn] : []),
+    ].filter(Boolean); // Filter out undefined values
 
+    // Check for duplicate USNs in the team
+    if (usns.length !== new Set(usns).size) {
+      return next(new Error("Duplicate USNs found in the team"));
+    }
+
+    // Check if any USN is already registered with another team
     const conflictingTeam = await mongoose.models.whackiestTeam.findOne({
       $or: [
         { "captain.usn": { $in: usns } },
         { "member1.usn": { $in: usns } },
         { "member2.usn": { $in: usns } },
-        { "member3.usn": { $in: usns } },
+        { "member3.usn": { $in: usns } }, // Corrected member3.usn
       ],
     });
 

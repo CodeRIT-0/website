@@ -235,7 +235,7 @@ export default function TeamRegistration() {
                   >
                     <h4 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700 flex items-center">
                       {index === 0 ? <UserPlus className="mr-3 w-6 h-6" /> : <Users className="mr-3 w-6 h-6" />}
-                      {index === 0 ? "Team Leader" : `Member ${index + 1}`} Details
+                      {index === 0 ? "Team Leader" : `Member ${index}`} Details
                     </h4>
                     
                     <div className="grid md:grid-cols-2 gap-6">
