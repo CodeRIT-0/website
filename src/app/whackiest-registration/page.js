@@ -37,10 +37,10 @@ export default function TeamRegistration() {
   const [team, setTeam] = useState({
     teamName: "",
     teamSize: "",
-    captain: { name: "", usn: "", year: "", branch: "" },
+    captain: { name: "", usn: "", year: "", branch: "", phoneNumber: "", email: "" },
     member1: { name: "", usn: "", year: "", branch: "" },
     member2: { name: "", usn: "", year: "", branch: "" },
-    member3: { name: "", usn: "", year: "", branch: "" }
+    member3: { name: "", usn: "", year: "", branch: "" },
   });
 
   const showToast = (message, type = "error") => {
@@ -54,10 +54,10 @@ export default function TeamRegistration() {
     setTeam({
       teamName: "",
       teamSize: "",
-      captain: { name: "", usn: "", year: "", branch: "" },
+      captain: { name: "", usn: "", year: "", branch: "", phoneNumber: "", email: "" },
       member1: { name: "", usn: "", year: "", branch: "" },
       member2: { name: "", usn: "", year: "", branch: "" },
-      member3: { name: "", usn: "", year: "", branch: "" }
+      member3: { name: "", usn: "", year: "", branch: "" },
     });
   };
 
@@ -66,23 +66,23 @@ export default function TeamRegistration() {
     const value = e.target.value;
 
     if (name === "teamSize") {
-      setTeam(prevTeam => ({
+      setTeam((prevTeam) => ({
         ...prevTeam,
         teamSize: value,
-        member3: { name: "", usn: "", year: "", branch: "" }
+        member3: { name: "", usn: "", year: "", branch: "" },
       }));
     } else if (memberType) {
-      setTeam(prevTeam => ({
+      setTeam((prevTeam) => ({
         ...prevTeam,
         [memberType]: {
           ...prevTeam[memberType],
-          [name]: value
-        }
+          [name]: value,
+        },
       }));
     } else {
-      setTeam(prevTeam => ({
+      setTeam((prevTeam) => ({
         ...prevTeam,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -90,22 +90,47 @@ export default function TeamRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const teamSizeInt = parseInt(team.teamSize);
+    const teamSizeInt = parseInt(team.teamSize, 10);
     const requiredMembers =
       teamSizeInt === 3
         ? ["captain", "member1", "member2"]
         : ["captain", "member1", "member2", "member3"];
 
-    const missingFields = requiredMembers.some(
-      (member) =>
-        !team[member].name ||
-        !team[member].usn ||
-        !team[member].year ||
-        !team[member].branch
-    );
+    const missingFields = requiredMembers.some((member) => {
+      const isCaptain = member === "captain";
+      const memberData = team[member];
+
+      return (
+        !memberData.name ||
+        !memberData.usn ||
+        !memberData.year ||
+        !memberData.branch ||
+        (isCaptain && (!memberData.phoneNumber || !memberData.email))
+      );
+    });
 
     if (!team.teamName || !team.teamSize || missingFields) {
       showToast("Please fill all required fields");
+      return;
+    }
+
+    for (const member of requiredMembers) {
+      const memberData = team[member];
+      if (!/^(1ms2|1MS2)\w*$/.test(memberData.usn)) {
+        showToast(`Invalid USN format for ${member}. USN must start with '1ms2' or '1MS2'. If thats all correct, check for repeatition of USN`);
+        return;
+      }
+    }
+
+    // Validate captain's phone number
+    if (!/^[6-9]\d{9}$/.test(team.captain.phoneNumber)) {
+      showToast("Invalid phone number format for captain");
+      return;
+    }
+
+    // Validate captain's email
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(team.captain.email)) {
+      showToast("Invalid email format for captain");
       return;
     }
 
@@ -140,7 +165,6 @@ export default function TeamRegistration() {
     }
   };
 
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-50 py-12 px-4 sm:px-6 md:mt-20 lg:px-8 flex items-center justify-center">
       <AnimatePresence>
@@ -150,12 +174,14 @@ export default function TeamRegistration() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
             className={`fixed top-4 left-2/5 -translate-x-1/2 z-[100] px-3 py-3 rounded-xl shadow-2xl flex items-center space-x-4 
-              ${toast.type === 'error'
-                ? 'bg-red-50 border-2 border-red-300 text-red-800'
-                : 'bg-green-50 border-2 border-green-300 text-green-800'} 
+              ${
+                toast.type === "error"
+                  ? "bg-red-50 border-2 border-red-300 text-red-800"
+                  : "bg-green-50 border-2 border-green-300 text-green-800"
+              } 
               w-[90%] max-w-md mx-auto`}
           >
-            {toast.type === 'error' ? (
+            {toast.type === "error" ? (
               <AlertCircle className="w-6 h-6 text-red-500" />
             ) : (
               <Info className="w-6 h-6 text-green-500" />
@@ -209,10 +235,7 @@ export default function TeamRegistration() {
 
               <div className="flex justify-center space-x-6">
                 {["3", "4"].map((size) => (
-                  <label
-                    key={size}
-                    className="inline-flex items-center cursor-pointer group"
-                  >
+                  <label key={size} className="inline-flex items-center cursor-pointer group">
                     <input
                       type="radio"
                       name="teamSize"
@@ -233,60 +256,96 @@ export default function TeamRegistration() {
 
             {team.teamSize && (
               <div className="space-y-6">
-                {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
-                  <motion.div
-                    key={member}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-indigo-50/50 p-6 rounded-xl border border-indigo-100"
-                  >
-                    <h4 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700 flex items-center">
-                      {index === 0 ? <UserPlus className="mr-3 w-6 h-6" /> : <Users className="mr-3 w-6 h-6" />}
-                      {index === 0 ? "Team Leader" : `Member ${index}`} Details
-                    </h4>
+                {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map(
+                  (member, index) => (
+                    <motion.div
+                      key={member}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-indigo-50/50 p-6 rounded-xl border border-indigo-100"
+                    >
+                      <h4 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700 flex items-center">
+                        {index === 0 ? (
+                          <>
+                            <UserPlus className="mr-3 w-6 h-6" />
+                            Team Leader
+                          </>
+                        ) : (
+                          <>
+                            <Users className="mr-3 w-6 h-6" />
+                            {`Member ${index}`}
+                          </>
+                        )}{" "}
+                        Details
+                      </h4>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {Object.keys(team[member]).map((field) => (
-                        <div key={field} className="relative">
-                          {field === "year" || field === "branch" ? (
-                            <div className="relative">
-                              <select
-                                name={field}
-                                value={team[member][field]}
-                                onChange={(e) => handleChange(e, member)}
-                                className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 appearance-none text-sm sm:text-base"
-                                required
-                              >
-                                <option value="" disabled>
-                                  Select {field.charAt(0).toUpperCase() + field.slice(1)}
-                                </option>
-                                {(field === "year" ? years : branches).map((option) => (
-                                  <option key={option} value={option} className="bg-white text-gray-800">
-                                    {option}
-                                  </option>
-                                ))}
-                              </select>
-                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <ChevronDown className="h-5 w-5" />
-                              </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {Object.keys(team[member]).map((field) => {
+                          // Skip phoneNumber and email for non-captains
+                          if ((field === "phoneNumber" || field === "email") && member !== "captain") {
+                            return null;
+                          }
+
+                          // Determine placeholder
+                          let placeholder = "";
+                          if (field === "phoneNumber") {
+                            placeholder = "Phone Number";
+                          } else if (field === "email") {
+                            placeholder = "Email Address";
+                          } else {
+                            placeholder = `${index === 0 ? "Team Leader" : `Member ${index}`} ${
+                              field.charAt(0).toUpperCase() + field.slice(1)
+                            }`;
+                          }
+
+                          return (
+                            <div key={field} className="relative">
+                              {field === "year" || field === "branch" ? (
+                                // Dropdown for year or branch
+                                <div className="relative">
+                                  <select
+                                    name={field}
+                                    value={team[member][field]}
+                                    onChange={(e) => handleChange(e, member)}
+                                    className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 appearance-none text-sm sm:text-base"
+                                    required={member === "captain" || field !== "phoneNumber" && field !== "email"} // Required only for captain's fields
+                                  >
+                                    <option value="" disabled>
+                                      Select {field.charAt(0).toUpperCase() + field.slice(1)}
+                                    </option>
+                                    {(field === "year" ? years : branches).map((option) => (
+                                      <option key={option} value={option} className="bg-white text-gray-800">
+                                        {option}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <ChevronDown className="h-5 w-5" />
+                                  </div>
+                                </div>
+                              ) : (
+                                // Text input for other fields
+                                <input
+                                  type={field === "email" ? "email" : "text"}
+                                  name={field}
+                                  value={team[member][field]}
+                                  onChange={(e) => handleChange(e, member)}
+                                  placeholder={placeholder}
+                                  className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 placeholder-gray-400 text-sm sm:text-base"
+                                  required={
+                                    (member === "captain" && (field === "phoneNumber" || field === "email")) ||
+                                    field !== "phoneNumber" && field !== "email"
+                                  } // Required only for captain's phone and email
+                                />
+                              )}
                             </div>
-                          ) : (
-                            <input
-                              type="text"
-                              name={field}
-                              value={team[member][field]}
-                              onChange={(e) => handleChange(e, member)}
-                              placeholder={`${index === 0 ? "Team Leader" : `Member ${index}`} ${field.charAt(0).toUpperCase() + field.slice(1)}`}
-                              className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 placeholder-gray-400 text-sm sm:text-base"
-                              required
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )
+                )}
               </div>
             )}
 
@@ -341,7 +400,9 @@ export default function TeamRegistration() {
               <button
                 onClick={() => {
                   setShowWindow(false);
+
                   window.open('https://chat.whatsapp.com/C1OLANv58r74mmghyuljvg', '_blank');
+
                 }}
                 className="w-full py-2 sm:py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 text-xs sm:text-base"
               >
