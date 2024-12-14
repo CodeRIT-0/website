@@ -4,10 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    // Connect to the database
     await connect();
-
-    // Fetch all teams
     const whackiestTeams = await whackiestTeam.find();
 
     return NextResponse.json({
@@ -35,11 +32,11 @@ export async function POST(request) {
     const { teamName, captain, member1, member2, member3 } = reqBody;
     let { teamSize } = reqBody;
 
-    // Parse teamSize as a number
+
     teamSize = parseInt(teamSize, 10);
     console.log("Parsed Team Size:", teamSize, "Type:", typeof teamSize);
 
-    // Validate teamSize
+
     const validTeamSizes = [3, 4];
     if (!validTeamSizes.includes(teamSize)) {
       console.error("Invalid team size");
@@ -49,7 +46,6 @@ export async function POST(request) {
       );
     }
 
-    // Validate required fields
     if (
       !teamName ||
       !teamSize ||
@@ -65,17 +61,15 @@ export async function POST(request) {
       );
     }
 
-    // Prepare the new team document
     const newTeam = new whackiestTeam({
       teamName,
       teamSize,
       captain,
       member1,
       member2,
-      ...(teamSize === 4 && { member3 }), // Include member3 only if teamSize is 4
+      ...(teamSize === 4 && { member3 }),
     });
 
-    // Save the new team
     const savedTeam = await newTeam.save();
     console.log("Team saved successfully:", savedTeam);
 
@@ -86,7 +80,7 @@ export async function POST(request) {
         id: savedTeam._id,
         teamName: savedTeam.teamName,
         teamSize: savedTeam.teamSize,
-      }, // Exclude sensitive data like full team details
+      },
     });
   } catch (error) {
     console.error("Error in POST handler:", error.message);
@@ -104,6 +98,5 @@ export async function POST(request) {
     );
   }
 }
-
 
 

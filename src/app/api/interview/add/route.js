@@ -1,5 +1,5 @@
 import Interview from "@/src/models/interviewModel";
-import Company from "@/src/models/companyModel"; // Fixed import
+import Company from "@/src/models/companyModel"; 
 import { connect } from "@/src/dbconfig/dbconfig";
 
 import { NextResponse } from "next/server";
