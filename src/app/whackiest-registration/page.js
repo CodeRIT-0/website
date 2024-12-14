@@ -2,21 +2,29 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Users, 
-  UserPlus, 
-  ArrowRight, 
-  CheckCircle2, 
+
+import {
+  Users,
+  UserPlus,
+  ArrowRight,
+  CheckCircle2,
   X,
   AlertCircle,
   Info,
-  ChevronDown 
+  ChevronDown,
+  Loader2
 } from 'lucide-react';
 
+const ButtonSpinner = ({ className = '' }) => (
+  <Loader2 
+    className={`animate-spin mr-2 ${className}`} 
+  />
+);
+
 const branches = [
-  "ARCH", "BIOTECH", "CHE", "CHEM", "CIVIL", "CSE", "CSE (CY)", 
-  "CSE (AI/ML)", "AI/ML", "AI/DS", "ECE", "EIE", "EEE", "ETC", 
-  "HUM", "IEM", "ISE", "MATH","AEROSPACE" ,"MCA", "MBA", "MECH", "MED ELEC", 
+  "ARCH", "BIOTECH", "CHE", "CHEM", "CIVIL", "CSE", "CSE (CY)",
+  "CSE (AI/ML)", "AI/ML", "AI/DS", "ECE", "EIE", "EEE", "ETC",
+  "HUM", "IEM", "ISE", "MATH", "AEROSPACE", "MCA", "MBA", "MECH", "MED ELEC",
   "PHYS"
 ];
 
@@ -25,7 +33,7 @@ const years = [1, 2, 3, 4];
 export default function TeamRegistration() {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const [showWindow, setShowWindow] = useState(false);
-  const [load, setLoad] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [team, setTeam] = useState({
     teamName: "",
     teamSize: "",
@@ -101,7 +109,7 @@ export default function TeamRegistration() {
       return;
     }
 
-    setLoad(true); 
+    setIsSubmitting(true); 
 
     try {
       const response = await fetch("/api/whackiest-team-registration", {
@@ -128,21 +136,22 @@ export default function TeamRegistration() {
       console.error("Error submitting team:", error);
       showToast("An error occurred. Please try again.");
     } finally {
-      setLoad(false);
+      setIsSubmitting(false);
     }
   };
 
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-50 py-12 px-4 sm:px-6 md:mt-20 lg:px-8 flex items-center justify-center">
-       <AnimatePresence>
+      <AnimatePresence>
         {toast.show && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
             className={`fixed top-4 left-2/5 -translate-x-1/2 z-[100] px-3 py-3 rounded-xl shadow-2xl flex items-center space-x-4 
-              ${toast.type === 'error' 
-                ? 'bg-red-50 border-2 border-red-300 text-red-800' 
+              ${toast.type === 'error'
+                ? 'bg-red-50 border-2 border-red-300 text-red-800'
                 : 'bg-green-50 border-2 border-green-300 text-green-800'} 
               w-[90%] max-w-md mx-auto`}
           >
@@ -152,7 +161,7 @@ export default function TeamRegistration() {
               <Info className="w-6 h-6 text-green-500" />
             )}
             <span className="text-xs sm:text-sm flex-grow font-medium">{toast.message}</span>
-            <button 
+            <button
               onClick={() => setToast({ show: false, message: "", type: "" })}
               className="hover:bg-gray-100 rounded-full p-1"
             >
@@ -162,7 +171,7 @@ export default function TeamRegistration() {
         )}
       </AnimatePresence>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -170,7 +179,7 @@ export default function TeamRegistration() {
       >
         <div className="bg-white shadow-2xl rounded-3xl overflow-hidden border border-indigo-100/50 transform transition-all hover:scale-[1.01] duration-300">
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 sm:p-8 text-center">
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -184,7 +193,6 @@ export default function TeamRegistration() {
             </p>
           </div>
 
-         
           <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-8">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="relative">
@@ -201,8 +209,8 @@ export default function TeamRegistration() {
 
               <div className="flex justify-center space-x-6">
                 {["3", "4"].map((size) => (
-                  <label 
-                    key={size} 
+                  <label
+                    key={size}
                     className="inline-flex items-center cursor-pointer group"
                   >
                     <input
@@ -226,7 +234,7 @@ export default function TeamRegistration() {
             {team.teamSize && (
               <div className="space-y-6">
                 {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
-                  <motion.div 
+                  <motion.div
                     key={member}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -235,9 +243,9 @@ export default function TeamRegistration() {
                   >
                     <h4 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700 flex items-center">
                       {index === 0 ? <UserPlus className="mr-3 w-6 h-6" /> : <Users className="mr-3 w-6 h-6" />}
-                      {index === 0 ? "Team Leader" : `Member ${index + 1}`} Details
+                      {index === 0 ? "Team Leader" : `Member ${index}`} Details
                     </h4>
-                    
+
                     <div className="grid md:grid-cols-2 gap-6">
                       {Object.keys(team[member]).map((field) => (
                         <div key={field} className="relative">
@@ -282,19 +290,29 @@ export default function TeamRegistration() {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="w-full flex justify-center items-center space-x-3 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-indigo-300"
-            >
+<button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full flex justify-center items-center space-x-3 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? (
+            <>
+              <ButtonSpinner className="text-white" />
+              <span>Submitting...</span>
+            </>
+          ) : (
+            <>
               <span>Submit Registration</span>
               <ArrowRight className="w-6 h-6" />
-            </button>
+            </>
+          )}
+        </button>
           </form>
         </div>
       </motion.div>
 
       {showWindow && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"

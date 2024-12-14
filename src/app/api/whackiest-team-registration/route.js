@@ -4,10 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    // Connect to the database
-    await connect();
-
-    // Fetch all teams
+    await connect();   
     const whackiestTeams = await whackiestTeam.find();
 
     return NextResponse.json({
@@ -32,45 +29,65 @@ export async function POST(request) {
     const reqBody = await request.json();
     console.log("Request Body:", reqBody);
 
-    const { teamName, teamSize, captain, member1, member2, member3 } = reqBody;
+    const { teamName, captain, member1, member2, member3 } = reqBody;
+    let { teamSize } = reqBody;
 
-    // Validate required fields
-    if (!teamName || !teamSize || !captain || !member1 || !member2 || (teamSize === 4 && !member3)) {
+  
+    teamSize = parseInt(teamSize, 10);
+    console.log("Parsed Team Size:", teamSize, "Type:", typeof teamSize);
+
+
+    const validTeamSizes = [3, 4];
+    if (!validTeamSizes.includes(teamSize)) {
+      console.error("Invalid team size");
+      return NextResponse.json(
+        { message: "Invalid team size", success: false },
+        { status: 400 }
+      );
+    }
+
+    if (
+      !teamName ||
+      !teamSize ||
+      !captain?.usn ||
+      !member1?.usn ||
+      !member2?.usn ||
+      (teamSize === 4 && !member3?.usn)
+    ) {
       console.error("Missing required fields");
       return NextResponse.json(
         { message: "Missing required fields", success: false },
         { status: 400 }
       );
     }
-
-    // Prepare the new team document
+  
     const newTeam = new whackiestTeam({
       teamName,
       teamSize,
       captain,
       member1,
       member2,
-      member3: teamSize === 4 ? member3 : undefined,
+      ...(teamSize === 4 && { member3 }), 
     });
 
-    // Save the new team
     const savedTeam = await newTeam.save();
     console.log("Team saved successfully:", savedTeam);
 
     return NextResponse.json({
       message: "Team registered successfully",
       success: true,
-      savedTeam,
+      team: {
+        id: savedTeam._id,
+        teamName: savedTeam.teamName,
+        teamSize: savedTeam.teamSize,
+      }, 
     });
   } catch (error) {
     console.error("Error in POST handler:", error.message);
 
     if (error.code === 11000) {
       return NextResponse.json(
-        {
-          message: "Team Name or USN already exists",
-          success: false,
-        },
+        { message: "Team Name or USN already exists", success: false },
         { status: 400 }
       );
     }
@@ -81,6 +98,5 @@ export async function POST(request) {
     );
   }
 }
-
 
 
