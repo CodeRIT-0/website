@@ -16,7 +16,7 @@ import {
 const branches = [
   "ARCH", "BIOTECH", "CHE", "CHEM", "CIVIL", "CSE", "CSE (CY)", 
   "CSE (AI/ML)", "AI/ML", "AI/DS", "ECE", "EIE", "EEE", "ETC", 
-  "HUM", "IEM", "ISE", "MATH","AEROSPACE" ,"MCA", "MBA", "MECH", "MED ELEC", 
+  "HUM", "IEM", "ISE", "MATH", "AEROSPACE", "MCA", "MBA", "MECH", "MED ELEC", 
   "PHYS"
 ];
 
