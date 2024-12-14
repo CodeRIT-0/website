@@ -1,6 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Users, 
+  UserPlus, 
+  ArrowRight, 
+  CheckCircle2, 
+  X,
+  AlertCircle,
+  Info,
+  ChevronDown 
+} from 'lucide-react';
 
 const branches = [
   "ARCH", "BIOTECH", "CHE", "CHEM", "CIVIL", "CSE", "CSE (CY)", 
@@ -9,26 +20,38 @@ const branches = [
   "PHYS"
 ];
 
-// const topics = [
-//   "A", "B", "C", "D", "E", "F", "G"
-// ];
-
 const years = [1, 2, 3, 4];
 
 export default function TeamRegistration() {
-  const [message, setMessage] = useState({ text: "", color: "" });
-  const [showMsg, setShowMsg] = useState(false);
-  const [showWindow, setShowWindow] = useState(false); // Show window modal
-  const [load, setLoad] = useState(false); // Loading state
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [showWindow, setShowWindow] = useState(false);
+  const [load, setLoad] = useState(false);
   const [team, setTeam] = useState({
     teamName: "",
     teamSize: "",
-    topic: "",
     captain: { name: "", usn: "", year: "", branch: "" },
     member1: { name: "", usn: "", year: "", branch: "" },
     member2: { name: "", usn: "", year: "", branch: "" },
     member3: { name: "", usn: "", year: "", branch: "" }
   });
+
+  const showToast = (message, type = "error") => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: "", type: "" });
+    }, 5000);
+  };
+
+  const resetForm = () => {
+    setTeam({
+      teamName: "",
+      teamSize: "",
+      captain: { name: "", usn: "", year: "", branch: "" },
+      member1: { name: "", usn: "", year: "", branch: "" },
+      member2: { name: "", usn: "", year: "", branch: "" },
+      member3: { name: "", usn: "", year: "", branch: "" }
+    });
+  };
 
   const handleChange = (e, memberType = null) => {
     const name = e.target.name;
@@ -56,270 +79,261 @@ export default function TeamRegistration() {
     }
   };
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const teamSizeInt = parseInt(team.teamSize);
+    const requiredMembers =
+      teamSizeInt === 3
+        ? ["captain", "member1", "member2"]
+        : ["captain", "member1", "member2", "member3"];
 
-      
-      const teamSizeInt = parseInt(team.teamSize);
-      const requiredMembers =
-        teamSizeInt === 3
-          ? ["captain", "member1", "member2"]
-          : ["captain", "member1", "member2", "member3"];
+    const missingFields = requiredMembers.some(
+      (member) =>
+        !team[member].name ||
+        !team[member].usn ||
+        !team[member].year ||
+        !team[member].branch
+    );
 
-      const missingFields = requiredMembers.some(
-        (member) =>
-          !team[member].name ||
-          !team[member].usn ||
-          !team[member].year ||
-          !team[member].branch
-      );
+    if (!team.teamName || !team.teamSize || missingFields) {
+      showToast("Please fill all required fields");
+      return;
+    }
 
-      if (!team.teamName || !team.teamSize || missingFields) {
-        setShowMsg(true);
-        setMessage({ text: "Please fill all required fields", color: "text-red-400" });
+    setLoad(true); 
 
-        setTimeout(() => {
-          setShowMsg(false);
-          setMessage({ text: "", color: "" });
-        }, 5000);
-        return;
-      }
+    try {
+      const response = await fetch("/api/whackiest-team-registration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(team),
+      });
 
-      setLoad(true); 
+      const data = await response.json();
 
-      try {
-        const response = await fetch("/api/whackiest-team-registration", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(team),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setMessage({ text: "Team registered successfully!", color: "text-green-400" });
-          setShowWindow(true);
-          window.scrollTo({
-            top: document.documentElement.scrollHeight / 2 - window.innerHeight / 2,
-            behavior: "smooth",
-          });
-        } else {
-          setMessage({
-            text: data.message || "Failed to register the team",
-            color: "text-red-400",
-          });
-          setShowMsg(true);
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
-        }
-      } catch (error) {
-        console.error("Error submitting team:", error);
-        setMessage({
-          text: "An error occurred. Please try again.",
-          color: "text-red-400",
-        });
-        setShowMsg(true);
+      if (response.ok) {
+        resetForm();
+        setShowWindow(true);
         window.scrollTo({
-          top: 0,
+          top: document.documentElement.scrollHeight / 2 - window.innerHeight / 2,
           behavior: "smooth",
         });
-      } finally {
-        setLoad(false); 
-        setTimeout(() => setShowMsg(false), 5000);
+      } else {
+        showToast(data.message || "Failed to register the team");
       }
-    };
+    } catch (error) {
+      console.error("Error submitting team:", error);
+      showToast("An error occurred. Please try again.");
+    } finally {
+      setLoad(false);
+    }
+  };
 
   return (
-    <>
-      <div className="relative min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="relative w-full max-w-2xl mt-10">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl transform transition-all hover:scale-[1.01] duration-300">
-            <div className="px-8 py-12 mt-20">
-              <div className="text-center mb-12">
-                <h3 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Ideathon Team Registration
-                </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">Register your team for the Ideathon</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-50 py-12 px-4 sm:px-6 md:mt-20 lg:px-8 flex items-center justify-center">
+       <AnimatePresence>
+        {toast.show && (
+          <motion.div 
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className={`fixed top-4 left-2/5 -translate-x-1/2 z-[100] px-3 py-3 rounded-xl shadow-2xl flex items-center space-x-4 
+              ${toast.type === 'error' 
+                ? 'bg-red-50 border-2 border-red-300 text-red-800' 
+                : 'bg-green-50 border-2 border-green-300 text-green-800'} 
+              w-[90%] max-w-md mx-auto`}
+          >
+            {toast.type === 'error' ? (
+              <AlertCircle className="w-6 h-6 text-red-500" />
+            ) : (
+              <Info className="w-6 h-6 text-green-500" />
+            )}
+            <span className="text-xs sm:text-sm flex-grow font-medium">{toast.message}</span>
+            <button 
+              onClick={() => setToast({ show: false, message: "", type: "" })}
+              className="hover:bg-gray-100 rounded-full p-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-3xl mt-20 sm:mt-0"
+      >
+        <div className="bg-white shadow-2xl rounded-3xl overflow-hidden border border-indigo-100/50 transform transition-all hover:scale-[1.01] duration-300">
+          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 sm:p-8 text-center">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="flex justify-center items-center space-x-4 mb-4"
+            >
+              <Users className="w-10 h-10 text-white" />
+              <h2 className="text-2xl sm:text-4xl font-bold text-white">Ideathon Team Registration</h2>
+            </motion.div>
+            <p className="text-indigo-100 max-w-xl mx-auto text-sm sm:text-base">
+              Form your team and showcase your innovative ideas in the upcoming Ideathon!
+            </p>
+          </div>
+
+         
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="relative">
+                <input
+                  type="text"
+                  name="teamName"
+                  value={team.teamName}
+                  onChange={handleChange}
+                  placeholder="Team Name"
+                  className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 placeholder-gray-400"
+                  required
+                />
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Team Name */}
-                <div className="relative">
-                  <input
-                    onChange={handleChange}
-                    value={team.teamName}
-                    type="text"
-                    name="teamName"
-                    id="teamName"
-                    className="w-full h-12 text-gray-900 dark:text-white placeholder-transparent peer border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
-                    placeholder="Team Name"
-                    required
-                  />
-                  <label
-                    htmlFor="teamName"
-                    className="absolute left-0 -top-3.5 text-sm text-gray-600 dark:text-gray-400 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-blue-600"
+              <div className="flex justify-center space-x-6">
+                {["3", "4"].map((size) => (
+                  <label 
+                    key={size} 
+                    className="inline-flex items-center cursor-pointer group"
                   >
-                    Team Name
-                  </label>
-                </div>
-
-                {/* Team Size */}
-                <div className="flex justify-center space-x-6 mb-6">
-                  <label className="inline-flex items-center cursor-pointer">
                     <input
                       type="radio"
                       name="teamSize"
-                      value="3"
-                      checked={team.teamSize === "3"}
+                      value={size}
+                      checked={team.teamSize === size}
                       onChange={handleChange}
-                      className="form-radio h-5 w-5 text-blue-600 cursor-pointer 
-                        checked:bg-blue-600 checked:border-transparen"
+                      className="hidden peer"
                     />
-                    <span className="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">3 Members</span>
+                    <span className="flex items-center px-4 py-2 border-2 border-indigo-200 text-gray-600 rounded-full transition-all duration-300 
+                      peer-checked:bg-indigo-500 peer-checked:text-white 
+                      group-hover:border-indigo-400 text-sm sm:text-base">
+                      {size} Members
+                    </span>
                   </label>
-                  <label className="inline-flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="teamSize"
-                      value="4"
-                      checked={team.teamSize === "4"}
-                      onChange={handleChange}
-                      className="form-radio h-5 w-5 text-blue-600 cursor-pointer 
-                        checked:bg-blue-600 checked:border-transparent"
-                    />
-                    <span className="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">4 Members</span>
-                  </label>
-                </div>
+                ))}
+              </div>
+            </div>
 
-                {/* <div className="relative">
-                  <select
-                    onChange={handleChange}
-                    value={team.topic}
-                    name="topic"
-                    id="topic"
-                    className="w-full h-12 text-gray-900 dark:text-gray-400 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
-                    required
+            {team.teamSize && (
+              <div className="space-y-6">
+                {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
+                  <motion.div 
+                    key={member}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-indigo-50/50 p-6 rounded-xl border border-indigo-100"
                   >
-                    <option value="" disabled>Select your topic</option>
-                    {topics.map((topic) => (
-                      <option key={topic} value={topic} className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">
-                        {topic}
-                      </option>
-                    ))}
-                  </select>
-                  <label
-                    htmlFor="topic"
-                    className="absolute left-0 -top-3.5 text-sm text-gray-600 dark:text-gray-400"
-                  >
-                    Topic
-                  </label>
-                </div> */}
-
-                {/* Error Message */}
-                <div className={`${showMsg ? "" : "hidden"} w-full text-center`}>
-                  <p className={`text-xl font-semibold ${message.color} animate-pulse`}>
-                    {message.text}
-                  </p>
-                </div>
-
-                {/* Dynamic Member Forms */}
-                {team.teamSize && (
-                  <div>
-                    {["captain", "member1", "member2", ...(team.teamSize === "4" ? ["member3"] : [])].map((member, index) => (
-                      <div key={member} className="border-b-2 pb-4 mb-4">
-                        <h4 className="text-xl font-semibold text-center mb-4 text-gray-700 dark:text-gray-300">
-                          {index === 0 ? "Team Leader" : `Member ${index + 1}`} Details
-                        </h4>
-                        {Object.keys(team[member]).map((field) => (
-                          <div key={field} className="relative mb-4">
-                            {field === "year" || field === "branch" ? (
+                    <h4 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700 flex items-center">
+                      {index === 0 ? <UserPlus className="mr-3 w-6 h-6" /> : <Users className="mr-3 w-6 h-6" />}
+                      {index === 0 ? "Team Leader" : `Member ${index + 1}`} Details
+                    </h4>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {Object.keys(team[member]).map((field) => (
+                        <div key={field} className="relative">
+                          {field === "year" || field === "branch" ? (
+                            <div className="relative">
                               <select
-                                onChange={(e) => handleChange(e, member)}
-                                value={team[member][field]}
                                 name={field}
-                                id={`${member}${field}`}
-                                className="w-full h-12 text-gray-900 dark:text-gray-400 border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
+                                value={team[member][field]}
+                                onChange={(e) => handleChange(e, member)}
+                                className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 appearance-none text-sm sm:text-base"
                                 required
                               >
-                                <option value="" disabled>{`Select ${field.charAt(0).toUpperCase() + field.slice(1)}`}</option>
+                                <option value="" disabled>
+                                  Select {field.charAt(0).toUpperCase() + field.slice(1)}
+                                </option>
                                 {(field === "year" ? years : branches).map((option) => (
-                                  <option key={option} value={option} className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">
+                                  <option key={option} value={option} className="bg-white text-gray-800">
                                     {option}
                                   </option>
                                 ))}
                               </select>
-                            ) : (
-                              <input
-                                onChange={(e) => handleChange(e, member)}
-                                value={team[member][field]}
-                                type="text"
-                                name={field}
-                                id={`${member}${field}`}
-                                className="w-full h-12 text-gray-900 dark:text-white placeholder-gray-400 peer border-b-2 border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none bg-transparent transition-colors duration-200"
-                                placeholder={`${index === 0 ? "Team Leader" : `Member ${index}`} ${field.charAt(0).toUpperCase() + field.slice(1)}`}
-                                required
-                              />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  className="w-full py-3 px-6 text-white font-medium rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 transform transition-all hover:scale-[1.02] duration-200"
-                >
-                  Submit
-                </button>
-              </form>
-
-              {/* Success/Loading Modal */}
-              <div
-                className={`${
-                  showWindow ? "" : "hidden"
-                } absolute z-10 w-[90%] h-auto min-h-[200px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
-              >
-                {load ? (
-                  <div className="w-full h-full flex justify-center items-center">
-                    <div className="w-16 h-16 sm:w-24 sm:h-24">Loading...</div>
-                  </div>
-                ) : (
-                  <div className="w-full h-full flex flex-col py-8 px-6 justify-evenly bg-gray-800 rounded-2xl shadow-2xl">
-                    <h1 className="text-center text-2xl sm:text-3xl font-bold text-white mb-6">
-                      Your Response was Recorded
-                    </h1>
-                    <div className="flex flex-col gap-4 w-full px-4">
-                      <button
-                        onClick={() => {
-                          setShowWindow(false);
-                        }}
-                        className="py-4 text-center text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 rounded-xl font-medium transform transition-all hover:scale-[1.02] duration-200 shadow-lg"
-                      >
-                        Close
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowWindow(false);
-                          window.open('https://chat.whatsapp.com/FeFzoAe63rpAaZPrTCYjyx', '_blank');
-                        }}
-                        className="py-4 text-center text-white bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-xl font-medium transform transition-all hover:scale-[1.02] duration-200 shadow-lg"
-                      >
-                        Join WhatsApp Community
-                      </button>
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <ChevronDown className="h-5 w-5" />
+                              </div>
+                            </div>
+                          ) : (
+                            <input
+                              type="text"
+                              name={field}
+                              value={team[member][field]}
+                              onChange={(e) => handleChange(e, member)}
+                              placeholder={`${index === 0 ? "Team Leader" : `Member ${index}`} ${field.charAt(0).toUpperCase() + field.slice(1)}`}
+                              className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-transparent text-gray-800 placeholder-gray-400 text-sm sm:text-base"
+                              required
+                            />
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                )}
+                  </motion.div>
+                ))}
               </div>
-            </div>
-          </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full flex justify-center items-center space-x-3 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-indigo-300"
+            >
+              <span>Submit Registration</span>
+              <ArrowRight className="w-6 h-6" />
+            </button>
+          </form>
         </div>
-      </div>
-    </>
+      </motion.div>
+
+      {showWindow && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 sm:p-8 text-center"
+          >
+            <div className="flex justify-center mb-4 sm:mb-6">
+              <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-green-500" />
+            </div>
+            <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
+              Registration Successful!
+            </h2>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-xs sm:text-base">
+              Your team has been registered for the Ideathon.
+            </p>
+            <div className="space-y-3 sm:space-y-4">
+              <button
+                onClick={() => setShowWindow(false)}
+                className="w-full py-2 sm:py-3 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors text-xs sm:text-base"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowWindow(false);
+                  window.open('https://chat.whatsapp.com/FeFzoAe63rpAaZPrTCYjyx', '_blank');
+                }}
+                className="w-full py-2 sm:py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 text-xs sm:text-base"
+              >
+                <span>Join WhatsApp Community</span>
+                <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </div>
   );
 }
