@@ -117,7 +117,7 @@ export default function TeamRegistration() {
     for (const member of requiredMembers) {
       const memberData = team[member];
       if (!/^(1ms2|1MS2)\w*$/.test(memberData.usn)) {
-        showToast(`Invalid USN format for ${member}. USN must start with '1ms2' or '1MS2'.`);
+        showToast(`Invalid USN format for ${member}. USN must start with '1ms2' or '1MS2'. If thats all correct, check for repeatition of USN`);
         return;
       }
     }
