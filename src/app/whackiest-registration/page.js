@@ -61,6 +61,47 @@ export default function TeamRegistration() {
     });
   };
 
+  // const handleChange = (e, memberType = null) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "email") {
+  //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //     if (!emailRegex.test(value)) {
+  //       showToast("Invalid email address");
+  //       return;
+  //     }
+  //   }
+
+  //   if (name === "phone") {
+  //     const phoneRegex = /^\d{10}$/;
+  //     if (!phoneRegex.test(value)) {
+  //       showToast("Invalid phone number. Must be 10 digits.");
+  //       return;
+  //     }
+  //   }
+
+  //   if (name === "teamSize") {
+  //     setTeam((prevTeam) => ({
+  //       ...prevTeam,
+  //       teamSize: value,
+  //       member3: { name: "", usn: "", year: "", branch: "" },
+  //     }));
+  //   } else if (memberType) {
+  //     setTeam((prevTeam) => ({
+  //       ...prevTeam,
+  //       [memberType]: {
+  //         ...prevTeam[memberType],
+  //         [name]: value,
+  //       },
+  //     }));
+  //   } else {
+  //     setTeam((prevTeam) => ({
+  //       ...prevTeam,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
+
   const handleChange = (e, memberType = null) => {
     const name = e.target.name;
     const value = e.target.value;

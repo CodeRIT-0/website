@@ -28,16 +28,16 @@ export async function POST(request) {
 
     const reqBody = await request.json();
     console.log("Request Body:", reqBody);
-
     const { teamName, captain, member1, member2, member3 } = reqBody;
     let { teamSize } = reqBody;
 
+    // Declare valid team sizes
+    const validTeamSizes = [3, 4]; // Ensure this is declared here
 
     teamSize = parseInt(teamSize, 10);
     console.log("Parsed Team Size:", teamSize, "Type:", typeof teamSize);
 
-
-    const validTeamSizes = [3, 4];
+    // Validate team size
     if (!validTeamSizes.includes(teamSize)) {
       console.error("Invalid team size");
       return NextResponse.json(
@@ -46,21 +46,51 @@ export async function POST(request) {
       );
     }
 
+    // Validate required fields
     if (
       !teamName ||
       !teamSize ||
       !captain?.usn ||
+      !captain?.phoneNumber ||
+      !captain?.email ||
       !member1?.usn ||
       !member2?.usn ||
       (teamSize === 4 && !member3?.usn)
     ) {
-      console.error("Missing required fields");
       return NextResponse.json(
         { message: "Missing required fields", success: false },
         { status: 400 }
       );
     }
 
+    // Mark captain with __isCaptain flag
+    captain.__isCaptain = true;
+
+    if (!captain?.phoneNumber || !captain?.email) {
+      console.error("Captain phone number or email is missing or invalid");
+      return NextResponse.json(
+        { message: "Captain's phone number and email are required", success: false },
+        { status: 400 }
+      );
+    }
+
+    // Additional captain validation (if needed)
+    if (!/^[6-9]\d{9}$/.test(captain.phoneNumber)) {
+      return NextResponse.json(
+        { message: "Invalid phone number format for captain", success: false },
+        { status: 400 }
+      );
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(captain.email)) {
+      return NextResponse.json(
+        { message: "Invalid email format for captain", success: false },
+        { status: 400 }
+      );
+    }
+
+
+    // Save the team
     const newTeam = new whackiestTeam({
       teamName,
       teamSize,
@@ -71,6 +101,7 @@ export async function POST(request) {
     });
 
     const savedTeam = await newTeam.save();
+
     console.log("Team saved successfully:", savedTeam);
 
     return NextResponse.json({
@@ -98,5 +129,4 @@ export async function POST(request) {
     );
   }
 }
-
 
