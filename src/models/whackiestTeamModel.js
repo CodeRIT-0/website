@@ -85,11 +85,14 @@ const whackiestTeamSchema = new mongoose.Schema({
 
 whackiestTeamSchema.pre("save", async function (next) {
   try {
-    // Check if team name is unique
-    const existingTeam = await mongoose.models.whackiestTeam.findOne({ teamName: this.teamName });
+    const existingTeam = await mongoose.models.whackiestTeam.findOne({
+      teamName: { $regex: new RegExp("^" + this.teamName + "$", "i") }
+    });
+
     if (existingTeam) {
       return next(new Error("Team Name already exists"));
     }
+
 
     // Collect USNs from team members
     const usns = [
