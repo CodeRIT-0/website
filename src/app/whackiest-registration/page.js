@@ -116,11 +116,12 @@ export default function TeamRegistration() {
 
     for (const member of requiredMembers) {
       const memberData = team[member];
-      if (!/^(1ms2|1MS2)\w*$/.test(memberData.usn)) {
-        showToast(`Invalid USN format for ${member}. USN must start with '1ms2' or '1MS2'. If thats all correct, check for repeatition of USN`);
+      if (!/^(1ms2|1MS2)[a-zA-Z0-9_-]*$/.test(memberData.usn)) {
+        showToast(`Invalid USN format for ${member}. USN must start with '1ms2' or '1MS2'.`);
         return;
       }
     }
+
 
     // Validate captain's phone number
     if (!/^[6-9]\d{9}$/.test(team.captain.phoneNumber)) {
