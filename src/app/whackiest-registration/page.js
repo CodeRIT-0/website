@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import {
@@ -165,6 +165,17 @@ export default function TeamRegistration() {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (showWindow) {
+      const timer = setTimeout(() => {
+        setShowWindow(false); 
+        window.location.href = "/whackiest-timeline";
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showWindow]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-50 py-12 px-4 sm:px-6 md:mt-20 lg:px-8 flex items-center justify-center">
@@ -372,48 +383,31 @@ export default function TeamRegistration() {
       </motion.div>
 
       {showWindow && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-        >
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 sm:p-8 text-center"
-          >
-            <div className="flex justify-center mb-4 sm:mb-6">
-              <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-green-500" />
-            </div>
-            <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
-              Registration Successful!
-            </h2>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-xs sm:text-base">
-              Your team has been registered for the Ideathon.
-            </p>
-            <div className="space-y-3 sm:space-y-4">
-              <button
-                onClick={() => setShowWindow(false)}
-                className="w-full py-2 sm:py-3 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors text-xs sm:text-base"
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
               >
-                Close
-              </button>
-              <button
-                onClick={() => {
-                  setShowWindow(false);
-
-                  window.open('https://chat.whatsapp.com/C1OLANv58r74mmghyuljvg', '_blank');
-
-                }}
-                className="w-full py-2 sm:py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 text-xs sm:text-base"
-              >
-                <span>Join WhatsApp Community</span>
-                <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
+                <motion.div
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 sm:p-8 text-center"
+                >
+                  <div className="flex justify-center mb-4 sm:mb-6">
+                    <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-green-500" />
+                  </div>
+                  <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
+                    Registration Successful!
+                  </h2>
+                  <p className="text-gray-600 mb-4 sm:mb-6 text-xs sm:text-base">
+                    Your team has been registered for the Ideathon.
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Redirecting you to the next step in 5 seconds...
+                  </p>
+                </motion.div>
+              </motion.div>
+            )}
     </div>
   );
 }
