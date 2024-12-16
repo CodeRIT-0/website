@@ -171,7 +171,7 @@ export default function TeamRegistration() {
       const timer = setTimeout(() => {
         setShowWindow(false); 
         window.location.href = "/whackiest-timeline";
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
