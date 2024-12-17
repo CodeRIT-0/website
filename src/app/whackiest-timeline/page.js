@@ -44,29 +44,29 @@ export default function EventTimelinePage() {
             <div className="space-y-4 text-gray-600">
               <div>
                 <h3 className="font-semibold text-gray-800">1. Theme Announcement / Polling Starts</h3>
-                <p><strong>Time:</strong> 9:00 AM</p>
-                <p><strong>Platform:</strong> Official social media handles</p>
-                <p><strong>Details:</strong> 10 themes will be announced, and all participating teams must vote for their preferred themes. The top 5 themes will be finalized.</p>
+                <p><strong>Time:</strong> 10:00 AM</p>
+                <p><strong>Venue:</strong> ESB Seminar Hall 1</p>
+                <p><strong>Details:</strong> All participants must be present in ESB Seminar Hall 1 at 10:00 AM sharp. A link to the poll will be provided in the hall. Participants will vote for their preferred themes from the 10 announced themes.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800">2. Polling End Time</h3>
                 <p><strong>Time:</strong> 10:30 AM</p>
-                <p><strong>Details:</strong> Polling closes, and the top 5 themes are announced to begin the offline Ideathon.</p>
+                <p><strong>Details:</strong> Polling closes, and the top 5 themes with the highest votes are announced. The offline Ideathon begins immediately.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800">3. Offline Ideathon</h3>
                 <p><strong>Time:</strong> 10:00 AM to 1:00 PM</p>
                 <p><strong>Venue:</strong> ESB Seminar Hall 1</p>
-                <p><strong>Details:</strong> Participants will receive a pre-designed PPT template for their presentations. Teams will be mentored by experts and must submit their final presentations by 1:00 PM.</p>
+                <p><strong>Details:</strong> Teams will receive a pre-designed PPT template for their presentations. Teams can start working on their ideas immediately after the themes are finalized. Participants can consult with any of the mentors present in the hall during the ideation phase. Teams must submit their final presentations by 1:00 PM sharp.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800">4. Shortlisted Teams Announcement</h3>
                 <p><strong>Time:</strong> Evening (Exact time to be communicated)</p>
-                <p><strong>Details:</strong> The shortlisted teams for the final 24-hour online hackathon will be announced.</p>
+                <p><strong>Details:</strong> Shortlisted teams advancing to the final 24-hour online hackathon will be announced via email.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800">5. Final Online Hackathon</h3>
-                <p><strong>Details:</strong> Shortlisted teams will advance to the final online round. Further details will be shared with qualifying teams.</p>
+                <p><strong>Details:</strong> The shortlisted teams will proceed to the final round, which will be conducted online. Further details will be shared with the qualifying teams.</p>
               </div>
             </div>
           </div>
@@ -81,10 +81,17 @@ export default function EventTimelinePage() {
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Important Notes</h2>
           </div>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>Teams are expected to reach the venue at 10:00 AM sharp.</li>
-            <li>All ideation will take place during the 10:00 AM to 1:00 PM session.</li>
-            <li>Participants can freely use mentoring sessions to refine their ideas.</li>
-            <li>Final presentations must be submitted at 1:00 PM sharp.</li>
+            <li>All participants must be present in ESB Seminar Hall 1 at 10:00 AM sharp.</li>
+            <li>Teams will receive the polling link in the hall and must vote by 10:30 AM.</li>
+            <li>Ideation starts immediately after polling closes.</li>
+            <li>Teams can utilize mentoring sessions freely to refine their ideas.</li>
+            <li>Final presentations must be submitted by 1:00 PM sharp.</li>
+            <li>At least 2 teammates are expected to remain present in the hall during the ideathon phase. Exceptions (e.g., exams/quizzes) must be communicated to the core members and organizers in advance.</li>
+            <li>Participants must inform the core members before leaving the hall for any reason.</li>
+            <li>Teams are requested to maintain good conduct and harmony among teammates.</li>
+            <li>Any plagiarism or suspicious activities must be reported to the core members or organizers immediately.</li>
+            <li>The decision of the organizing committee is final.</li>
+            <li>Violation of rules and regulations may result in disqualification.</li>
           </ul>
         </motion.div>
       </div>
