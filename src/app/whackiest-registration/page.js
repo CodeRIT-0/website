@@ -341,7 +341,7 @@ export default function TeamRegistration() {
               <button
                 onClick={() => {
                   setShowWindow(false);
-                  window.open('https://chat.whatsapp.com/FeFzoAe63rpAaZPrTCYjyx', '_blank');
+                  window.open('https://chat.whatsapp.com/C1OLANv58r74mmghyuljvg', '_blank');
                 }}
                 className="w-full py-2 sm:py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 text-xs sm:text-base"
               >
