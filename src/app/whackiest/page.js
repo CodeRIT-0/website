@@ -34,7 +34,7 @@ export default function WhackiestEventPage() {
         <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
       </motion.div>
 
-      {/* Event Phases Section */}
+    
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 max-w-full sm:max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-2 sm:px-4 mb-12">
         <motion.div
           {...sectionVariants}
@@ -136,7 +136,7 @@ export default function WhackiestEventPage() {
 
       <motion.div
         {...sectionVariants}
-        className="max-w-full sm:max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-2 sm:px-4 mb-12"
+        className="max-w-full sm:max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-2 sm:px-4 mb-12 text-left"
       >
         <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
           <div className="p-6 sm:p-8">
@@ -144,7 +144,7 @@ export default function WhackiestEventPage() {
               <Calendar className="mr-3 text-blue-600 w-8 h-8" />
               <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Event Timeline: Phase 1 Ideathon</h2>
             </div>
-            <div className="space-y-4 text-gray-600">
+            <div className="space-y-4 text-gray-600 text-left pl-0 ml-0">
               <div>
                 <h3 className="font-semibold text-gray-800">1. Theme Announcement / Polling Starts</h3>
                 <p><strong>Time:</strong> 10:00 AM</p>
@@ -185,7 +185,7 @@ export default function WhackiestEventPage() {
             <Clock className="mr-3 text-purple-600 w-8 h-8" />
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Important Notes</h2>
           </div>
-          <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <ul className="list-disc ml-6 space-y-2 text-gray-600 text-left pl-0 ml-0">
             <li>All participants must be present in ESB Seminar Hall 1 at 10:00 AM sharp.</li>
             <li>Teams will receive the polling link in the hall and must vote by 10:30 AM.</li>
             <li>Ideation starts immediately after polling closes.</li>
