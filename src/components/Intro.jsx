@@ -140,7 +140,7 @@ const Intro = () => {
             transition={{ duration: 0.3 }}
           />
           <br />
-          <motion.a
+          {/* <motion.a
             href="/whackiest-registration"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -150,7 +150,7 @@ const Intro = () => {
     hover:shadow-lg transition-all duration-300"
           >
             Register Now
-          </motion.a>
+          </motion.a> */}
         </motion.div>
       </motion.div>
     </div>
