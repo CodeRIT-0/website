@@ -121,7 +121,7 @@ export default function WhackiestEventPage() {
           Beginners are welcome. This is your chance to learn, collaborate, and innovate.
         </p>
         
-        <motion.a 
+        {/* <motion.a 
           href="/whackiest-registration"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -131,7 +131,7 @@ export default function WhackiestEventPage() {
             hover:shadow-lg transition-all duration-300"
         >
           <Zap className="mr-2 w-5 h-5" /> Register Here
-        </motion.a>
+        </motion.a> */}
       </motion.div>
     </motion.div>
   );

@@ -18,7 +18,33 @@ const memberSchema = new mongoose.Schema({
     type: String,
     required: [true, "Branch is required"],
   },
+  phoneNumber: {
+    type: String,
+    validate: {
+      validator: function (v) {
+        return /^[6-9]\d{9}$/.test(v); // Mobile number must start with 6-9 and be 10 digits
+      },
+      message: "Invalid phone number format",
+    },
+    required: function () {
+      return this.parent().isCaptain; // Only required for captain
+    },
+  },
+  email: {
+    type: String,
+    validate: {
+      validator: function (v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // Basic email regex
+      },
+      message: "Invalid email format",
+    },
+    required: function () {
+      return this.parent().isCaptain; // Only required for captain
+    },
+  },
 });
+
+
 
 const whackiestTeamSchema = new mongoose.Schema({
   teamName: {
@@ -59,11 +85,14 @@ const whackiestTeamSchema = new mongoose.Schema({
 
 whackiestTeamSchema.pre("save", async function (next) {
   try {
-    // Check if team name is unique
-    const existingTeam = await mongoose.models.whackiestTeam.findOne({ teamName: this.teamName });
+    const existingTeam = await mongoose.models.whackiestTeam.findOne({
+      teamName: { $regex: new RegExp("^" + this.teamName + "$", "i") }
+    });
+
     if (existingTeam) {
       return next(new Error("Team Name already exists"));
     }
+
 
     // Collect USNs from team members
     const usns = [
