@@ -13,13 +13,6 @@ const Faculty=[
         "info":"Faculty Coordinator of the CodeRIT Club, his expertise lies in Data Mining, Big Data, Machine Learning, and IoT.",
         "url":"https://www.msrit.edu/department/faculty-detail.html?dept=cse&ID=17"
     },
-    {
-        "name":"Jamuna S. Murthy",
-        "src":"/Faculty/Jamuna.jpg",
-        "desc":"Assistant Professor, CSE RIT",
-        "info":"Faculty Coordinator of the CodeRIT Club, she focuses on Software Engineering, Cloud Computing, and Machine Learning.",
-        "url":"https://www.msrit.edu/department/faculty-detail.html?dept=cse&ID=19"
-    }
 ]
 
 export default Faculty;
