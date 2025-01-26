@@ -125,7 +125,7 @@ const Intro = () => {
         whileInView="whileInView"
       >
         <h1 id="intro-head" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-          Upcoming Events
+          Past Event
         </h1>
         <h3 className="bold-text text-blue-700">CodeRIT's Coding Day!</h3>
         <motion.div
@@ -151,14 +151,6 @@ const Intro = () => {
           >
             Register Now
           </motion.a> */}
-          <motion.a
-            href="https://www.hackerrank.com/coderit-january-chapter-2025-republic-day"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-[#ffa500] to-[#008000] text-white font-bold rounded-full hover:shadow-lg transition-all duration-300"
-          >
-            Register Now
-          </motion.a>
         </motion.div>
       </motion.div>
     </div>
