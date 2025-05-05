@@ -43,8 +43,7 @@ export default function Navbar() {
     { path: '/events', label: 'Events' },
     { path: '/team', label: 'Team' },
     { path: '/interview-experience', label: 'Interview Experience' },
-    // { path: '/registration', label: 'Ice-Breaker 2024', special: true }
-    { path: '', label: 'Whackiest-24', special: true }
+    { path: '/code-chase-register', label: 'Code Chase', special: true }
   ];
 
   return (
@@ -75,7 +74,7 @@ export default function Navbar() {
                 className={`
                   ${pathname === item.path ? 'text-[#17cf97]' : 'text-gray-300 hover:text-[#17cf97]'}
                   ${item.special 
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 px-4 py-2 rounded-full font-medium text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 px-4 py-2 rounded-full font-medium text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
                     : 'text-lg tracking-wide font-medium transition-colors duration-200 relative group'
                   }
                 `}
@@ -144,7 +143,7 @@ export default function Navbar() {
                     block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200
                     ${pathname === item.path ? 'text-[#17cf97] bg-[#353e47]' : 'text-gray-300 hover:text-white hover:bg-[#353e47]'}
                     ${item.special 
-                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white'
                       : ''
                     }
                   `}

@@ -125,9 +125,9 @@ const Intro = () => {
         whileInView="whileInView"
       >
         <h1 id="intro-head" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-          Past Event
+         Upcoming Event
         </h1>
-        <h3 className="bold-text text-blue-700">CodeRIT's Coding Day!</h3>
+        <h3 className="bold-text text-blue-700">CodeRIT's Code Chase!</h3>
         <motion.div
           className="inline-block mt-4 mb-4"
           whileHover={{ scale: 1.02 }}
