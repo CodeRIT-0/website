@@ -6,6 +6,15 @@ export async function POST(request) {
   try {
     await connect();
 
+   
+    const teamCount = await CodeChaseTeam.countDocuments();
+    if (teamCount >= 130) {
+      return NextResponse.json(
+        { message: "Registrations are full. We have reached the limit of 130 teams.", success: false },
+        { status: 400 } 
+      );
+    }
+
     const reqBody = await request.json();
     const {
       teamName,
