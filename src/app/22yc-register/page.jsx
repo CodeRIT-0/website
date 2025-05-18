@@ -119,7 +119,7 @@ export default function CodeChaseRegisterPage() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-2"
           >
-            Code Chase Registration
+            22 Yards Of Code Registration
           </motion.h2>
           <motion.p
             initial={{ y: 10, opacity: 0 }}

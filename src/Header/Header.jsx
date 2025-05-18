@@ -43,7 +43,7 @@ export default function Navbar() {
     { path: '/events', label: 'Events' },
     { path: '/team', label: 'Team' },
     { path: '/interview-experience', label: 'Interview Experience' },
-    { path: '/code-chase-register', label: 'Code Chase', special: true }
+    { path: '/22yc-register', label: '22 Yards Of Code', special: true }
   ];
 
   return (

@@ -53,7 +53,7 @@ export async function POST(request) {
     const savedTeam = await newTeam.save();
 
     return NextResponse.json({
-      message: "Team registered successfully for Code Chase!",
+      message: "Team registered successfully for 22 Yards Of Code!",
       success: true,
       team: {
         id: savedTeam._id,
@@ -62,7 +62,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error("Code Chase Registration Error:", error.message);
+    console.error("22 Yards Of Code Registration Error:", error.message);
 
    
     if (error.code === 11000 || error.message.includes('duplicate key') || error.message.includes('already exists') || error.message.includes('already registered')) {
