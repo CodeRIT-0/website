@@ -19,6 +19,7 @@ export default function CodeChaseRegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -92,150 +93,476 @@ export default function CodeChaseRegisterPage() {
   };
 
   const getErrorClass = (fieldName) => {
-    return error && error.field === fieldName ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-600';
+    return error && error.field === fieldName ? 'border-red-400 ring-2 ring-red-400/30' : 'border-green-300/20';
   };
 
-  const inputBaseClass = "appearance-none rounded-lg relative block w-full px-4 py-2.5 border placeholder-gray-500 text-white bg-gray-700/60 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200 ease-in-out";
-  const fieldGroupClass = "rounded-lg shadow-sm space-y-5 border border-gray-700/50 p-5 bg-gradient-to-br from-gray-800/50 to-gray-900/30 backdrop-blur-sm";
-  const fieldTitleClass = "text-lg font-semibold text-gray-200 border-b border-indigo-500/30 pb-2 mb-5 flex items-center gap-2";
-
-  return (
+  const inputBaseClass = "w-full px-6 py-4 bg-white/95 border-2 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300 font-medium shadow-sm";
+  
+  const CricketBall = () => (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-950 to-black text-white flex items-center mt-10 justify-center py-16 px-4 sm:px-6 lg:px-8"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      className="w-8 h-8 bg-red-600 rounded-full relative shadow-lg"
     >
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        className="max-w-2xl w-full space-y-10 bg-gray-800 bg-opacity-60 backdrop-blur-lg p-8 sm:p-10 md:p-12 rounded-xl shadow-xl border border-gray-700/50"
-      >
-        <div className="text-center">
-          <motion.h2
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-2"
-          >
-            22 Yards Of Code Registration
-          </motion.h2>
-          <motion.p
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="text-sm text-gray-400"
-          >
-            Assemble your team and get ready to code!
-          </motion.p>
-        </div>
-
-        <form className="space-y-8" onSubmit={handleSubmit} noValidate>
-          <div className={fieldGroupClass}>
-            <h3 className={fieldTitleClass}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-              Team Information
-            </h3>
-            <div>
-              <label htmlFor="teamName" className="sr-only">Team Name</label>
-              <input id="teamName" name="teamName" type="text" required className={`${inputBaseClass} ${getErrorClass('teamName')}`} placeholder="Choose a cool Team Name" value={formData.teamName} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="year" className="sr-only">Year</label>
-              <input id="year" name="year" type="text" required className={`${inputBaseClass} ${getErrorClass('year')}`} placeholder="Year (e.g., 1st, 2nd, 3rd, 4th)" value={formData.year} onChange={handleChange} />
-            </div>
-          </div>
-
-          <div className={fieldGroupClass}>
-             <h3 className={fieldTitleClass}>
-               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-               Team Leader
-             </h3>
-            <div>
-              <label htmlFor="leaderName" className="sr-only">Leader Name</label>
-              <input id="leaderName" name="leaderName" type="text" required className={`${inputBaseClass} ${getErrorClass('leaderName')}`} placeholder="Leader's Full Name" value={formData.leaderName} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="leaderUsn" className="sr-only">Leader USN</label>
-              <input id="leaderUsn" name="leaderUsn" type="text" required className={`${inputBaseClass} ${getErrorClass('leaderUsn')} uppercase`} placeholder="Leader USN (e.g., 1MS21CS001)" value={formData.leaderUsn} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="leaderMobile" className="sr-only">Leader Mobile</label>
-              <input id="leaderMobile" name="leaderMobile" type="tel" required className={`${inputBaseClass} ${getErrorClass('leaderMobile')}`} placeholder="Leader Mobile Number" value={formData.leaderMobile} onChange={handleChange} />
-            </div>
-          </div>
-
-          <div className={fieldGroupClass}>
-            <h3 className={fieldTitleClass}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              Member 2
-             </h3>
-            <div>
-              <label htmlFor="member2Name" className="sr-only">Member 2 Name</label>
-              <input id="member2Name" name="member2Name" type="text" required className={`${inputBaseClass} ${getErrorClass('member2Name')}`} placeholder="Member 2 Full Name" value={formData.member2Name} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="member2Usn" className="sr-only">Member 2 USN</label>
-              <input id="member2Usn" name="member2Usn" type="text" required className={`${inputBaseClass} ${getErrorClass('member2Usn')} uppercase`} placeholder="Member 2 USN (e.g., 1MS21CS002)" value={formData.member2Usn} onChange={handleChange} />
-            </div>
-          </div>
-
-          <div className={fieldGroupClass}>
-            <h3 className={fieldTitleClass}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              Member 3
-            </h3>
-            <div>
-              <label htmlFor="member3Name" className="sr-only">Member 3 Name</label>
-              <input id="member3Name" name="member3Name" type="text" required className={`${inputBaseClass} ${getErrorClass('member3Name')}`} placeholder="Member 3 Full Name" value={formData.member3Name} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="member3Usn" className="sr-only">Member 3 USN</label>
-              <input id="member3Usn" name="member3Usn" type="text" required className={`${inputBaseClass} ${getErrorClass('member3Usn')} uppercase`} placeholder="Member 3 USN (e.g., 1MS21CS003)" value={formData.member3Usn} onChange={handleChange} />
-            </div>
-          </div>
-
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-red-400 text-sm text-center p-3 bg-red-900/40 rounded-md border border-red-500/50"
-            >
-              {error.message}
-            </motion.div>
-          )}
-          {success && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-green-300 text-sm text-center p-3 bg-green-900/40 rounded-md border border-green-500/50"
-            >
-              {success}
-            </motion.div>
-          )}
-
-          <div>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={isLoading || !!success}
-              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white ${isLoading || success ? 'bg-gray-600 cursor-not-allowed' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500'} transition duration-150 ease-in-out shadow-md hover:shadow-lg`}
-            >
-              {isLoading ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Registering Team...
-                </>
-              ) : success ? 'Registered Successfully!' : 'Register Team'}
-            </motion.button>
-          </div>
-        </form>
-      </motion.div>
+      <div className="absolute inset-0 rounded-full border-2 border-white/30"></div>
+      {/* Straight seam design */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-0.5 bg-white/80 rounded-full"></div>
+      {/* Additional stitching details for more realistic look */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-px bg-white/60 rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="w-1 h-px bg-white/90 absolute -left-2.5"></div>
+        <div className="w-1 h-px bg-white/90 absolute -left-1.5"></div>
+        <div className="w-1 h-px bg-white/90 absolute -left-0.5"></div>
+        <div className="w-1 h-px bg-white/90 absolute left-0.5"></div>
+        <div className="w-1 h-px bg-white/90 absolute left-1.5"></div>
+        <div className="w-1 h-px bg-white/90 absolute left-2.5"></div>
+      </div>
     </motion.div>
   );
-} 
+
+  const CricketBat = () => (
+    <motion.div
+      whileHover={{ rotate: 10 }}
+      className="w-6 h-6 relative"
+    >
+      <svg 
+        viewBox="0 0 100 100" 
+        fill="none" 
+        className="w-full h-full"
+        style={{ transform: 'rotate(135deg)' }}
+      >
+        {/* Bat blade */}
+        <rect 
+          x="10" 
+          y="45" 
+          width="60" 
+          height="12" 
+          rx="6"
+          fill="#F4C430"
+        />
+        
+        {/* Bat handle */}
+        <rect 
+          x="70" 
+          y="47" 
+          width="25" 
+          height="8" 
+          rx="4"
+          fill="#2E86AB"
+        />
+        
+        {/* Handle connection */}
+        <rect 
+          x="65" 
+          y="46" 
+          width="10" 
+          height="10" 
+          rx="3"
+          fill="#E6B800"
+        />
+      </svg>
+    </motion.div>
+  );
+
+  const Wickets = () => (
+    <div className="flex space-x-1">
+      {[1, 2, 3].map((i) => (
+        <motion.div
+          key={i}
+          initial={{ scaleY: 0.8 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: i * 0.1, duration: 0.5 }}
+          className="w-2 h-8 bg-amber-700 rounded-t-lg"
+        />
+      ))}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 0.4, duration: 0.3 }}
+        className="absolute top-0 w-8 h-1 bg-amber-700 rounded-full"
+      />
+    </div>
+  );
+
+  
+
+  const Trophy = () => (
+    <motion.svg
+      animate={{ y: [0, -5, 0] }}
+      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      className="w-8 h-8 text-yellow-500"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path d="M5,16L3,20V21H21V20L19,16M12,1L14,5H18L15,7.5L16,11L12,9L8,11L9,7.5L6,5H10L12,1M12,3.5L11,5.5H9.5L10.5,6.5L10,8L12,7L14,8L13.5,6.5L14.5,5.5H13L12,3.5Z"/>
+    </motion.svg>
+  );
+
+  const steps = [
+    { title: "Team Setup", icon: <Trophy />, fields: ["teamName", "year"] },
+    { title: "Captain's Info", icon: <CricketBat />, fields: ["leaderName", "leaderUsn", "leaderMobile"] },
+    { title: "Player 2", icon: <CricketBall />, fields: ["member2Name", "member2Usn"] },
+    { title: "Player 3", icon: <div className="relative"><Wickets /></div>, fields: ["member3Name", "member3Usn"] }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br mt-20 from-green-900 via-green-800 to-emerald-900 relative overflow-hidden">
+      {/* Cricket field background pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
+        <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-white rounded-full"></div>
+        <div className="absolute top-1/2 left-1/4 w-24 h-24 border-2 border-white rounded-full"></div>
+      </div>
+
+      {/* Floating cricket elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          >
+            <div className="w-4 h-4 bg-white/20 rounded-full"></div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-4xl bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-8 text-center relative">
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center justify-center space-x-4 mb-4"
+            >
+              <CricketBall />
+              <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+                22 Yards Of Code
+              </h1>
+              <CricketBat />
+            </motion.div>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-green-100 text-lg"
+            >
+              Build Your Championship Squad! 🏏
+            </motion.p>
+            
+            {/* Progress indicator */}
+            <div className="mt-6 flex justify-center space-x-4">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
+                    index === currentStep 
+                      ? 'bg-white text-green-600 shadow-lg' 
+                      : 'bg-white/20 text-white'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {step.icon}
+                  <span className="font-medium">{step.title}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Form Content */}
+          <div className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+                className="space-y-6"
+              >
+                {/* Team Setup */}
+                {currentStep === 0 && (
+                  <div className="space-y-6">
+                    <div className="text-center mb-8">
+                      <Trophy />
+                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Team Setup</h2>
+                      <p className="text-gray-600">Create your championship team</p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Team Name 🏏
+                        </label>
+                        <input
+                          name="teamName"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('teamName')}`}
+                          placeholder="Enter your team name (e.g., Code Crusaders)"
+                          value={formData.teamName}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Academic Year 📚
+                        </label>
+                        <input
+                          name="year"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('year')}`}
+                          placeholder="Year (e.g., 1st, 2nd, 3rd, 4th)"
+                          value={formData.year}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Team Leader */}
+                {currentStep === 1 && (
+                  <div className="space-y-6">
+                    <div className="text-center mb-8">
+                      <CricketBat />
+                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Team Captain</h2>
+                      <p className="text-gray-600">Captain leads from the front!</p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Captain Name 👑
+                        </label>
+                        <input
+                          name="leaderName"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('leaderName')}`}
+                          placeholder="Captain's full name"
+                          value={formData.leaderName}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Captain USN 🎯
+                        </label>
+                        <input
+                          name="leaderUsn"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('leaderUsn')} uppercase`}
+                          placeholder="USN (e.g., 1MS21CS001)"
+                          value={formData.leaderUsn}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Captain Mobile 📱
+                        </label>
+                        <input
+                          name="leaderMobile"
+                          type="tel"
+                          className={`${inputBaseClass} ${getErrorClass('leaderMobile')}`}
+                          placeholder="10-digit mobile number"
+                          value={formData.leaderMobile}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Member 2 */}
+                {currentStep === 2 && (
+                  <div className="space-y-6">
+                    <div className="text-center mb-8">
+                      <CricketBall />
+                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Player 2</h2>
+                      <p className="text-gray-600">Second player on the pitch</p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Player 2 Name 🏃‍♂️
+                        </label>
+                        <input
+                          name="member2Name"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('member2Name')}`}
+                          placeholder="Player 2 full name"
+                          value={formData.member2Name}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Player 2 USN 🎯
+                        </label>
+                        <input
+                          name="member2Usn"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('member2Usn')} uppercase`}
+                          placeholder="USN (e.g., 1MS21CS002)"
+                          value={formData.member2Usn}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Member 3 */}
+                {currentStep === 3 && (
+                  <div className="space-y-6">
+                    <div className="text-center mb-8">
+                      <div className="relative inline-block">
+                        <Wickets />
+                      </div>
+                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Player 3</h2>
+                      <p className="text-gray-600">Complete your squad!</p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Player 3 Name 🏃‍♀️
+                        </label>
+                        <input
+                          name="member3Name"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('member3Name')}`}
+                          placeholder="Player 3 full name"
+                          value={formData.member3Name}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Player 3 USN 🎯
+                        </label>
+                        <input
+                          name="member3Usn"
+                          type="text"
+                          className={`${inputBaseClass} ${getErrorClass('member3Usn')} uppercase`}
+                          placeholder="USN (e.g., 1MS21CS003)"
+                          value={formData.member3Usn}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Error/Success Messages */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg"
+                >
+                  <div className="flex items-center">
+                    <div className="ml-3">
+                      <p className="text-red-700 font-medium">{error.message}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg"
+                >
+                  <div className="flex items-center">
+                    <Trophy />
+                    <div className="ml-3">
+                      <p className="text-green-700 font-medium">{success}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between pt-6">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                  disabled={currentStep === 0}
+                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                    currentStep === 0
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-600 text-white hover:bg-gray-700 shadow-md hover:shadow-lg'
+                  }`}
+                >
+                  Previous
+                </motion.button>
+
+                {currentStep < steps.length - 1 ? (
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
+                    className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                  >
+                    Next
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={isLoading || !!success}
+                    className={`px-8 py-3 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2 ${
+                      isLoading || success
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-md hover:shadow-lg'
+                    }`}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>Registering...</span>
+                      </>
+                    ) : success ? (
+                      <>
+                        <Trophy />
+                        <span>Registered!</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Register Team</span>
+                        <CricketBat />
+                      </>
+                    )}
+                  </motion.button>
+                )}
+              </div>
+            </form>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
