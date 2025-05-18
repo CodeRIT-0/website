@@ -96,26 +96,23 @@ export default function CodeChaseRegisterPage() {
     return error && error.field === fieldName ? 'border-red-400 ring-2 ring-red-400/30' : 'border-green-300/20';
   };
 
-  const inputBaseClass = "w-full px-6 py-4 bg-white/95 border-2 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300 font-medium shadow-sm";
+  const inputBaseClass = "w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/95 border-2 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300 font-medium shadow-sm text-sm sm:text-base";
   
   const CricketBall = () => (
     <motion.div
       animate={{ rotate: 360 }}
       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="w-8 h-8 bg-red-600 rounded-full relative shadow-lg"
+      className="w-6 h-6 sm:w-8 sm:h-8 bg-red-600 rounded-full relative shadow-lg"
     >
       <div className="absolute inset-0 rounded-full border-2 border-white/30"></div>
-      {/* Straight seam design */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-0.5 bg-white/80 rounded-full"></div>
-      {/* Additional stitching details for more realistic look */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-px bg-white/60 rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 sm:w-6 h-0.5 bg-white/80 rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 sm:w-5 h-px bg-white/60 rounded-full"></div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <div className="w-1 h-px bg-white/90 absolute -left-2.5"></div>
-        <div className="w-1 h-px bg-white/90 absolute -left-1.5"></div>
-        <div className="w-1 h-px bg-white/90 absolute -left-0.5"></div>
-        <div className="w-1 h-px bg-white/90 absolute left-0.5"></div>
-        <div className="w-1 h-px bg-white/90 absolute left-1.5"></div>
-        <div className="w-1 h-px bg-white/90 absolute left-2.5"></div>
+        <div className="w-1 h-px bg-white/90 absolute -left-2"></div>
+        <div className="w-1 h-px bg-white/90 absolute -left-1"></div>
+        <div className="w-1 h-px bg-white/90 absolute left-0"></div>
+        <div className="w-1 h-px bg-white/90 absolute left-1"></div>
+        <div className="w-1 h-px bg-white/90 absolute left-2"></div>
       </div>
     </motion.div>
   );
@@ -123,7 +120,7 @@ export default function CodeChaseRegisterPage() {
   const CricketBat = () => (
     <motion.div
       whileHover={{ rotate: 10 }}
-      className="w-6 h-6 relative"
+      className="w-5 h-5 sm:w-6 sm:h-6 relative"
     >
       <svg 
         viewBox="0 0 100 100" 
@@ -131,7 +128,6 @@ export default function CodeChaseRegisterPage() {
         className="w-full h-full"
         style={{ transform: 'rotate(135deg)' }}
       >
-        {/* Bat blade */}
         <rect 
           x="10" 
           y="45" 
@@ -140,8 +136,6 @@ export default function CodeChaseRegisterPage() {
           rx="6"
           fill="#F4C430"
         />
-        
-        {/* Bat handle */}
         <rect 
           x="70" 
           y="47" 
@@ -150,8 +144,6 @@ export default function CodeChaseRegisterPage() {
           rx="4"
           fill="#2E86AB"
         />
-        
-        {/* Handle connection */}
         <rect 
           x="65" 
           y="46" 
@@ -172,25 +164,23 @@ export default function CodeChaseRegisterPage() {
           initial={{ scaleY: 0.8 }}
           animate={{ scaleY: 1 }}
           transition={{ delay: i * 0.1, duration: 0.5 }}
-          className="w-2 h-8 bg-amber-700 rounded-t-lg"
+          className="w-1.5 sm:w-2 h-6 sm:h-8 bg-amber-700 rounded-t-lg"
         />
       ))}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ delay: 0.4, duration: 0.3 }}
-        className="absolute top-0 w-8 h-1 bg-amber-700 rounded-full"
+        className="absolute top-0 w-6 sm:w-8 h-1 bg-amber-700 rounded-full"
       />
     </div>
   );
-
-  
 
   const Trophy = () => (
     <motion.svg
       animate={{ y: [0, -5, 0] }}
       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      className="w-8 h-8 text-yellow-500"
+      className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500"
       fill="currentColor"
       viewBox="0 0 24 24"
     >
@@ -205,21 +195,25 @@ export default function CodeChaseRegisterPage() {
     { title: "Player 3", icon: <div className="relative"><Wickets /></div>, fields: ["member3Name", "member3Usn"] }
   ];
 
+  const handleStepClick = (stepIndex) => {
+    setCurrentStep(stepIndex);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br mt-20 from-green-900 via-green-800 to-emerald-900 relative overflow-hidden">
-      {/* Cricket field background pattern */}
-      <div className="absolute inset-0 opacity-10">
+    <div className="min-h-screen bg-gradient-to-br mt-10 sm:mt-20 from-green-900 via-green-800 to-emerald-900 relative overflow-hidden">
+      {/* Cricket field background pattern - Hidden on mobile for performance */}
+      <div className="absolute inset-0 opacity-10 hidden sm:block">
         <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
         <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-white rounded-full"></div>
         <div className="absolute top-1/2 left-1/4 w-24 h-24 border-2 border-white rounded-full"></div>
       </div>
 
-      {/* Floating cricket elements */}
+      {/* Floating cricket elements - Reduced on mobile */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute"
+            className="absolute hidden sm:block"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -244,18 +238,18 @@ export default function CodeChaseRegisterPage() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+          className="w-full max-w-4xl bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-8 text-center relative">
+          <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-4 sm:p-8 text-center relative">
             <motion.div
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex items-center justify-center space-x-4 mb-4"
+              className="flex items-center justify-center space-x-2 sm:space-x-4 mb-4"
             >
               <CricketBall />
-              <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
                 22 Yards Of Code
               </h1>
               <CricketBat />
@@ -264,48 +258,103 @@ export default function CodeChaseRegisterPage() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-green-100 text-lg"
+              className="text-green-100 text-sm sm:text-lg"
             >
               Build Your Championship Squad! 🏏
             </motion.p>
             
-            {/* Progress indicator */}
-            <div className="mt-6 flex justify-center space-x-4">
-              {steps.map((step, index) => (
-                <motion.div
-                  key={index}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
-                    index === currentStep 
-                      ? 'bg-white text-green-600 shadow-lg' 
-                      : 'bg-white/20 text-white'
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {step.icon}
-                  <span className="font-medium">{step.title}</span>
-                </motion.div>
-              ))}
+            {/* Progress indicator - Responsive design */}
+            <div className="mt-4 sm:mt-6">
+              {/* Desktop/Tablet view */}
+              <div className="hidden md:flex justify-center space-x-4">
+                {steps.map((step, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => handleStepClick(index)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 cursor-pointer hover:scale-105 ${
+                      index === currentStep 
+                        ? 'bg-white text-green-600 shadow-lg' 
+                        : index < currentStep
+                        ? 'bg-green-500 text-white'
+                        : 'bg-white/20 text-white hover:bg-white/30'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                  >
+                    {step.icon}
+                    <span className="font-medium">{step.title}</span>
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Mobile view - Simplified tabs */}
+              <div className="grid grid-cols-2 gap-2 sm:hidden">
+                {steps.map((step, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => handleStepClick(index)}
+                    className={`flex items-center justify-center space-x-1 px-2 py-2 rounded-lg transition-all duration-300 cursor-pointer ${
+                      index === currentStep 
+                        ? 'bg-white text-green-600 shadow-lg' 
+                        : index < currentStep
+                        ? 'bg-green-500 text-white'
+                        : 'bg-white/20 text-white'
+                    }`}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                  >
+                    {step.icon}
+                    <span className="font-medium text-xs">{step.title}</span>
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Tablet view - Compact horizontal */}
+              <div className="hidden sm:flex md:hidden justify-center space-x-2">
+                {steps.map((step, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => handleStepClick(index)}
+                    className={`flex items-center space-x-1 px-3 py-2 rounded-full transition-all duration-300 cursor-pointer hover:scale-105 ${
+                      index === currentStep 
+                        ? 'bg-white text-green-600 shadow-lg' 
+                        : index < currentStep
+                        ? 'bg-green-500 text-white'
+                        : 'bg-white/20 text-white hover:bg-white/30'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                  >
+                    {step.icon}
+                    <span className="font-medium text-sm">{step.title}</span>
+                  </motion.button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Form Content */}
-          <div className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="p-4 sm:p-8">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
               <motion.div
                 key={currentStep}
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5 }}
-                className="space-y-6"
+                className="space-y-4 sm:space-y-6"
               >
                 {/* Team Setup */}
                 {currentStep === 0 && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <Trophy />
-                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Team Setup</h2>
-                      <p className="text-gray-600">Create your championship team</p>
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="text-center mb-6 sm:mb-8">
+                      <div className="flex justify-center mb-2">
+                        <Trophy />
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Team Setup</h2>
+                      <p className="text-gray-600 text-sm sm:text-base">Create your championship team</p>
                     </div>
                     <div className="space-y-4">
                       <div>
@@ -340,11 +389,13 @@ export default function CodeChaseRegisterPage() {
 
                 {/* Team Leader */}
                 {currentStep === 1 && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <CricketBat />
-                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Team Captain</h2>
-                      <p className="text-gray-600">Captain leads from the front!</p>
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="text-center mb-6 sm:mb-8">
+                      <div className="flex justify-center mb-2">
+                        <CricketBat />
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Team Captain</h2>
+                      <p className="text-gray-600 text-sm sm:text-base">Captain leads from the front!</p>
                     </div>
                     <div className="space-y-4">
                       <div>
@@ -392,11 +443,13 @@ export default function CodeChaseRegisterPage() {
 
                 {/* Member 2 */}
                 {currentStep === 2 && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <CricketBall />
-                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Player 2</h2>
-                      <p className="text-gray-600">Second player on the pitch</p>
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="text-center mb-6 sm:mb-8">
+                      <div className="flex justify-center mb-2">
+                        <CricketBall />
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Player 2</h2>
+                      <p className="text-gray-600 text-sm sm:text-base">Second player on the pitch</p>
                     </div>
                     <div className="space-y-4">
                       <div>
@@ -431,13 +484,15 @@ export default function CodeChaseRegisterPage() {
 
                 {/* Member 3 */}
                 {currentStep === 3 && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <div className="relative inline-block">
-                        <Wickets />
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="text-center mb-6 sm:mb-8">
+                      <div className="flex justify-center mb-2">
+                        <div className="relative inline-block">
+                          <Wickets />
+                        </div>
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-800 mt-2">Player 3</h2>
-                      <p className="text-gray-600">Complete your squad!</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Player 3</h2>
+                      <p className="text-gray-600 text-sm sm:text-base">Complete your squad!</p>
                     </div>
                     <div className="space-y-4">
                       <div>
@@ -480,7 +535,7 @@ export default function CodeChaseRegisterPage() {
                 >
                   <div className="flex items-center">
                     <div className="ml-3">
-                      <p className="text-red-700 font-medium">{error.message}</p>
+                      <p className="text-red-700 font-medium text-sm sm:text-base">{error.message}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -495,21 +550,21 @@ export default function CodeChaseRegisterPage() {
                   <div className="flex items-center">
                     <Trophy />
                     <div className="ml-3">
-                      <p className="text-green-700 font-medium">{success}</p>
+                      <p className="text-green-700 font-medium text-sm sm:text-base">{success}</p>
                     </div>
                   </div>
                 </motion.div>
               )}
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6">
+              <div className="flex justify-between pt-4 sm:pt-6 gap-3">
                 <motion.button
                   type="button"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
                   disabled={currentStep === 0}
-                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all duration-200 text-sm sm:text-base ${
                     currentStep === 0
                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       : 'bg-gray-600 text-white hover:bg-gray-700 shadow-md hover:shadow-lg'
@@ -524,7 +579,7 @@ export default function CodeChaseRegisterPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
-                    className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                    className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
                   >
                     Next
                   </motion.button>
@@ -534,7 +589,7 @@ export default function CodeChaseRegisterPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     disabled={isLoading || !!success}
-                    className={`px-8 py-3 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2 ${
+                    className={`px-4 sm:px-8 py-2 sm:py-3 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2 text-sm sm:text-base ${
                       isLoading || success
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-md hover:shadow-lg'
@@ -542,7 +597,7 @@ export default function CodeChaseRegisterPage() {
                   >
                     {isLoading ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         <span>Registering...</span>
                       </>
                     ) : success ? (
