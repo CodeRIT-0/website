@@ -416,7 +416,7 @@ export default function CodeChaseRegisterPage() {
                           name="year"
                           type="text"
                           className={`${inputBaseClass} ${getErrorClass('year')}`}
-                          placeholder="Year (e.g., 1st, 2nd, 3rd, 4th)"
+                          placeholder="Year (e.g., 1st, 2nd)"
                           value={formData.year}
                           onChange={handleChange}
                         />
@@ -457,7 +457,7 @@ export default function CodeChaseRegisterPage() {
                           name="leaderUsn"
                           type="text"
                           className={`${inputBaseClass} ${getErrorClass('leaderUsn')} uppercase`}
-                          placeholder="USN (e.g., 1MS21CS001)"
+                          placeholder="USN (e.g., 1MS23CS001)"
                           value={formData.leaderUsn}
                           onChange={handleChange}
                         />
@@ -511,7 +511,7 @@ export default function CodeChaseRegisterPage() {
                           name="member2Usn"
                           type="text"
                           className={`${inputBaseClass} ${getErrorClass('member2Usn')} uppercase`}
-                          placeholder="USN (e.g., 1MS21CS002)"
+                          placeholder="USN (e.g., 1MS23CS002)"
                           value={formData.member2Usn}
                           onChange={handleChange}
                         />
@@ -554,7 +554,7 @@ export default function CodeChaseRegisterPage() {
                           name="member3Usn"
                           type="text"
                           className={`${inputBaseClass} ${getErrorClass('member3Usn')} uppercase`}
-                          placeholder="USN (e.g., 1MS21CS003)"
+                          placeholder="USN (e.g., 1MS23CS003)"
                           value={formData.member3Usn}
                           onChange={handleChange}
                         />
