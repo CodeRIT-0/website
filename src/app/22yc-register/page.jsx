@@ -288,7 +288,7 @@ export default function CodeChaseRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br mt-10 sm:mt-20 from-green-900 via-green-800 to-emerald-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br mt-16 pt-4 sm:mt-20 from-green-900 via-green-800 to-emerald-900 relative overflow-hidden">
      
       <div className="absolute inset-0 opacity-10 hidden sm:block">
         <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
