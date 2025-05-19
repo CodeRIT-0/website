@@ -37,12 +37,32 @@ export default function CodeChaseRegisterPage() {
     setError(prevError => prevError && prevError.field === name ? null : prevError);
   };
 
+  // Helper function to check if USN is from 3rd year or above (1MS22 or lower)
+  const isRestrictedUSN = (usn) => {
+    // Convert to uppercase for consistency
+    const usnUpper = usn.toUpperCase();
+    
+    // Check if it's a standard MSR USN format
+    const usnPattern = /^1MS\d{2}[A-Z]{2}\d{3}$/;
+    if (!usnPattern.test(usnUpper)) {
+      return false; // If not in standard format, let the backend handle validation
+    }
+    
+    // Extract the year part (e.g., "22" from "1MS22CS001")
+    const yearPart = usnUpper.substring(3, 5);
+    const yearNum = parseInt(yearPart, 10);
+    
+    // Restrict 22 and below (3rd years and above)
+    return yearNum <= 22;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     setSuccess(null);
 
+    // Check all required fields
     for (const key in formData) {
       if (!formData[key].trim()) {
         setError({ message: `Please fill in the ${key.replace(/([A-Z])/g, ' $1').toLowerCase()} field.`, field: key });
@@ -51,10 +71,28 @@ export default function CodeChaseRegisterPage() {
       }
     }
 
+    // Validate mobile number
     if (!/^[6-9]\d{9}$/.test(formData.leaderMobile)) {
       setError({ message: 'Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.', field: 'leaderMobile' });
       setIsLoading(false);
       return;
+    }
+    
+    // Check for restricted USNs (3rd years and above)
+    const usnsToCheck = [formData.leaderUsn, formData.member2Usn, formData.member3Usn];
+    for (let i = 0; i < usnsToCheck.length; i++) {
+      const usn = usnsToCheck[i];
+      const fieldName = i === 0 ? 'leaderUsn' : i === 1 ? 'member2Usn' : 'member3Usn';
+      const memberName = i === 0 ? 'Team Captain' : `Player ${i + 1}`;
+      
+      if (isRestrictedUSN(usn)) {
+        setError({ 
+          message: `${memberName} appears to be a 3rd year or above student. This event is restricted to 1st and 2nd year students only.`, 
+          field: fieldName 
+        });
+        setIsLoading(false);
+        return;
+      }
     }
 
     try {
