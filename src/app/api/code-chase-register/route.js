@@ -1,6 +1,7 @@
 import { connect } from "@/src/dbconfig/dbconfig";
 import CodeChaseTeam from "@/src/models/codeChaseTeamModel";
 import { NextResponse } from "next/server";
+import { emitRegistrationCount } from "../socketio/route";
 
 export async function POST(request) {
   try {
@@ -51,6 +52,9 @@ export async function POST(request) {
 
 
     const savedTeam = await newTeam.save();
+    
+   
+    await emitRegistrationCount();
 
     return NextResponse.json({
       message: "Team registered successfully for 22 Yards Of Code!",

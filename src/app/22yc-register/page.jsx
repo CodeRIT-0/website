@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import RegistrationCounter from '@/src/components/RegistrationCounter';
+import { initializeSocket, closeSocket, onRegistrationCount } from '@/src/lib/socketio';
 
 export default function CodeChaseRegisterPage() {
+  const [registrationsOpen, setRegistrationsOpen] = useState(true);
   const [formData, setFormData] = useState({
     teamName: '',
     year: '',
@@ -22,6 +25,48 @@ export default function CodeChaseRegisterPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
 
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    
+    const checkInitialStatus = async () => {
+      try {
+        const response = await fetch('/api/socketio');
+        const data = await response.json();
+        
+        if (data.success && isMounted) {
+          setRegistrationsOpen(data.registrationsOpen);
+        }
+      } catch (err) {
+        console.error('Error checking registration status:', err);
+      }
+    };
+
+    
+    initializeSocket();
+    
+   
+    onRegistrationCount((data) => {
+      if (data && typeof data.registrationsOpen !== 'undefined' && isMounted) {
+        setRegistrationsOpen(data.registrationsOpen);
+      }
+    });
+    
+  
+    checkInitialStatus();
+    
+   
+    const intervalId = setInterval(checkInitialStatus, 30000); 
+    
+    
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+     
+    };
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let processedValue = value;
@@ -37,32 +82,37 @@ export default function CodeChaseRegisterPage() {
     setError(prevError => prevError && prevError.field === name ? null : prevError);
   };
 
-  // Helper function to check if USN is from 3rd year or above (1MS22 or lower)
+  
   const isRestrictedUSN = (usn) => {
-    // Convert to uppercase for consistency
+
     const usnUpper = usn.toUpperCase();
     
-    // Check if it's a standard MSR USN format
+
     const usnPattern = /^1MS\d{2}[A-Z]{2}\d{3}$/;
     if (!usnPattern.test(usnUpper)) {
-      return false; // If not in standard format, let the backend handle validation
+      return false; 
     }
     
-    // Extract the year part (e.g., "22" from "1MS22CS001")
+  
     const yearPart = usnUpper.substring(3, 5);
     const yearNum = parseInt(yearPart, 10);
     
-    // Restrict 22 and below (3rd years and above)
+   
     return yearNum <= 22;
   };
 
   const handleSubmit = async (e) => {
+   
+    if (!registrationsOpen) {
+      setError({ message: 'Registrations are now closed. Maximum limit of 130 teams has been reached.' });
+      return;
+    }
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     setSuccess(null);
 
-    // Check all required fields
+   
     for (const key in formData) {
       if (!formData[key].trim()) {
         setError({ message: `Please fill in the ${key.replace(/([A-Z])/g, ' $1').toLowerCase()} field.`, field: key });
@@ -71,14 +121,14 @@ export default function CodeChaseRegisterPage() {
       }
     }
 
-    // Validate mobile number
+   
     if (!/^[6-9]\d{9}$/.test(formData.leaderMobile)) {
       setError({ message: 'Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.', field: 'leaderMobile' });
       setIsLoading(false);
       return;
     }
     
-    // Check for restricted USNs (3rd years and above)
+   
     const usnsToCheck = [formData.leaderUsn, formData.member2Usn, formData.member3Usn];
     for (let i = 0; i < usnsToCheck.length; i++) {
       const usn = usnsToCheck[i];
@@ -239,14 +289,14 @@ export default function CodeChaseRegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br mt-10 sm:mt-20 from-green-900 via-green-800 to-emerald-900 relative overflow-hidden">
-      {/* Cricket field background pattern - Hidden on mobile for performance */}
+     
       <div className="absolute inset-0 opacity-10 hidden sm:block">
         <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
         <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-white rounded-full"></div>
         <div className="absolute top-1/2 left-1/4 w-24 h-24 border-2 border-white rounded-full"></div>
       </div>
 
-      {/* Floating cricket elements - Reduced on mobile */}
+     
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(3)].map((_, i) => (
           <motion.div
@@ -301,9 +351,9 @@ export default function CodeChaseRegisterPage() {
               Build Your Championship Squad! 🏏
             </motion.p>
             
-            {/* Progress indicator - Responsive design */}
+            {/* Progress indicator */}
             <div className="mt-4 sm:mt-6">
-              {/* Desktop/Tablet view */}
+         
               <div className="hidden md:flex justify-center space-x-4">
                 {steps.map((step, index) => (
                   <motion.button
@@ -326,7 +376,7 @@ export default function CodeChaseRegisterPage() {
                 ))}
               </div>
 
-              {/* Mobile view - Simplified tabs */}
+             
               <div className="grid grid-cols-2 gap-2 sm:hidden">
                 {steps.map((step, index) => (
                   <motion.button
@@ -348,7 +398,7 @@ export default function CodeChaseRegisterPage() {
                 ))}
               </div>
 
-              {/* Tablet view - Compact horizontal */}
+             
               <div className="hidden sm:flex md:hidden justify-center space-x-2">
                 {steps.map((step, index) => (
                   <motion.button
@@ -373,9 +423,45 @@ export default function CodeChaseRegisterPage() {
             </div>
           </div>
 
-          {/* Form Content */}
+        
           <div className="p-4 sm:p-8">
-            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+           
+            <div className="mb-6">
+              <RegistrationCounter />
+            </div>
+            
+            {!registrationsOpen && (
+              <div className="mb-6 p-6 bg-gradient-to-br from-green-50 to-blue-50 border border-green-200 rounded-xl shadow-sm">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="flex items-center justify-center space-x-3">
+                    <CricketBat />
+                    <CricketBall />
+                    <div className="w-6 h-6 flex items-center justify-center bg-green-100 rounded-full">
+                      <span className="text-green-800 font-bold">!</span>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-green-800">Stumps Down! All Spots Filled</h3>
+                  <p className="text-gray-700">
+                    All 130 teams have taken to the field for 22 Yards of Code! 
+                    The tournament is now at full capacity.
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Watch out for our next innings! Follow us on social media for updates on future events.
+                  </p>
+                  <div className="pt-2">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-5 py-2 bg-green-600 text-white rounded-full font-medium shadow-md hover:bg-green-700 transition-all duration-300"
+                      onClick={() => router.push('/')}
+                    >
+                      Back to Home
+                    </motion.button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <form onSubmit={handleSubmit} className={`space-y-6 sm:space-y-8 ${!registrationsOpen ? 'opacity-50 pointer-events-none' : ''}`}>
               <motion.div
                 key={currentStep}
                 initial={{ opacity: 0, x: 50 }}
@@ -384,7 +470,7 @@ export default function CodeChaseRegisterPage() {
                 transition={{ duration: 0.5 }}
                 className="space-y-4 sm:space-y-6"
               >
-                {/* Team Setup */}
+             
                 {currentStep === 0 && (
                   <div className="space-y-4 sm:space-y-6">
                     <div className="text-center mb-6 sm:mb-8">
@@ -425,7 +511,7 @@ export default function CodeChaseRegisterPage() {
                   </div>
                 )}
 
-                {/* Team Leader */}
+            
                 {currentStep === 1 && (
                   <div className="space-y-4 sm:space-y-6">
                     <div className="text-center mb-6 sm:mb-8">
@@ -479,7 +565,7 @@ export default function CodeChaseRegisterPage() {
                   </div>
                 )}
 
-                {/* Member 2 */}
+              
                 {currentStep === 2 && (
                   <div className="space-y-4 sm:space-y-6">
                     <div className="text-center mb-6 sm:mb-8">
@@ -520,7 +606,7 @@ export default function CodeChaseRegisterPage() {
                   </div>
                 )}
 
-                {/* Member 3 */}
+           
                 {currentStep === 3 && (
                   <div className="space-y-4 sm:space-y-6">
                     <div className="text-center mb-6 sm:mb-8">
@@ -564,7 +650,7 @@ export default function CodeChaseRegisterPage() {
                 )}
               </motion.div>
 
-              {/* Error/Success Messages */}
+              
               {error && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -594,7 +680,7 @@ export default function CodeChaseRegisterPage() {
                 </motion.div>
               )}
 
-              {/* Navigation Buttons */}
+             
               <div className="flex justify-between pt-4 sm:pt-6 gap-3">
                 <motion.button
                   type="button"
