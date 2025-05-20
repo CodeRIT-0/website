@@ -53,16 +53,26 @@ export async function POST(request) {
 
     const savedTeam = await newTeam.save();
     
-   
-    await emitRegistrationCount();
+    // Get the updated count after saving
+    const updatedCount = await CodeChaseTeam.countDocuments();
+    
+    // Try to emit the count update (for backward compatibility)
+    try {
+      await emitRegistrationCount();
+    } catch (error) {
+      // Ignore errors from Socket.IO
+    }
 
     return NextResponse.json({
       message: "Team registered successfully for 22 Yards Of Code!",
       success: true,
       team: {
         id: savedTeam._id,
-        teamName: savedTeam.teamName,
+        teamName: savedTeam.teamName
       },
+      count: updatedCount,
+      maxRegistrations: 130,
+      registrationsOpen: updatedCount < 130
     });
 
   } catch (error) {

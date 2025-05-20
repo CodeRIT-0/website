@@ -15,6 +15,15 @@ const ProgressBar = ({ percentage, statusColor }) => {
   );
 };
 
+// Create a global reference to store the refresh function
+let globalRefreshFunction = null;
+
+export function refreshRegistrationCount() {
+  if (globalRefreshFunction) {
+    globalRefreshFunction();
+  }
+}
+
 export default function RegistrationCounter() {
   // Use a single state object to prevent multiple re-renders
   const [state, setState] = useState({
@@ -31,7 +40,7 @@ export default function RegistrationCounter() {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    // Simple function to fetch the registration count once on page load
+    // Function to fetch the registration count
     const fetchRegistrationCount = async () => {
       if (fetchingRef.current) return;
       
@@ -88,11 +97,15 @@ export default function RegistrationCounter() {
       }
     };
 
+    // Store the refresh function in the global reference so it can be called from outside
+    globalRefreshFunction = fetchRegistrationCount;
+
     // Fetch count once on page load
     fetchRegistrationCount();
     
-    // No cleanup needed since we're not setting up any intervals or timeouts
+    // Clean up the global reference when component unmounts
     return () => {
+      globalRefreshFunction = null;
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);

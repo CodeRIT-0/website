@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import RegistrationCounter from '@/src/components/RegistrationCounter';
+import RegistrationCounter, { refreshRegistrationCount } from '@/src/components/RegistrationCounter';
 
 export default function CodeChaseRegisterPage() {
   const [registrationsOpen, setRegistrationsOpen] = useState(true);
@@ -168,8 +168,13 @@ export default function CodeChaseRegisterPage() {
       // Refresh the registration count after successful submission
       // This ensures the user sees their registration reflected in the count
       setTimeout(() => {
-        window.location.reload();
-      }, 2000); // Wait 2 seconds so the user can see the success message
+        refreshRegistrationCount(); // Directly refresh the count without page reload
+        
+        // Also check if registrations are now full
+        if (result.count >= 130) {
+          setRegistrationsOpen(false);
+        }
+      }, 1000); // Wait 1 second so the database has time to update
 
     } catch (err) {
       setError({ message: err.message });
