@@ -28,11 +28,10 @@ export default function CodeChaseRegisterPage() {
   useEffect(() => {
     let isMounted = true;
     
-    // Check registration status once on page load
+   
     const checkRegistrationStatus = async () => {
       try {
-        // Use the new simple API endpoint that directly queries the database
-        // Add timestamp to prevent any possible caching
+        
         const timestamp = new Date().getTime();
         const response = await fetch(`/api/get-registration-count?t=${timestamp}`, {
           headers: {
@@ -52,7 +51,7 @@ export default function CodeChaseRegisterPage() {
       }
     };
 
-    // Check status once on page load
+   
     checkRegistrationStatus();
     
     return () => {
@@ -166,12 +165,11 @@ export default function CodeChaseRegisterPage() {
         member3Usn: '',
       });
       
-      // Show success message for 2 seconds, then force a full page reload
-      // This is the most reliable way to ensure the count updates in production
+      
       setTimeout(() => {
-        // Force a complete page reload to get fresh data from the server
+       
         window.location.href = window.location.href.split('?')[0] + '?refresh=' + new Date().getTime();
-      }, 2000); // Wait 2 seconds so the user can see the success message
+      }, 2000); 
 
     } catch (err) {
       setError({ message: err.message });

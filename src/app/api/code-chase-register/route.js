@@ -53,14 +53,14 @@ export async function POST(request) {
 
     const savedTeam = await newTeam.save();
     
-    // Get the updated count after saving
+
     const updatedCount = await CodeChaseTeam.countDocuments();
     
-    // Try to emit the count update (for backward compatibility)
+   
     try {
       await emitRegistrationCount();
     } catch (error) {
-      // Ignore errors from Socket.IO
+  
     }
 
     return NextResponse.json({

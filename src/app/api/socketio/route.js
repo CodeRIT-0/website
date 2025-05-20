@@ -6,7 +6,7 @@ import { getSocketIO, setRegistrationCount } from '@/src/lib/socket-server';
 
 export async function GET(req) {
   try {
-    // Set strong cache control headers to prevent caching in production
+ 
     const headers = {
       'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
       'Pragma': 'no-cache',
@@ -16,23 +16,22 @@ export async function GET(req) {
       'Vary': '*'
     };
 
-    // Connect to the database
+   
     await connect();
     
-    // Force a fresh query with no caching
+   
     const count = await CodeChaseTeam.countDocuments().exec();
     const maxRegistrations = 130;
     
-    // Update the in-memory count and emit to all clients
-    setRegistrationCount(count);
     
-    // Return the latest data with no-cache headers
+    setRegistrationCount(count);
+   
     return NextResponse.json({ 
       success: true, 
       count,
       maxRegistrations,
       registrationsOpen: count < maxRegistrations,
-      timestamp: new Date().getTime() // Add timestamp for debugging
+      timestamp: new Date().getTime() 
     }, { headers });
   } catch (error) {
     console.error('Error fetching registration count:', error);
