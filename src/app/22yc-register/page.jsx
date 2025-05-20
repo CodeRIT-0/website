@@ -425,10 +425,6 @@ export default function CodeChaseRegisterPage() {
 
         
           <div className="p-4 sm:p-8">
-           
-            <div className="mb-6">
-              <RegistrationCounter />
-            </div>
             
             {!registrationsOpen && (
               <div className="mb-6 p-6 bg-gradient-to-br from-green-50 to-blue-50 border border-green-200 rounded-xl shadow-sm">
