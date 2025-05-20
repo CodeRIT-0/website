@@ -6,11 +6,14 @@ import { getSocketIO, setRegistrationCount } from '@/src/lib/socket-server';
 
 export async function GET(req) {
   try {
-    // Set cache control headers to prevent caching
+    // Set strong cache control headers to prevent caching in production
     const headers = {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
       'Pragma': 'no-cache',
-      'Expires': '0'
+      'Expires': '0',
+      'Surrogate-Control': 'no-store',
+      'X-Accel-Expires': '0',
+      'Vary': '*'
     };
 
     // Connect to the database

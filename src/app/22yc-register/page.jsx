@@ -165,16 +165,12 @@ export default function CodeChaseRegisterPage() {
         member3Usn: '',
       });
       
-      // Refresh the registration count after successful submission
-      // This ensures the user sees their registration reflected in the count
+      // Show success message for 2 seconds, then force a full page reload
+      // This is the most reliable way to ensure the count updates in production
       setTimeout(() => {
-        refreshRegistrationCount(); // Directly refresh the count without page reload
-        
-        // Also check if registrations are now full
-        if (result.count >= 130) {
-          setRegistrationsOpen(false);
-        }
-      }, 1000); // Wait 1 second so the database has time to update
+        // Force a complete page reload to get fresh data from the server
+        window.location.href = window.location.href.split('?')[0] + '?refresh=' + new Date().getTime();
+      }, 2000); // Wait 2 seconds so the user can see the success message
 
     } catch (err) {
       setError({ message: err.message });
