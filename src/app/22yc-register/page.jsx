@@ -31,9 +31,10 @@ export default function CodeChaseRegisterPage() {
     // Check registration status once on page load
     const checkRegistrationStatus = async () => {
       try {
-        // Add timestamp to prevent caching
+        // Use the new simple API endpoint that directly queries the database
+        // Add timestamp to prevent any possible caching
         const timestamp = new Date().getTime();
-        const response = await fetch(`/api/socketio?t=${timestamp}`, {
+        const response = await fetch(`/api/get-registration-count?t=${timestamp}`, {
           headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
