@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import RegistrationCounter from '@/src/components/RegistrationCounter';
-import { initializeSocket, closeSocket, onRegistrationCount } from '@/src/lib/socketio';
 
 export default function CodeChaseRegisterPage() {
   const [registrationsOpen, setRegistrationsOpen] = useState(true);
@@ -29,10 +28,19 @@ export default function CodeChaseRegisterPage() {
   useEffect(() => {
     let isMounted = true;
     
-    
-    const checkInitialStatus = async () => {
+    // Check registration status once on page load
+    const checkRegistrationStatus = async () => {
       try {
-        const response = await fetch('/api/socketio');
+        // Add timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/api/socketio?t=${timestamp}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        
         const data = await response.json();
         
         if (data.success && isMounted) {
@@ -43,27 +51,11 @@ export default function CodeChaseRegisterPage() {
       }
     };
 
-    
-    initializeSocket();
-    
-   
-    onRegistrationCount((data) => {
-      if (data && typeof data.registrationsOpen !== 'undefined' && isMounted) {
-        setRegistrationsOpen(data.registrationsOpen);
-      }
-    });
-    
-  
-    checkInitialStatus();
-    
-   
-    const intervalId = setInterval(checkInitialStatus, 30000); 
-    
+    // Check status once on page load
+    checkRegistrationStatus();
     
     return () => {
       isMounted = false;
-      clearInterval(intervalId);
-     
     };
   }, []);
 
@@ -172,6 +164,12 @@ export default function CodeChaseRegisterPage() {
         member3Name: '',
         member3Usn: '',
       });
+      
+      // Refresh the registration count after successful submission
+      // This ensures the user sees their registration reflected in the count
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000); // Wait 2 seconds so the user can see the success message
 
     } catch (err) {
       setError({ message: err.message });

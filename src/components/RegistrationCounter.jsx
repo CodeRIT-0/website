@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, memo } from 'react';
-import { initializeSocket, onRegistrationCount } from '@/src/lib/socketio';
+import React, { useState, useEffect, useRef } from 'react';
 
 
 // Static progress bar with no transitions to prevent flickering
@@ -32,51 +31,45 @@ export default function RegistrationCounter() {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    // Helper function to update the counter data
-    const updateCounterData = (data) => {
-      if (!data || prevCountRef.current === data.count) return;
-      
-      const count = data.count;
-      const maxReg = data.maxRegistrations || state.maxRegistrations;
-      
-      const newPercentage = Math.min(100, Math.round((count / maxReg) * 100));
-      let newStatusColor = 'bg-green-500';
-      if (newPercentage >= 80) newStatusColor = 'bg-red-500';
-      else if (newPercentage >= 50) newStatusColor = 'bg-yellow-500';
-      
-      // Update all state at once to prevent flickering
-      setState(prevState => ({
-        ...prevState,
-        registrationCount: count,
-        percentage: newPercentage,
-        statusColor: newStatusColor,
-        error: null
-      }));
-      
-      prevCountRef.current = count;
-    };
-
-    // Initial fetch to get the count while Socket.IO connects
-    const fetchInitialCount = async () => {
+    // Simple function to fetch the registration count once on page load
+    const fetchRegistrationCount = async () => {
       if (fetchingRef.current) return;
       
       fetchingRef.current = true;
-      
-      // Only show loading on first load
-      if (prevCountRef.current === null) {
-        setState(prevState => ({ ...prevState, loading: true }));
-      }
+      setState(prevState => ({ ...prevState, loading: true }));
       
       try {
-        const response = await fetch('/api/socketio');
+        // Add timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/api/socketio?t=${timestamp}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        
         const data = await response.json();
         
         if (data.success) {
-          updateCounterData({
-            count: data.count,
-            maxRegistrations: data.maxRegistrations,
-            registrationsOpen: data.registrationsOpen
-          });
+          const count = data.count;
+          const maxReg = data.maxRegistrations || state.maxRegistrations;
+          
+          const newPercentage = Math.min(100, Math.round((count / maxReg) * 100));
+          let newStatusColor = 'bg-green-500';
+          if (newPercentage >= 80) newStatusColor = 'bg-red-500';
+          else if (newPercentage >= 50) newStatusColor = 'bg-yellow-500';
+          
+          // Update all state at once to prevent flickering
+          setState(prevState => ({
+            ...prevState,
+            registrationCount: count,
+            percentage: newPercentage,
+            statusColor: newStatusColor,
+            error: null
+          }));
+          
+          prevCountRef.current = count;
         } else {
           setState(prevState => ({
             ...prevState,
@@ -84,13 +77,10 @@ export default function RegistrationCounter() {
           }));
         }
       } catch (err) {
-        // Only show error if we don't have any data yet
-        if (prevCountRef.current === null) {
-          setState(prevState => ({
-            ...prevState,
-            error: 'Error connecting to server'
-          }));
-        }
+        setState(prevState => ({
+          ...prevState,
+          error: 'Error connecting to server'
+        }));
         console.error('Error fetching registration count:', err);
       } finally {
         setState(prevState => ({ ...prevState, loading: false }));
@@ -98,31 +88,12 @@ export default function RegistrationCounter() {
       }
     };
 
-    // Initialize Socket.IO only once
-    initializeSocket();
+    // Fetch count once on page load
+    fetchRegistrationCount();
     
-    // Register for registration count updates
-    onRegistrationCount(updateCounterData);
-    
-    // Fetch initial count
-    fetchInitialCount();
-    
-    // Set up a more aggressive backup polling mechanism to ensure counter stays updated
-    // Poll more frequently to ensure we don't miss updates
-    const intervalId = setInterval(fetchInitialCount, 10000); // 10 seconds
-    
-    // Also set up a forced refresh every minute to ensure we're always in sync
-    const forcedRefreshId = setInterval(() => {
-      fetchingRef.current = false; // Reset fetching flag to force a refresh
-      fetchInitialCount();
-    }, 60000); // 1 minute
-    
-    // Cleanup function
+    // No cleanup needed since we're not setting up any intervals or timeouts
     return () => {
-      clearInterval(intervalId);
-      clearInterval(forcedRefreshId);
       if (timerRef.current) clearTimeout(timerRef.current);
-      // Don't close the socket here, it's shared across components
     };
   }, []);
 
