@@ -63,24 +63,37 @@ export const initializeSocket = () => {
   return socket;
 };
 
-// Fetch registration count from server
+// Fetch registration count from server with cache-busting to prevent stale data
 const fetchRegistrationCount = async () => {
   try {
-    const response = await fetch('/api/socketio');
+    // Add cache-busting parameter to prevent cached responses
+    const timestamp = new Date().getTime();
+    const response = await fetch(`/api/socketio?t=${timestamp}`, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+    
     const data = await response.json();
     
     if (data.success) {
-      registrationCount = data.count;
-      registrationsOpen = data.registrationsOpen;
-      
-      notifyRegistrationCountCallbacks({
-        count: data.count,
-        maxRegistrations: data.maxRegistrations,
-        registrationsOpen: data.registrationsOpen
-      });
+      // Only update if the count has changed or we don't have a count yet
+      if (registrationCount !== data.count || registrationCount === null) {
+        registrationCount = data.count;
+        registrationsOpen = data.registrationsOpen;
+        
+        notifyRegistrationCountCallbacks({
+          count: data.count,
+          maxRegistrations: data.maxRegistrations,
+          registrationsOpen: data.registrationsOpen
+        });
+      }
     }
   } catch (error) {
-    // Silent fail - we'll rely on Socket.IO or polling
+    console.error('Error fetching registration count:', error);
+    // We'll rely on polling as fallback
   }
 };
 

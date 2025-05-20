@@ -107,13 +107,20 @@ export default function RegistrationCounter() {
     // Fetch initial count
     fetchInitialCount();
     
-    // Set up a backup polling mechanism with a longer interval
-    // Only poll if Socket.IO fails or is slow
-    const intervalId = setInterval(fetchInitialCount, 30000); // 30 seconds
+    // Set up a more aggressive backup polling mechanism to ensure counter stays updated
+    // Poll more frequently to ensure we don't miss updates
+    const intervalId = setInterval(fetchInitialCount, 10000); // 10 seconds
+    
+    // Also set up a forced refresh every minute to ensure we're always in sync
+    const forcedRefreshId = setInterval(() => {
+      fetchingRef.current = false; // Reset fetching flag to force a refresh
+      fetchInitialCount();
+    }, 60000); // 1 minute
     
     // Cleanup function
     return () => {
       clearInterval(intervalId);
+      clearInterval(forcedRefreshId);
       if (timerRef.current) clearTimeout(timerRef.current);
       // Don't close the socket here, it's shared across components
     };
