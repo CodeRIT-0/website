@@ -21,7 +21,7 @@ export async function GET(req) {
     
    
     const count = await CodeChaseTeam.countDocuments().exec();
-    const maxRegistrations = 130;
+    const maxRegistrations = 120;
     
     
     setRegistrationCount(count);

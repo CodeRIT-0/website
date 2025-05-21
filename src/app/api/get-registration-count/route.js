@@ -11,7 +11,7 @@ export async function GET() {
     
     // Get the current count directly from the database
     const count = await CodeChaseTeam.countDocuments();
-    const maxRegistrations = 130;
+    const maxRegistrations = 120; // Updated from 130 to 120
     
     // Return the count with strong cache control headers
     return NextResponse.json({ 
