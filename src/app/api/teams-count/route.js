@@ -2,27 +2,19 @@ import { connect } from "@/src/dbconfig/dbconfig";
 import CodeChaseTeam from "@/src/models/codeChaseTeamModel";
 import { NextResponse } from "next/server";
 
-/**
- * Simple public API endpoint that returns the current team count
- * Can be accessed directly in a browser at /api/teams-count
- */
 export async function GET(request) {
   try {
-    // Connect to the database
+   
     await connect();
     
-    // Get the current count directly from the database
+   
     const count = await CodeChaseTeam.countDocuments();
-    const maxRegistrations = 130;
-    
-    // Get format parameter from URL if present (default to json)
+    const maxRegistrations = 120; 
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
-    
-    // Calculate percentage filled
     const percentageFilled = Math.round((count / maxRegistrations) * 100);
     
-    // Return data in requested format
+    
     if (format === 'text') {
       return new Response(`${count}/${maxRegistrations} teams registered (${percentageFilled}% filled)`, {
         headers: {
@@ -33,7 +25,7 @@ export async function GET(request) {
         }
       });
     } else {
-      // Default JSON response
+    
       return NextResponse.json({ 
         success: true, 
         count,
@@ -53,7 +45,7 @@ export async function GET(request) {
   } catch (error) {
     console.error('Error fetching count:', error);
     
-    // Return error in requested format
+   
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
     
