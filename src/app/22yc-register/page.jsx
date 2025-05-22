@@ -434,7 +434,7 @@ export default function CodeChaseRegisterPage() {
                   </div>
                   <h3 className="text-xl font-bold text-green-800">Stumps Down! All Spots Filled</h3>
                   <p className="text-gray-700">
-                    All 120 teams have taken to the field for 22 Yards of Code! 
+                    All 140 teams have taken to the field for 22 Yards of Code! 
                     The tournament is now at full capacity.
                   </p>
                   <p className="text-gray-600 text-sm">
