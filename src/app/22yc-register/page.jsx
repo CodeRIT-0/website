@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import RegistrationCounter, { refreshRegistrationCount } from '@/src/components/RegistrationCounter';
 
 export default function CodeChaseRegisterPage() {
-  const [registrationsOpen, setRegistrationsOpen] = useState(true);
+  const [registrationsOpen, setRegistrationsOpen] = useState(false);
   const [formData, setFormData] = useState({
     teamName: '',
     year: '',
@@ -43,9 +43,7 @@ export default function CodeChaseRegisterPage() {
         
         const data = await response.json();
         
-        if (data.success && isMounted) {
-          setRegistrationsOpen(data.registrationsOpen);
-        }
+        
       } catch (err) {
         console.error('Error checking registration status:', err);
       }
