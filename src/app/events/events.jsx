@@ -198,7 +198,7 @@ const eventData = [
         "ActualDate": "2025-05-23",
         "Priority": 2,
         "Description": "Unique cricket and coding crossover contest - The high-energy event brilliantly combined strategic thinking with programming challenges, creating an unforgettable experience of sportsmanship and technical skills.",
-        "img": "/Events/2024-05-23-22yardsofcode.webp"
+        "img": "/Events/2025-05-23-22yardsofcode.webp"
     }
 ]
 export default eventData;
