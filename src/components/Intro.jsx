@@ -3,6 +3,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import "../app/intro.css";
+import eventData from "../app/events/events";
+import EventCard from "../Card/Card1";
 
 const Intro = () => {
   const fadeInUp = {
@@ -16,6 +18,11 @@ const Intro = () => {
     whileInView: { scale: 1, opacity: 1 },
     transition: { duration: 0.8, ease: "easeOut", delay: 0.5 }
   };
+
+  // Get the 3 most recent events
+  const recentEvents = [...eventData]
+    .sort((a, b) => new Date(b.ActualDate) - new Date(a.ActualDate))
+    .slice(0, 3);
 
   return (
     <div id="intro" className="flex flex-col items-center bg-gradient-to-b from-white via-blue-50 to-white">
@@ -125,32 +132,44 @@ const Intro = () => {
         whileInView="whileInView"
       >
         <h1 id="intro-head" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-         Upcoming Event
+          Recent Events
         </h1>
-        <h3 className="bold-text text-blue-700">CodeRIT's 22 Yards Of Code!</h3>
-        <motion.div
-          className="inline-block mt-4 mb-4"
-          whileHover={{ scale: 1.02 }}
-        >
-          <motion.img
-            src="./poster.png"
-            alt="Image"
-            className="h-[32rem] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          />
-          <br />
-          {/* <motion.a
-            href="/whackiest-registration"
+        
+        {/* Events Grid - Responsive: 1 on mobile, 3 on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mt-8">
+          {recentEvents.map((event, index) => (
+            <motion.div
+              key={index}
+              className={`${index > 0 ? 'hidden lg:block' : ''}`}
+              variants={scaleIn}
+              initial="initial"
+              whileInView="whileInView"
+              viewport={{ once: true }}
+            >
+              <EventCard
+                name={event.Name}
+                year={event.Year}
+                date={event.Date}
+                description={event.Description}
+                url={event.img}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Show All Events Button */}
+        <motion.div className="mt-8 mb-8">
+          <motion.a
+            href="/events"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center px-6 sm:px-8 py-2 sm:py-3 
-    bg-gradient-to-r from-blue-600 to-purple-600
-    text-white font-bold rounded-full 
-    hover:shadow-lg transition-all duration-300"
+              bg-gradient-to-r from-blue-600 to-purple-600
+              text-white font-bold rounded-full 
+              hover:shadow-lg transition-all duration-300"
           >
-            Register Now
-          </motion.a> */}
+            Show All Events
+          </motion.a>
         </motion.div>
       </motion.div>
     </div>
