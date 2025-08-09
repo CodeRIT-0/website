@@ -129,3 +129,7 @@ fetch('/api/addimage', {
 - If an image with the same name already exists, it will be overwritten
 - The `name` parameter will be used as the public ID, creating clean URLs
 - Supported file formats: Auto-detected by Cloudinary (jpg, png, gif, webp, svg, etc.)
+
+
+
+- 
