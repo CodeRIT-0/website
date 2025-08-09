@@ -50,7 +50,7 @@ POST /api/addimage
 This endpoint allows you to upload images to Cloudinary with custom names for clean, readable URLs.
 
 #### Prerequisites
-Make sure you have the following environment variables set in your `.env` file:
+Make sure you have the following environment variables set in your `.env` file
 ```env
 CLOUD_NAME="your_cloudinary_cloud_name"
 API_KEY="your_cloudinary_api_key"
