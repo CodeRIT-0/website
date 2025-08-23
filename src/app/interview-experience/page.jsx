@@ -65,7 +65,7 @@ export default function InterviewExperiencePage() {
               <CompanyCard
                 name={company.name}
                 slug={company.name}
-                interviewCount={company.interviews?.length || 0}
+                interviewCount={company.interviewCount || 0}
                 logo={company.imageUrl}
               />
             </motion.div>

@@ -20,7 +20,11 @@ export async function connect() {
   }
 
   // Start a new connection attempt
-  connectionPromise = mongoose.connect(process.env.DB_URL, {
+  if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not defined');
+  }
+  
+  connectionPromise = mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -36,25 +40,3 @@ export async function connect() {
     throw new Error("Database connection failed");
   }
 }
-// require('dotenv').config();
-// import mongoose from  "mongoose";
-// const mongoURI = process.env.DB_URL;
-
-// export async function connect(){
-//     try{
-//         await mongoose.connect(mongoURI, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         });
-//         const connection=mongoose.connection;
-//         connection.on('connected',()=>{
-//             console.log("MongoDB connected beautifully");
-//         })
-//         connection.on('error',(err)=>{
-//             process.exit();
-//         })
-//     }
-//     catch(err){
-//         console.log("Something has gone wrong");
-//     }
-// }
