@@ -42,7 +42,9 @@ export function CompanyCard({ name, slug, interviewCount, logo }) {
               <div className="flex items-center space-x-1.5 sm:space-x-2">
                 <span className="inline-block w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-green-500"></span>
                 <p className="text-xs sm:text-base text-gray-400 font-medium">
-                  {interviewCount} interview experience{interviewCount !== 1 ? 's' : ''} available
+                  {typeof interviewCount === 'number' && interviewCount > 0 
+                    ? `${interviewCount} interview experience${interviewCount !== 1 ? 's' : ''} available`
+                    : 'No interviews yet'}
                 </p>
               </div>
             </div>
