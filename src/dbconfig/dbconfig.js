@@ -20,11 +20,11 @@ export async function connect() {
   }
 
   // Start a new connection attempt
-  if (!process.env.MONGODB_URI) {
-    throw new Error('MONGODB_URI environment variable is not defined');
+  if (!process.env.DB_URL) {
+    throw new Error('DB_URL environment variable is not defined');
   }
   
-  connectionPromise = mongoose.connect(process.env.MONGODB_URI, {
+  connectionPromise = mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
