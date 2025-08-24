@@ -1,30 +1,57 @@
 "use client";
 import { CompanyCard } from "@/src/components/company-card"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import LoadingSpinner from '@/src/components/LoadingSpinner';
+import { Search, X } from 'lucide-react';
 
 export default function InterviewExperiencePage() {
   const [companies, setCompanies] = useState([]);
+  const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+
+  const fetchCompanies = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/interview/company/getAll');
+      const data = await response.json();
+      
+      if (data.success) {
+        setCompanies(data.allCompanies);
+        setFilteredCompanies(data.allCompanies);
+      }
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await fetch('/api/interview/company/getAll');
-        const data = await response.json();
-        if (data.success) {
-          setCompanies(data.allCompanies);
-        }
-      } catch (error) {
-        console.error('Error fetching companies:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCompanies();
-  }, []);
+  }, [fetchCompanies]);
+
+  // Filter companies based on search query
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const filtered = companies.filter(company => 
+        company.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredCompanies(filtered);
+      setIsSearching(true);
+    } else {
+      setFilteredCompanies(companies);
+      setIsSearching(false);
+    }
+  }, [searchQuery, companies]);
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setFilteredCompanies(companies);
+    setIsSearching(false);
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -49,12 +76,41 @@ export default function InterviewExperiencePage() {
         <p className="text-base sm:text-lg md:text-xl text-gray-400 text-center mb-6 sm:mb-7 md:mb-8 font-medium max-w-xl md:max-w-2xl lg:max-w-3xl mx-auto">
           Learn from the interview experiences of successful candidates at top tech companies
         </p>
-        <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+        
+        {/* Search Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="max-w-2xl mx-auto px-4 flex flex-col items-center"
+        >
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search companies..."
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-500 transition-all duration-300"
+            />
+          </div>
+          {isSearching && (
+            <button
+              type="button"
+              onClick={clearSearch}
+              className="mt-3 px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              Clear Search
+            </button>
+          )}
+        </motion.div>
+        
+        <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-8"></div>
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-full sm:max-w-xl md:max-w-4xl lg:max-w-7xl mx-auto px-2 sm:px-4">
-        {companies.length > 0 ? (
-          companies.map((company, index) => (
+        {filteredCompanies.length > 0 ? (
+          filteredCompanies.map((company, index) => (
             <motion.div
               key={company._id}
               initial={{ opacity: 0, y: 20 }}
@@ -71,9 +127,21 @@ export default function InterviewExperiencePage() {
             </motion.div>
           ))
         ) : (
-          <p className="text-center col-span-1 sm:col-span-2 lg:col-span-3 text-gray-500 text-sm sm:text-base">
-            No companies found
-          </p>
+          <div className="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-12">
+            <p className="text-gray-400 text-lg mb-4">
+              {isSearching 
+                ? "No companies found matching your search."
+                : "No companies found"}
+            </p>
+            {isSearching && (
+              <button
+                onClick={clearSearch}
+                className="px-4 py-2 text-blue-400 hover:text-white transition-colors text-sm"
+              >
+                Clear search and show all companies
+              </button>
+            )}
+          </div>
         )}
       </div>
     </motion.div>
