@@ -120,6 +120,12 @@ export default function InterviewExperiencePage({ params }) {
                   blockquote: ({ node, ...props }) => (
                     <blockquote className="border-l-3 border-blue-500 pl-2 sm:pl-3 py-1 my-2 sm:my-4 text-gray-400 italic text-xs sm:text-base" {...props} />
                   ),
+                  code: ({ node, ...props }) => (
+                    <code className="bg-gray-700 text-green-300 px-1 py-0.5 rounded text-xs sm:text-sm" {...props} />
+                  ),
+                  pre: ({ node, ...props }) => (
+                    <pre className="bg-gray-800 text-green-300 p-3 rounded-md overflow-x-auto text-sm sm:text-base" {...props} />
+                  ),
                   strong: ({ node, ...props }) => (
                     <strong className="font-semibold text-white" {...props} />
                   ),
