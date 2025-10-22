@@ -1,0 +1,238 @@
+.container {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/minecraft-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* Hide grid overlay to match website theming */
+  background-image: none;
+  opacity: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+}
+
+.titleWrapper {
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pixelBorder {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: rgba(20, 20, 40, 0.5);
+  border: 3px solid #ffd700;
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4),
+    inset 0 0 20px rgba(255, 215, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.titleGlow {
+  color: #facc15; /* Tailwind yellow-400 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  letter-spacing: 1px;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+}
+
+.titleYear {
+  font-size: 1.5rem;
+  color: #fde047; /* Tailwind yellow-300 */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  color: #a0aec0;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.main {
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formCard {
+  background: transparent; /* Match website page style */
+  border: none;
+  backdrop-filter: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.cardTitle {
+  font-size: 2rem;
+  color: #fde047; /* Tailwind yellow-300 */
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.decorativeLine {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.footer {
+  margin-top: 4rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.footerContent {
+  animation: fadeIn 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.footerText {
+  color: #fde68a; /* Tailwind yellow-200 */
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .titleYear {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .formCard {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+
+  .pixelBorder {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .titleYear {
+    font-size: 1rem;
+    letter-spacing: 4px;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .formCard {
+    padding: 1.25rem;
+  }
+
+  .cardTitle {
+    font-size: 1.3rem;
+  }
+}

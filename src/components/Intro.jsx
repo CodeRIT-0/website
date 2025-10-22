@@ -125,6 +125,42 @@ const Intro = () => {
         </div>
       </motion.div>
 
+<motion.div
+        className="text-center w-full px-4"
+        variants={fadeInUp}
+        initial="initial"
+        whileInView="whileInView"
+      >
+        <h1 id="intro-head" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+         Upcoming Event
+        </h1>
+        <h3 className="bold-text text-blue-700">Ice Breaker!</h3>
+        <motion.div
+          className="inline-block mt-4 mb-4"
+          whileHover={{ scale: 1.02 }}
+        >
+          <motion.img
+            src="./posterIceBreaker.jpg"
+            alt="Image"
+            className="h-[32rem] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+          />
+          <br />
+          <motion.a
+            href="/icebreaker-register"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center px-6 sm:px-8 py-2 sm:py-3 
+    bg-gradient-to-r from-blue-600 to-purple-600
+    text-white font-bold rounded-full 
+    hover:shadow-lg transition-all duration-300"
+          >
+            Register Now
+          </motion.a>
+        </motion.div>
+      </motion.div>
+
       <motion.div
         className="text-center w-full px-4"
         variants={fadeInUp}
