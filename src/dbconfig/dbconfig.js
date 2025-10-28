@@ -1,42 +1,47 @@
-require('dotenv').config();
 import mongoose from "mongoose";
 
-// Track connection state
 let isConnected = false;
-
-// Cache the connection promise to prevent multiple connection attempts
 let connectionPromise = null;
 
-export async function connect() {
-  // If already connected, return immediately
+const dbConnect = async () => {
   if (isConnected) {
     return;
   }
 
-  // If connection is in progress, wait for it to complete
   if (connectionPromise) {
     await connectionPromise;
     return;
   }
 
-  // Start a new connection attempt
   if (!process.env.DB_URL) {
     throw new Error('DB_URL environment variable is not defined');
   }
   
-  connectionPromise = mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  let connectionString = process.env.DB_URL;
+  
+  if (connectionString.includes('/?')) {
+    connectionString = connectionString.replace('/?', '/test?');
+  } else if (connectionString.includes('?')) {
+    const parts = connectionString.split('?');
+    connectionString = `${parts[0]}/test?${parts[1]}`;
+  } else {
+    connectionString = `${connectionString}/test`;
+  }
+  
+  console.log('Connecting to database: test');
+  
+  connectionPromise = mongoose.connect(connectionString);
 
   try {
     const db = await connectionPromise;
     isConnected = !!db.connections[0].readyState;
-    console.log("Database connected successfully");
+    console.log("Database connected successfully to:", db.connections[0].name);
   } catch (error) {
     console.error("Database connection failed", error);
-    // Reset connection promise so we can try again
     connectionPromise = null;
     throw new Error("Database connection failed");
   }
-}
+};
+
+export default dbConnect;
+export const connect = dbConnect;
