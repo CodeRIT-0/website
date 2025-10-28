@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import IcebreakerForm from '../../components/IcebreakerForm/IcebreakerForm';
 import styles from './page.module.css';
 
@@ -18,6 +19,15 @@ export default function IcebreakerRegister() {
   return (
     <div className={styles.container}>
       <div className={styles.background}>
+        <Image
+          src="/minecraft-bg-better.webp"
+          alt="Minecraft background"
+          fill
+          priority
+          quality={85}
+          sizes="100vw"
+          className={styles.backgroundImage}
+        />
         <div className={styles.grid}></div>
       </div>
 

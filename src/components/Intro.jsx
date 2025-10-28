@@ -140,7 +140,7 @@ const Intro = () => {
           whileHover={{ scale: 1.02 }}
         >
           <motion.img
-            src="./posterIceBreaker.jpg"
+            src="./posterIceBreaker-better.webp"
             alt="Image"
             className="h-[32rem] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
             whileHover={{ scale: 1.02 }}
