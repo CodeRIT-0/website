@@ -23,4 +23,4 @@ export const DEPARTMENTS = [
   { name: 'MEDICAL ELECTRONICS ENGINEERING', short: 'MEE' }
 ];
 
-export const YEARS = ['1st Year', '2nd Year'];
+export const YEARS = ['1st Year', '2nd Year','3rd Year'];
