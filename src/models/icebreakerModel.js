@@ -40,7 +40,7 @@ const IcebreakerSchema = new mongoose.Schema(
       required: [true, 'Year is required'],
       trim: true,
       enum: {
-        values: ['1st Year', '2nd Year'],
+        values: ['1st Year', '2nd Year','3rd Year'],
         message: 'Year must be either 1st Year or 2nd Year'
       }
     },
