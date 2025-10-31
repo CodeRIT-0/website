@@ -7,10 +7,6 @@ export const validateField = (name, value) => {
     
     case 'usn':
       if (!value.trim()) return 'USN is required';
-      if (value.length !== 10) return 'USN must be exactly 10 characters';
-      if (!/^[1-4][A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{3}$/i.test(value)) {
-        return 'Invalid USN format (e.g., 1MS23CS001)';
-      }
       return '';
     
     case 'email':

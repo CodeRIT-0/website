@@ -12,12 +12,7 @@ const IcebreakerSchema = new mongoose.Schema(
     usn: {
       type: String,
       required: [true, 'USN is required'],
-      trim: true,
-      uppercase: true,
       unique: true,
-      minlength: [10, 'USN must be exactly 10 characters'],
-      maxlength: [10, 'USN must be exactly 10 characters'],
-      match: [/^[1-4][A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{3}$/, 'Please enter a valid USN format (e.g., 1MS23CS001)']
     },
     email: {
       type: String,

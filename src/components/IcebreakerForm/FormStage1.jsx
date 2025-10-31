@@ -48,7 +48,6 @@ export default function FormStage1({
             onChange={handleChange}
             placeholder="e.g., 1MS23CS001"
             className={styles.input}
-            maxLength={10}
             required
           />
         </div>
