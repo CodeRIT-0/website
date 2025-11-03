@@ -5,15 +5,15 @@ import styles from "./IcebreakerForm.module.css";
 import { useIcebreakerForm } from "./useIcebreakerForm";
 
 export default function IcebreakerForm() {
-  const { 
-    formData, 
-    errors, 
-    isSubmitting, 
-    submitStatus, 
-    handleChange, 
-    handleSubmit 
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    submitStatus,
+    handleChange,
+    handleSubmit
   } = useIcebreakerForm();
-  
+
   const [registrationComplete, setRegistrationComplete] = useState(false);
 
   useEffect(() => {
@@ -27,14 +27,14 @@ export default function IcebreakerForm() {
       <div className={styles.successContainer}>
         <div className={styles.successCard}>
           <h3 className={styles.successTitle}>Registration Successful</h3>
-          
+
           <p className={styles.successMessage}>
-          Join our WhatsApp group for all the further updates and alongside tech talk, project colabs and meet likeminded peers.
+            Join our WhatsApp group for all the further updates and alongside tech talk, project colabs and meet likeminded peers.
           </p>
 
-          <a 
-            href="https://linktr.ee/CodeRIT" 
-            target="_blank" 
+          <a
+            href="https://linktr.ee/CodeRIT"
+            target="_blank"
             rel="noopener noreferrer"
             className={styles.whatsappButton}
           >
@@ -60,7 +60,6 @@ export default function IcebreakerForm() {
             onChange={handleChange}
             placeholder="Enter your full name"
             className={styles.input}
-            maxLength={100}
             required
           />
         </div>
@@ -90,7 +89,7 @@ export default function IcebreakerForm() {
         <label className={styles.label} htmlFor="questionForClub">
           Do you have any questions for the Club/ Seniors?
         </label>
-        <div className={`${styles.textareaContainer} ${errors.questionForClub ? styles.error : ''}`}>
+        <div className={styles.textareaContainer}>
           <textarea
             id="questionForClub"
             name="questionForClub"
@@ -98,12 +97,9 @@ export default function IcebreakerForm() {
             onChange={handleChange}
             placeholder="Ask us anything..."
             className={styles.textarea}
-            maxLength={300}
             rows={4}
           />
-          <span className={styles.charCount}>{formData.questionForClub.length}/300</span>
         </div>
-        {errors.questionForClub && <span className={styles.errorMessage}>{errors.questionForClub}</span>}
       </div>
 
       {submitStatus.message && (
