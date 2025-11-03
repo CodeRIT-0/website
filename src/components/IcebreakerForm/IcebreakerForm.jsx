@@ -2,19 +2,25 @@
 
 import { useEffect, useState } from "react";
 import styles from "./IcebreakerForm.module.css";
-import FormStage1 from "./FormStage1";
-import FormStage2 from "./FormStage2";
 import { useIcebreakerForm } from "./useIcebreakerForm";
 
 export default function IcebreakerForm() {
-  const formProps = useIcebreakerForm();
+  const { 
+    formData, 
+    errors, 
+    isSubmitting, 
+    submitStatus, 
+    handleChange, 
+    handleSubmit 
+  } = useIcebreakerForm();
+  
   const [registrationComplete, setRegistrationComplete] = useState(false);
 
   useEffect(() => {
-    if (formProps.submitStatus?.type === "success") {
+    if (submitStatus?.type === "success") {
       setRegistrationComplete(true);
     }
-  }, [formProps.submitStatus?.type]);
+  }, [submitStatus?.type]);
 
   if (registrationComplete) {
     return (
@@ -40,12 +46,82 @@ export default function IcebreakerForm() {
   }
 
   return (
-    <form onSubmit={formProps.handleSubmit} className={styles.form}>
-      {formProps.formStage === 1 ? (
-        <FormStage1 {...formProps} />
-      ) : (
-        <FormStage2 {...formProps} />
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.inputWrapper}>
+        <label className={styles.label} htmlFor="name">
+          Name<span className={styles.required}> *</span>
+        </label>
+        <div className={`${styles.inputContainer} ${errors.name ? styles.error : ''}`}>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Enter your full name"
+            className={styles.input}
+            maxLength={100}
+            required
+          />
+        </div>
+        {errors.name && <span className={styles.errorMessage}>{errors.name}</span>}
+      </div>
+
+      <div className={styles.inputWrapper}>
+        <label className={styles.label} htmlFor="usn">
+          USN<span className={styles.required}> *</span>
+        </label>
+        <div className={`${styles.inputContainer} ${errors.usn ? styles.error : ''}`}>
+          <input
+            id="usn"
+            name="usn"
+            type="text"
+            value={formData.usn}
+            onChange={handleChange}
+            placeholder="e.g., 1MS23CS001"
+            className={styles.input}
+            required
+          />
+        </div>
+        {errors.usn && <span className={styles.errorMessage}>{errors.usn}</span>}
+      </div>
+
+      <div className={styles.textareaWrapper}>
+        <label className={styles.label} htmlFor="questionForClub">
+          Do you have any questions for the Club/ Seniors?
+        </label>
+        <div className={`${styles.textareaContainer} ${errors.questionForClub ? styles.error : ''}`}>
+          <textarea
+            id="questionForClub"
+            name="questionForClub"
+            value={formData.questionForClub}
+            onChange={handleChange}
+            placeholder="Ask us anything..."
+            className={styles.textarea}
+            maxLength={300}
+            rows={4}
+          />
+          <span className={styles.charCount}>{formData.questionForClub.length}/300</span>
+        </div>
+        {errors.questionForClub && <span className={styles.errorMessage}>{errors.questionForClub}</span>}
+      </div>
+
+      {submitStatus.message && (
+        <div className={`${styles.statusMessage} ${styles[submitStatus.type]}`}>
+          {submitStatus.message}
+        </div>
       )}
+
+      <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+        {isSubmitting ? (
+          <span className={styles.loadingText}>
+            <span className={styles.spinner}></span>
+            Processing...
+          </span>
+        ) : (
+          'Submit Registration'
+        )}
+      </button>
     </form>
   );
 }
