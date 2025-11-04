@@ -5,9 +5,9 @@ import Icebreaker from "@/src/models/icebreakerModel";
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, usn, email, branch, year, programmingInterests, expectations, howDidYouHear, questionForClub } = body;
+    const { name, usn, email, branch, questionForClub } = body;
 
-    if (!name || !usn || !email || !branch || !year || !programmingInterests || !expectations || !howDidYouHear || !questionForClub) {
+    if (!name || !usn || !email || !branch) {
       return NextResponse.json(
         { 
           success: false, 
@@ -44,17 +44,18 @@ export async function POST(request) {
       }
     }
 
-    const newRegistration = await Icebreaker.create({
+    const registrationData = {
       name: name.trim(),
       usn: usn.trim().toUpperCase(),
       email: email.trim().toLowerCase(),
-      branch: branch.trim(),
-      year: year,
-      programmingInterests: programmingInterests.trim(),
-      expectations: expectations.trim(),
-      howDidYouHear: howDidYouHear.trim(),
-      questionForClub: questionForClub.trim()
-    });
+      branch: branch.trim()
+    };
+
+    if (questionForClub && questionForClub.trim()) {
+      registrationData.questionForClub = questionForClub.trim();
+    }
+
+    const newRegistration = await Icebreaker.create(registrationData);
 
     return NextResponse.json(
       {
@@ -71,9 +72,6 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Registration error:', error);
-    console.error('Error name:', error.name);
-    console.error('Error message:', error.message);
-    console.error('Error stack:', error.stack);
 
     if (error.name === 'ValidationError') {
       const errors = Object.values(error.errors).map(err => err.message);

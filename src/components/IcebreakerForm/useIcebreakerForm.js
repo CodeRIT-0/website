@@ -8,17 +8,12 @@ export const useIcebreakerForm = () => {
     usn: "",
     email: "",
     branch: "",
-    year: "",
-    programmingInterests: "",
-    expectations: "",
-    howDidYouHear: "",
     questionForClub: "",
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: "", message: "" });
-  const [formStage, setFormStage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -59,23 +54,6 @@ export const useIcebreakerForm = () => {
     setErrors((prev) => ({ ...prev, branch: "" }));
   };
 
-  const handleNextStage = () => {
-    const stage1Fields = ["name", "usn", "email", "branch", "year"];
-    const newErrors = {};
-
-    stage1Fields.forEach((field) => {
-      const error = validateField(field, formData[field]);
-      if (error) newErrors[field] = error;
-    });
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setFormStage(2);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,14 +82,9 @@ export const useIcebreakerForm = () => {
           usn: "",
           email: "",
           branch: "",
-          year: "",
-          programmingInterests: "",
-          expectations: "",
-          howDidYouHear: "",
           questionForClub: "",
         });
         setSearchTerm("");
-        setFormStage(1);
         setErrors({});
       } else {
         setSubmitStatus({ type: "error", message: data.message });
@@ -131,7 +104,6 @@ export const useIcebreakerForm = () => {
     errors,
     isSubmitting,
     submitStatus,
-    formStage,
     searchTerm,
     showSuggestions,
     filteredDepts: filterDepartments(searchTerm),
@@ -139,8 +111,6 @@ export const useIcebreakerForm = () => {
     handleBranchInputChange,
     selectDepartment,
     setShowSuggestions,
-    handleNextStage,
-    setFormStage,
     handleSubmit,
   };
 };
