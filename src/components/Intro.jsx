@@ -131,16 +131,16 @@ const Intro = () => {
         initial="initial"
         whileInView="whileInView"
       >
-        <h1 id="intro-head" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+        <h1 id="intro-head" className=" text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
          Upcoming Event
         </h1>
-        <h3 className="bold-text text-blue-700">Ice Breaker!</h3>
+        <h3 className="bold-text mb-2 text-4xl text-red-700">wHACKiest</h3>
         <motion.div
           className="inline-block mt-4 mb-4"
           whileHover={{ scale: 1.02 }}
         >
           <motion.img
-            src="./IcePoster.webp"
+            src="./wHACKiest Poster - Final.webp"
             alt="Image"
             className="h-[32rem] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
             whileHover={{ scale: 1.02 }}
@@ -148,11 +148,11 @@ const Intro = () => {
           />
           <br />
           <motion.a
-            href="/icebreaker-register"
+            href="https://whackiest.vercel.app/"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center px-6 sm:px-8 py-2 sm:py-3 
-    bg-gradient-to-r from-blue-600 to-purple-600
+    bg-gradient-to-r from-red-700 to-red-500
     text-white font-bold rounded-full 
     hover:shadow-lg transition-all duration-300"
           >
