@@ -1,88 +1,94 @@
 const Juniors=[
     {
-        "name": "Ashutosh Kumar",
-        "src": "/Juniors/Ashutosh.jpeg",
-        "url": "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-        "desc": "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕"
-    },
+    name: "Aadya Singh",
+    src: "/Juniors/aadya.png",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Sathya Pramodh",
-        "src": "/Juniors/Sathya.webp",
-        "url": "https://www.linkedin.com/in/sathya-pramodh-606877259?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-        "desc": "I'm the one you talk to for anything Low-Level tech, Minecraft, Linux, Neovim and Metal Music. I love having nerdy discussions/rants :D"
-    },
+    name: "Aditya Raj",
+    src: "/Juniors/aditya.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Sanchit Vijay",
-        "src": "/Juniors/Sanchit.jpg",
-        "url": "https://www.linkedin.com/in/sanchiitvijay/",
-        "desc": "I sleep better after having coffee. Ore wa monkey d luffy, kaizoku you are the right one !"
-    },
+    name: "Ashwith Rai N",
+    src: "/Juniors/ashwith.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Ananya Singh",
-        "src": "/Juniors/Ananya.jpg",
-        "url": "https://www.linkedin.com/in/ananya-singh-a81061248",
-        "desc": "Hey, I’m Ananya! I’m all about combining creativity and technology to build something impactful. I love exploring fresh perspectives, crafting unique solutions through design and code and cats!"
-    },
+    name: "Atharv Dixit",
+    src: "/Juniors/atharv.jpeg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Ujjwal Jha",
-        "src": "/Juniors/Ujjwal.jpeg",
-        "url": "https://www.linkedin.com/in/ujjwal-jha-1540712a6?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-        "desc": "I love coding (when it works), watching movies, and overthinking geopolitics—because why not?"
-    },
+    name: "Deekshith M",
+    src: "/Juniors/deekshith.png",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Mihir Sai Dudekula",
-        "src": "/Juniors/Mihir.jpg",
-        "url": "https://www.linkedin.com/in/mihirsaidudekula/",
-        "desc": "Passionate developer. ML and Open Source enthusiast"
-    },
+    name: "Jayakeerthi",
+    src: "",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Nitin Paramkar",
-        "src": "/Juniors/Nitin.png",
-        "url": "https://www.linkedin.com/in/nitin-paramkar-aa833b269/",
-        "desc": "Web development is my passion, always aiming to create better websites. I thrive on learning new skills and exploring new places along the way."
-    },
+    name: "Kamal Karteek U",
+    src: "/Juniors/Kamal_karteek.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "N Radhesh Shetty",
-        "src": "/Juniors/Radhesh.jpeg",
-        "url": "https://www.linkedin.com/in/n-radhesh-shetty-86b358253/",
-        "desc": "Unlike others I’m the one who thrives by coding during the day and catching restful nights. Fueled by a deep passion for development technologies and a curiosity for emerging innovations, I’m always eager to learn and grow!"
-    },
+    name: "Manjunath Patil",
+    src: "/Juniors/Manjunath.jpeg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "B Karthik",
-        "src": "/Juniors/Karthik.jpeg",
-        "url": "https://www.linkedin.com/in/BKarthik7",
-        "desc": "A front end explorer who breaks things just to fix them better."
-    },
+    name: "Mishka Tiwari",
+    src: "/Juniors/mishka.png",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Shamanth Hiremath",
-        "src": "/Juniors/Shamanth.jpeg",
-        "url": "https://www.linkedin.com/in/shamanthmhiremath",
-        "desc": "I love AIML, but ChatGPT more ❤️ Messi for Life ⚽ Talk to me bout anything and you’re my friend. We can code having a coffee. 🥹"
-    },
+    name: "Prince Khatri",
+    src: "/Juniors/prince.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
+  {
+  name: "Sagar S R",
+  src: "/Juniors/sagarsr.jpg",
+  url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+  desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+},
     {
-        "name": "Sai Keerthana",
-        "src": "/Juniors/Keerthana.jpeg",
-        "url": "https://www.linkedin.com/in/sai-keerthana-thimmapagari-900949270/",
-        "desc": "Tackling DSA probs and diving into blockchain vibes rn. Also, major foodie when I’m not geeking out."
-    },
+    name: "Samrudh P",
+    src: "/Juniors/Samrudhp.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Adithya V",
-        "src": "/Juniors/Adithya.jpeg",
-        "url": "https://www.linkedin.com/in/adithya-v-05418524b/",
-        "desc": "I don’t need sleep. I need answers."
-    },
+    name: "Shreya Shetty",
+    src: "/Juniors/shreya.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Jenas Anton",
-        "src": "/Juniors/Jenas.jpeg",
-        "url": "https://www.linkedin.com/in/jenas-anton/",
-        "desc": "Engineering student specializing in Artificial Intelligence and Data Science at MS Ramaiah Institute of Technology. Experienced in developing advanced AI solutions, including fine-tuning large language models (LLMs) for custom tasks and enhancing image generation using Stable Diffusion. Passionate about leveraging AI to create impactful tools and solve real-world problems, with hands-on expertise in programming, machine learning, and data-driven innovation."
-    },
+    name: "Shreyas",
+    src: "/Juniors/shreyas.png",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  },
     {
-        "name": "Ankush Narayan Balse",
-        "src": "/Juniors/Ankush.jpeg",
-        "url": "https://www.linkedin.com/in/ankushbalse/",
-        "desc": "Hey guys I am Ankush. I'm a curious coder & love getting to know the working of code. I'm primarily interested in CP and also exploring Web Dev. My talents include staying awake late at night and still piling up energy for the very next day without having a single drop of Coffee."
-    }
+    name: "Vijay ",
+    src: "/Juniors/vijay.jpg",
+    url: "https://www.linkedin.com/in/ashutosh-kumar-170242189?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    desc: "Insomniac full stack dev 🖥️, Building bridges: One layer at a time, Striving on chai ☕, a drop of devops ⚙️ ...with dsa enthu as a plus ➕",
+  }
 ]
 
 
