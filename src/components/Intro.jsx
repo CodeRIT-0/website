@@ -125,39 +125,25 @@ const Intro = () => {
         </div>
       </motion.div>
 
-<motion.div
+      <motion.div
         className="text-center w-full px-4"
         variants={fadeInUp}
         initial="initial"
         whileInView="whileInView"
       >
         <h1 id="intro-head" className=" text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-         Upcoming Event
+          Upcoming Events
         </h1>
-        <h3 className="bold-text mb-2 text-4xl text-red-700">wHACKiest</h3>
         <motion.div
-          className="inline-block mt-4 mb-4"
-          whileHover={{ scale: 1.02 }}
+          className="mt-8 mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          <motion.img
-            src="./wHACKiest Poster - Final.webp"
-            alt="Image"
-            className="h-[32rem] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          />
-          <br />
-          <motion.a
-            href="https://whackiest.vercel.app/"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-6 sm:px-8 py-2 sm:py-3 
-    bg-gradient-to-r from-red-700 to-red-500
-    text-white font-bold rounded-full 
-    hover:shadow-lg transition-all duration-300"
-          >
-            Register Now
-          </motion.a>
+          <p className="text-2xl md:text-3xl font-semibold text-gray-700 mb-2">
+            Stay Tuned for Exciting Events!
+          </p>
+          
         </motion.div>
       </motion.div>
 
@@ -170,7 +156,7 @@ const Intro = () => {
         <h1 id="intro-head" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
           Recent Events
         </h1>
-        
+
         {/* Events Grid - Responsive: 1 on mobile, 3 on desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mt-8">
           {recentEvents.map((event, index) => (

@@ -3,7 +3,7 @@ import { CompanyCard } from "@/src/components/company-card"
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import LoadingSpinner from '@/src/components/LoadingSpinner';
-import { Search, X } from 'lucide-react';
+import { Search, X, ArrowUpDown } from 'lucide-react';
 
 export default function InterviewExperiencePage() {
   const [companies, setCompanies] = useState([]);
@@ -11,13 +11,14 @@ export default function InterviewExperiencePage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [sortOrder, setSortOrder] = useState('A-Z'); // 'A-Z' or 'Z-A'
 
   const fetchCompanies = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch('/api/interview/company/getAll');
       const data = await response.json();
-      
+
       if (data.success) {
         setCompanies(data.allCompanies);
         setFilteredCompanies(data.allCompanies);
@@ -36,7 +37,7 @@ export default function InterviewExperiencePage() {
   // Filter companies based on search query
   useEffect(() => {
     if (searchQuery.trim()) {
-      const filtered = companies.filter(company => 
+      const filtered = companies.filter(company =>
         company.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredCompanies(filtered);
@@ -53,12 +54,21 @@ export default function InterviewExperiencePage() {
     setIsSearching(false);
   };
 
+  // Sort companies based on sort order
+  const sortedCompanies = [...filteredCompanies].sort((a, b) => {
+    if (sortOrder === 'A-Z') {
+      return a.name.localeCompare(b.name);
+    } else {
+      return b.name.localeCompare(a.name);
+    }
+  });
+
   if (loading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -76,24 +86,46 @@ export default function InterviewExperiencePage() {
         <p className="text-base sm:text-lg md:text-xl text-gray-400 text-center mb-6 sm:mb-7 md:mb-8 font-medium max-w-xl md:max-w-2xl lg:max-w-3xl mx-auto">
           Learn from the interview experiences of successful candidates at top tech companies
         </p>
-        
-        {/* Search Bar */}
-        <motion.div 
+
+        {/* Search Bar and Sort Controls */}
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="max-w-2xl mx-auto px-4 flex flex-col items-center"
         >
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search companies..."
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-500 transition-all duration-300"
-            />
+          <div className="w-full flex flex-col sm:flex-row gap-3">
+            {/* Search Input */}
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search companies..."
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-500 transition-all duration-300"
+              />
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="w-full sm:w-auto pl-10 pr-8 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white transition-all duration-300 cursor-pointer appearance-none"
+              >
+                <option value="A-Z">Sort: A-Z</option>
+                <option value="Z-A">Sort: Z-A</option>
+              </select>
+              <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 pointer-events-none" />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
+
           {isSearching && (
             <button
               type="button"
@@ -104,13 +136,13 @@ export default function InterviewExperiencePage() {
             </button>
           )}
         </motion.div>
-        
+
         <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-8"></div>
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-full sm:max-w-xl md:max-w-4xl lg:max-w-7xl mx-auto px-2 sm:px-4">
-        {filteredCompanies.length > 0 ? (
-          filteredCompanies.map((company, index) => (
+        {sortedCompanies.length > 0 ? (
+          sortedCompanies.map((company, index) => (
             <motion.div
               key={company._id}
               initial={{ opacity: 0, y: 20 }}
@@ -129,7 +161,7 @@ export default function InterviewExperiencePage() {
         ) : (
           <div className="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-12">
             <p className="text-gray-400 text-lg mb-4">
-              {isSearching 
+              {isSearching
                 ? "No companies found matching your search."
                 : "No companies found"}
             </p>
