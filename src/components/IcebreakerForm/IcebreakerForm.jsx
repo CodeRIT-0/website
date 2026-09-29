@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./IcebreakerForm.module.css";
 import { useIcebreakerForm } from "./useIcebreakerForm";
+
+const WHATSAPP_LINK = "https://chat.whatsapp.com/Dd4Jr31XABKI9uBRkPZRqv";
+const LINKTREE_LINK = "https://linktr.ee/CodeRIT";
 
 export default function IcebreakerForm() {
   const {
@@ -28,30 +32,54 @@ export default function IcebreakerForm() {
     }
   }, [submitStatus?.type]);
 
-  if (registrationComplete) {
-    return (
-      <div className={styles.successContainer}>
+  return (
+    <>
+    {registrationComplete && createPortal(
+      <div
+        className={styles.modalOverlay}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="registration-success-title"
+      >
         <div className={styles.successCard}>
-          <h3 className={styles.successTitle}>Registration Successful</h3>
-          
+          <button
+            type="button"
+            className={styles.modalClose}
+            onClick={() => setRegistrationComplete(false)}
+            aria-label="Close"
+          >
+            ×
+          </button>
+          <h3 id="registration-success-title" className={styles.successTitle}>
+            You&apos;re in!
+          </h3>
+
           <p className={styles.successMessage}>
-          Join our WhatsApp group for all the further updates and alongside tech talk, project colabs and meet likeminded peers.
+            Registration successful. Join our WhatsApp community for all the updates, tech talk, project collabs and to meet like-minded peers.
           </p>
 
-          <a 
-            href="https://linktr.ee/CodeRIT" 
-            target="_blank" 
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
             rel="noopener noreferrer"
             className={styles.whatsappButton}
           >
-            Join WhatsApp Group
+            Join our WhatsApp Community
+          </a>
+
+          <a
+            href={LINKTREE_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.linktreeButton}
+          >
+            Visit our Linktree
           </a>
         </div>
-      </div>
-    );
-  }
+      </div>,
+      document.body
+    )}
 
-  return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.inputWrapper}>
         <label className={styles.label} htmlFor="name">
@@ -185,5 +213,6 @@ export default function IcebreakerForm() {
         )}
       </button>
     </form>
+    </>
   );
 }

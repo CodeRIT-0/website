@@ -1,6 +1,8 @@
 'use client';
 
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import "../app/intro.css";
 import eventData from "../app/events/events";
@@ -146,6 +148,30 @@ const Intro = () => {
           
         </motion.div>
       </motion.div>
+
+      {/* Current event poster - links to its registration page */}
+      <div className="w-full px-4 mb-12 flex flex-col items-center">
+        <Link
+          href="/icebreaker-register"
+          className="block w-full max-w-[360px] rounded-xl overflow-hidden border-4 border-black shadow-[6px_6px_0_rgba(0,0,0,0.9)] transition-transform duration-200 hover:-translate-y-1"
+          aria-label="Register for Icebreaker"
+        >
+          <Image
+            src="/images/icebreaker/poster-2026.webp"
+            alt="Icebreaker poster - click to register"
+            width={700}
+            height={876}
+            sizes="(max-width: 400px) 100vw, 360px"
+            className="w-full h-auto"
+          />
+        </Link>
+        <Link
+          href="/icebreaker-register"
+          className="mt-4 px-6 py-2 bg-yellow-300 border-4 border-black rounded font-black uppercase text-black shadow-[4px_4px_0_rgba(0,0,0,0.9)] hover:translate-y-0.5"
+        >
+          Register now
+        </Link>
+      </div>
 
       <motion.div
         className="text-center w-full px-4"

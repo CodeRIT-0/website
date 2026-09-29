@@ -45,7 +45,7 @@ const IcebreakerSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    collection: 'icebreaker25'
+    collection: 'icebreaker26'
   }
 );
 
