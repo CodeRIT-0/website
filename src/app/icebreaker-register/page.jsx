@@ -20,18 +20,18 @@ export default function IcebreakerRegister() {
     <div className={styles.container}>
       <div className={styles.background}>
         <Image
-          src="/images/icebreaker/icebreaker-bg.webp"
+          src="/images/icebreaker/icebreaker-bg2.webp"
           alt="Comic City Background"
           fill
           priority
-          quality={85}
+          quality={90}
           sizes="100vw"
           className={styles.backgroundImage}
         />
       </div>
 
       <div className={`${styles.character} ${styles.charSpidermanGroup}`}>
-        <Image src="/images/icebreaker/characters/spiderman-web.webp" alt="Web" width={10} height={500} className={styles.spiderWeb} />
+        <div className={styles.spiderWeb} aria-hidden="true" />
         <Image src="/images/icebreaker/characters/spider.webp" alt="Spider-Man" width={215} height={215} className={styles.spiderMan} />
       </div>
 
@@ -44,18 +44,11 @@ export default function IcebreakerRegister() {
         </header>
 
         <main className={styles.main}>
-          {/* Decorative characters */}
-          <div className={`${styles.character} ${styles.charIronman}`}>
-            <Image src="/images/icebreaker/characters/ironman.webp" alt="Iron Man" width={120} height={120} />
-          </div>
-          <div className={`${styles.character} ${styles.charCap}`}>
-            <Image src="/images/icebreaker/characters/captain-america.webp" alt="Captain America" width={130} height={130} />
-          </div>
-          <div className={`${styles.character} ${styles.charDrDoom}`}>
-            <Image src="/images/icebreaker/characters/drdoom.webp" alt="Dr. Doom" width={140} height={140} />
-          </div>
-
           <div className={styles.formCard}>
+            <div className={`${styles.character} ${styles.charDocStrange}`}>
+              <Image src="/images/icebreaker/characters/doc-strange-nobg.webp" alt="Doctor Strange" width={250} height={198} className={`${styles.pixelArt} ${styles.float} ${styles.docImg}`} />
+              <div className={styles.bubble}>Ready to break the ice?</div>
+            </div>
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>Registration</h2>
             </div>
@@ -64,12 +57,17 @@ export default function IcebreakerRegister() {
           </div>
         </main>
 
+        <div className={styles.squad}>
+          <Image src="/images/icebreaker/characters/captain-marvel.webp" alt="Captain Marvel" width={203} height={330} className={`${styles.pixelArt} ${styles.float} ${styles.marvel}`} style={{ '--dur': '3.4s' }} />
+          <Image src="/images/icebreaker/characters/wavenger2.webp" alt="Wavenger" width={109} height={123} className={`${styles.pixelArt} ${styles.float} ${styles.wanda}`} style={{ '--dur': '2.8s', '--delay': '-1s' }} />
+          <Image src="/images/icebreaker/characters/drdoom.webp" alt="Dr. Doom" width={335} height={398} className={`${styles.pixelArt} ${styles.float} ${styles.doom}`} style={{ '--dur': '3.6s', '--delay': '-0.5s' }} />
+          <Image src="/images/icebreaker/characters/cap-america.webp" alt="Captain America" width={354} height={531} className={`${styles.float} ${styles.cap}`} style={{ '--dur': '4s', '--delay': '-2s' }} />
+        </div>
+
         <footer className={styles.footer}>
-          <div className={styles.footerContent}>
-            <p className={styles.footerText}>
-              Ready to break the ice? Join us for an unforgettable experience at ICEBREAKER 2026!
-            </p>
-          </div>
+          <p className={styles.footerText}>
+            Join us for an unforgettable experience at ICEBREAKER 2026!
+          </p>
         </footer>
       </div>
     </div>
