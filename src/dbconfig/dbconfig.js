@@ -13,11 +13,12 @@ const dbConnect = async () => {
     return;
   }
 
-  if (!process.env.DB_URL) {
-    throw new Error('DB_URL environment variable is not defined');
+  const rawUri = (process.env.DB_URL || process.env.MONGODB_URI || '').trim().replace(/^[`'"]+|[`'"]+$/g, '').trim();
+  if (!rawUri) {
+    throw new Error('DB_URL or MONGODB_URI environment variable is not defined in .env.local');
   }
   
-  let connectionString = process.env.DB_URL;
+  let connectionString = rawUri;
   
   if (connectionString.includes('/?')) {
     connectionString = connectionString.replace('/?', '/test?');

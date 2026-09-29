@@ -199,6 +199,16 @@ const eventData = [
         "Priority": 2,
         "Description": "Unique cricket and coding crossover contest - The high-energy event brilliantly combined strategic thinking with programming challenges, creating an unforgettable experience of sportsmanship and technical skills.",
         "img": "/Events/2025-05-23-22yardsofcode.webp"
+    },
+    {
+        "EventName": "Icebreaker 2026",
+        "Name": "Icebreaker 2026",
+        "Year": "2026",
+        "Date": "7th October",
+        "ActualDate": "2026-10-07",
+        "Priority": 1,
+        "Description": "Be a part of the most active technical club of RIT! Join us for Icebreaker 2026 at ESB Seminar Hall - 1, featuring interactive games, tech insights, placement guidance, and networking with seniors.",
+        "img": "/Events/2026-10-07-icebreaker.webp"
     }
 ]
 export default eventData;
