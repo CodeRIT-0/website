@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./IcebreakerForm.module.css";
 import { useIcebreakerForm } from "./useIcebreakerForm";
+
+const WHATSAPP_LINK = "https://chat.whatsapp.com/Dd4Jr31XABKI9uBRkPZRqv";
+const LINKTREE_LINK = "https://linktr.ee/CodeRIT";
 
 export default function IcebreakerForm() {
   const {
@@ -14,6 +18,8 @@ export default function IcebreakerForm() {
     showSuggestions,
     filteredDepts,
     handleChange,
+    handleBlur,
+    handleBranchBlur,
     handleBranchInputChange,
     selectDepartment,
     setShowSuggestions,
@@ -28,30 +34,54 @@ export default function IcebreakerForm() {
     }
   }, [submitStatus?.type]);
 
-  if (registrationComplete) {
-    return (
-      <div className={styles.successContainer}>
+  return (
+    <>
+    {registrationComplete && createPortal(
+      <div
+        className={styles.modalOverlay}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="registration-success-title"
+      >
         <div className={styles.successCard}>
-          <h3 className={styles.successTitle}>Registration Successful</h3>
-          
+          <button
+            type="button"
+            className={styles.modalClose}
+            onClick={() => setRegistrationComplete(false)}
+            aria-label="Close"
+          >
+            ×
+          </button>
+          <h3 id="registration-success-title" className={styles.successTitle}>
+            You&apos;re in!
+          </h3>
+
           <p className={styles.successMessage}>
-          Join our WhatsApp group for all the further updates and alongside tech talk, project colabs and meet likeminded peers.
+            Registration successful. Join our WhatsApp community for all the updates, tech talk, project collabs and to meet like-minded peers.
           </p>
 
-          <a 
-            href="https://linktr.ee/CodeRIT" 
-            target="_blank" 
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
             rel="noopener noreferrer"
             className={styles.whatsappButton}
           >
-            Join WhatsApp Group
+            Join our WhatsApp Community
+          </a>
+
+          <a
+            href={LINKTREE_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.linktreeButton}
+          >
+            Visit our Linktree
           </a>
         </div>
-      </div>
-    );
-  }
+      </div>,
+      document.body
+    )}
 
-  return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.inputWrapper}>
         <label className={styles.label} htmlFor="name">
@@ -64,6 +94,7 @@ export default function IcebreakerForm() {
             type="text"
             value={formData.name}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Enter your full name"
             className={styles.input}
             maxLength={100}
@@ -84,8 +115,12 @@ export default function IcebreakerForm() {
             type="text"
             value={formData.usn}
             onChange={handleChange}
-            placeholder="e.g., 1MS23CS001"
+            onBlur={handleBlur}
+            placeholder="e.g., 1MS24CS186"
             className={styles.input}
+            maxLength={12}
+            autoCapitalize="characters"
+            autoComplete="off"
             required
           />
         </div>
@@ -103,6 +138,7 @@ export default function IcebreakerForm() {
             type="email"
             value={formData.email}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="your.email@example.com"
             className={styles.input}
             maxLength={100}
@@ -124,7 +160,7 @@ export default function IcebreakerForm() {
             value={searchTerm || formData.branch}
             onChange={handleBranchInputChange}
             onFocus={() => setShowSuggestions(searchTerm.length > 0)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            onBlur={handleBranchBlur}
             placeholder="Start typing (e.g., CSE, Computer Science)"
             className={styles.input}
             required
@@ -136,7 +172,10 @@ export default function IcebreakerForm() {
             {filteredDepts.map((dept, idx) => (
               <li 
                 key={idx}
-                onClick={() => selectDepartment(dept)}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // keep focus so blur doesn't fire before the pick
+                  selectDepartment(dept);
+                }}
                 className={styles.suggestionItem}
               >
                 <span className={styles.deptName}>{dept.name}</span>
@@ -158,6 +197,7 @@ export default function IcebreakerForm() {
             name="questionForClub"
             value={formData.questionForClub}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Ask us anything..."
             className={styles.textarea}
             maxLength={300}
@@ -185,5 +225,6 @@ export default function IcebreakerForm() {
         )}
       </button>
     </form>
+    </>
   );
 }

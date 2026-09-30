@@ -14,7 +14,8 @@ const IcebreakerSchema = new mongoose.Schema(
       required: [true, 'USN is required'],
       unique: true,
       trim: true,
-      uppercase: true
+      uppercase: true,
+      match: [/^1MS\d{2}[A-Z]{2}\d{3}(-T)?$/, 'USN must look like 1MS24CS186 or 1MS25CS001-T']
     },
     email: {
       type: String,
@@ -45,7 +46,7 @@ const IcebreakerSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    collection: 'icebreaker25'
+    collection: 'icebreaker26'
   }
 );
 

@@ -11,233 +11,371 @@
   width: 100%;
   height: 100%;
   z-index: -1;
-  overflow: hidden;
 }
 
 .backgroundImage {
   object-fit: cover;
   object-position: center;
+  opacity: 1;
 }
 
-.grid {
+.background::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none; 
-  background-image: none;
-  opacity: 0;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .content {
   position: relative;
   z-index: 1;
   padding: 2rem 1rem;
-  padding-top: 6rem;
+  padding-top: 7rem;
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 3rem;
-  padding-top: 1rem;
+  margin-bottom: 2rem;
+  z-index: 2;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.titleWrapper {
-  animation: fadeInDown 0.8s ease-out;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.pixelBorder {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background: rgba(20, 20, 40, 0.5);
-  border: 3px solid #ffd700;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4),
-    inset 0 0 20px rgba(255, 215, 0, 0.1);
-  margin-bottom: 1.5rem;
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .title {
-  font-size: 3.5rem;
-  font-weight: 900;
-  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  margin: 0;
 }
 
-.titleGlow {
-  color: #facc15; /* Tailwind yellow-400 */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-  letter-spacing: 1px;
-}
-
-@keyframes glow {
-  0%,
-  100% {
-    filter: brightness(1);
-  }
-  50% {
-    filter: brightness(1.3);
-  }
+.titleMain {
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: #ffde00; /* Comic yellow */
+  text-shadow: 
+    4px 4px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .titleYear {
-  font-size: 1.5rem;
-  color: #fde047; /* Tailwind yellow-300 */
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  letter-spacing: 2px;
-}
-
-.subtitle {
-  font-size: 1.3rem;
-  color: #a0aec0;
-  margin: 0;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 500;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #ff3333; /* Comic red */
+  text-shadow: 
+    3px 3px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  letter-spacing: 4px;
+  margin-top: -5px;
 }
 
 .main {
-  animation: fadeInUp 1s ease-out;
+  position: relative;
+  width: 100%;
+  max-width: 900px; /* Space for absolute characters */
+  padding-top: 9rem; /* Room for Doctor Strange above the card */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+/* Character Positioning */
+.character {
+  position: absolute;
+  z-index: 2;
+  filter: drop-shadow(3px 5px 0px rgba(0,0,0,0.8));
+  pointer-events: none; /* Prevent blocking clicks */
+}
+
+.pixelArt { image-rendering: pixelated; }
+
+/* Doctor Strange floats on top of the form card and talks */
+.charDocStrange {
+  bottom: calc(100% - 30px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.docImg {
+  width: 250px;
+  height: auto;
+}
+
+.bubble {
+  position: absolute;
+  left: 100%;
+  top: 10%;
+  margin-left: 6px;
+  width: max-content;
+  max-width: 190px;
+  padding: 0.6rem 0.9rem;
+  background: #fff;
+  color: #000;
+  border: 3px solid #000;
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.9);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.15;
+  text-transform: uppercase;
+  text-align: center;
+  transform: rotate(3deg);
+  animation: bubbleBob 3s ease-in-out infinite;
+}
+/* comic tail pointing back at Doctor Strange */
+.bubble::before,
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: -14px;
+  bottom: 6px;
+  border-style: solid;
+  border-width: 8px 16px 8px 0;
+  border-color: transparent #000 transparent transparent;
+}
+.bubble::after {
+  left: -9px;
+  bottom: 8px;
+  border-width: 6px 12px 6px 0;
+  border-color: transparent #fff transparent transparent;
+}
+
+/* Spider-Man hangs from the top and swings */
+.charSpidermanGroup {
+  position: absolute;
+  top: -60px;
+  right: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  transform-origin: top center;
+  animation: swing 4s ease-in-out infinite;
+}
+.spiderWeb {
+  width: 4px;
+  height: 134px;
+  background: rgba(255, 255, 255, 0.85); /* the web thread */
+}
+.spiderMan {
+  margin-top: 0px;
+  position: relative;
+}
+
+/* The team lineup, standing on the caption box */
+.squad {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(1rem, 5vw, 3.5rem);
+  margin-top: 2.5rem;
+  margin-bottom: -8px;
+}
+.squad img {
+  width: auto;
+  filter: drop-shadow(3px 5px 0px rgba(0,0,0,0.8));
+}
+.marvel { height: clamp(120px, 20vw, 190px); }
+.wanda  { height: clamp(95px, 15vw, 150px); }
+.doom   { height: clamp(110px, 18vw, 170px); }
+.cap    { height: clamp(130px, 22vw, 200px); }
+
+/* Wide screens: scatter the crew around the form instead of a lineup */
+@media (min-width: 1100px) {
+  .squad {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0;
+    pointer-events: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .squad img { position: absolute; }
+  .marvel { height: 210px; left: 1%;  top: 60%; rotate: -6deg; }
+  .wanda  { height: 150px; left: 13%; top: 25%; rotate: 5deg; }
+  .doom   { height: 175px; right: 2%; top: 62%; rotate: 6deg; }
+  .cap    { height: 220px; right: 14%; top: 32%; rotate: -4deg; }
+  .footer { margin-top: 2.5rem; }
+}
+
+@media (max-width: 480px) {
+  .squad { gap: 3vw; }
+  .marvel { height: 27vw; }
+  .wanda  { height: 22vw; }
+  .doom   { height: 24vw; }
+  .cap    { height: 29vw; }
+}
+
+/* Motion */
+.float {
+  animation: floatY var(--dur, 3.2s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes bubbleBob {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-5px); }
+}
+@keyframes swing {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .float, .bubble, .charSpidermanGroup { animation: none; }
 }
 
 .formCard {
-  background: transparent;
-  border: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  max-width: 700px;
-  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border: 4px solid #000;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.9);
+  position: relative;
+  z-index: 3;
 }
 
 .cardHeader {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 4px solid #000;
+  padding-bottom: 0.5rem;
 }
 
 .cardTitle {
-  font-size: 2rem;
-  color: #fde047; 
-  margin: 0 0 1rem 0;
-  font-weight: 700;
+  font-size: 1.8rem;
+  color: #000;
+  margin: 0;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.decorativeLine {
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, #ffd700, transparent);
-  margin: 0 auto;
-  border-radius: 2px;
+  letter-spacing: 1px;
 }
 
 .footer {
-  margin-top: 4rem;
-  padding: 2rem 1rem;
+  position: relative;
+  z-index: 3;
+  margin-top: 0;
   text-align: center;
-}
-
-.footerContent {
-  animation: fadeIn 1.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  background: #ffde00; /* comic yellow caption box */
+  padding: 1rem 2rem;
+  border: 4px solid #000;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
+  max-width: 600px;
+  transform: rotate(-1.5deg);
 }
 
 .footerText {
-  color: #fde68a; 
-  font-size: 1.1rem;
+  color: #000;
+  font-size: 1.05rem;
   margin: 0;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+  .charSpidermanGroup { right: 2%; }
 }
 
 @media (max-width: 768px) {
   .content {
-    padding: 1rem;
-    padding-top: 5rem;
+    padding-top: 6rem;
   }
 
-  .title {
-    font-size: 2.5rem;
+  .titleMain {
+    font-size: 3.5rem;
   }
 
   .titleYear {
-    font-size: 1.2rem;
-  }
-
-  .subtitle {
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .formCard {
     padding: 1.5rem;
-    border-radius: 16px;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
   }
 
-  .cardTitle {
-    font-size: 1.5rem;
-  }
+  .charSpidermanGroup { right: 2%; }
+  .spiderWeb { height: 70px; }
+  .spiderMan { width: 100px; height: 100px; }
+}
 
-  .pixelBorder {
-    padding: 0.75rem 1.5rem;
+@media (max-width: 600px) {
+  .charSpidermanGroup { display: none; }
+
+  .main { padding-top: 6rem; }
+
+  /* Doctor Strange moves to the left of the card so his bubble fits beside him */
+  .charDocStrange {
+    left: 0;
+    transform: none;
+  }
+  .docImg { width: 130px; }
+  .bubble {
+    top: 5%;
+    max-width: 150px;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
-  .title {
-    font-size: 2rem;
-  }
-
-  .titleYear {
-    font-size: 1rem;
-    letter-spacing: 4px;
-  }
-
-  .subtitle {
-    font-size: 0.9rem;
+  .content {
+    padding-top: 5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .formCard {
     padding: 1.25rem;
+    border-width: 3px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.9);
+    width: 100%; /* Ensure it takes full available width */
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .titleMain {
+    font-size: clamp(1.8rem, 11vw, 2.8rem);
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    line-height: 1.1;
   }
 
-  .cardTitle {
-    font-size: 1.3rem;
+  .titleYear {
+    font-size: 1.5rem;
+  }
+
+  .footer {
+    padding: 0.8rem 1rem;
+    border-width: 2px;
+  }
+  
+  .footerText {
+    font-size: 0.85rem;
+  }
+
+  .footer {
+    transform: rotate(-1deg);
   }
 }

@@ -23,4 +23,13 @@ export const DEPARTMENTS = [
   { name: 'MEDICAL ELECTRONICS ENGINEERING', short: 'MEE' }
 ];
 
+// Finds a department from its short code or full name (case-insensitive). Returns undefined if none.
+export const findDepartment = (value) => {
+  const v = (value || '').trim().toLowerCase();
+  if (!v) return undefined;
+  return DEPARTMENTS.find(
+    (dept) => dept.short.toLowerCase() === v || dept.name.toLowerCase() === v
+  );
+};
+
 export const YEARS = ['1st Year', '2nd Year','3rd Year'];

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DEPARTMENTS } from "./departments";
+import { DEPARTMENTS, findDepartment } from "./departments";
 import { validateField, validateForm } from "./validation";
 
 export const useIcebreakerForm = () => {
@@ -18,33 +18,48 @@ export const useIcebreakerForm = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const filterDepartments = (input) => {
-    if (!input) return [];
-    const regex = new RegExp(input, "i");
+    const term = input.trim().toLowerCase();
+    if (!term) return [];
     return DEPARTMENTS.filter(
-      (dept) => regex.test(dept.name) || regex.test(dept.short)
+      (dept) =>
+        dept.name.toLowerCase().includes(term) ||
+        dept.short.toLowerCase().includes(term)
     ).slice(0, 6);
   };
 
+  // While typing, don't nag: only refresh an error that is already showing,
+  // so it disappears as soon as the value becomes valid.
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    const value = name === "usn" ? e.target.value.toUpperCase() : e.target.value;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    setErrors((prev) => (prev[name] ? { ...prev, [name]: validateField(name, value) } : prev));
 
     if (submitStatus.message) {
       setSubmitStatus({ type: "", message: "" });
     }
   };
 
+  // Validate a field when the user leaves it
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+  };
+
+  // Branch only counts once a department from the list is chosen (or typed exactly)
   const handleBranchInputChange = (e) => {
     const value = e.target.value;
+    const match = findDepartment(value);
     setSearchTerm(value);
-    setFormData((prev) => ({ ...prev, branch: value }));
+    setFormData((prev) => ({ ...prev, branch: match ? match.short : "" }));
     setShowSuggestions(value.length > 0);
+    if (match) setErrors((prev) => ({ ...prev, branch: "" }));
+  };
 
-    const error = validateField("branch", value);
-    setErrors((prev) => ({ ...prev, branch: error }));
+  const handleBranchBlur = () => {
+    setShowSuggestions(false);
+    setErrors((prev) => ({ ...prev, branch: validateField("branch", formData.branch) }));
   };
 
   const selectDepartment = (dept) => {
@@ -58,6 +73,9 @@ export const useIcebreakerForm = () => {
     e.preventDefault();
 
     const formErrors = validateForm(formData);
+    if (formErrors.branch && searchTerm) {
+      formErrors.branch = "Please pick your branch from the list";
+    }
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
@@ -108,6 +126,8 @@ export const useIcebreakerForm = () => {
     showSuggestions,
     filteredDepts: filterDepartments(searchTerm),
     handleChange,
+    handleBlur,
+    handleBranchBlur,
     handleBranchInputChange,
     selectDepartment,
     setShowSuggestions,
