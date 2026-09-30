@@ -18,6 +18,8 @@ export default function IcebreakerForm() {
     showSuggestions,
     filteredDepts,
     handleChange,
+    handleBlur,
+    handleBranchBlur,
     handleBranchInputChange,
     selectDepartment,
     setShowSuggestions,
@@ -92,6 +94,7 @@ export default function IcebreakerForm() {
             type="text"
             value={formData.name}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Enter your full name"
             className={styles.input}
             maxLength={100}
@@ -112,8 +115,12 @@ export default function IcebreakerForm() {
             type="text"
             value={formData.usn}
             onChange={handleChange}
-            placeholder="e.g., 1MS23CS001"
+            onBlur={handleBlur}
+            placeholder="e.g., 1MS24CS186"
             className={styles.input}
+            maxLength={12}
+            autoCapitalize="characters"
+            autoComplete="off"
             required
           />
         </div>
@@ -131,6 +138,7 @@ export default function IcebreakerForm() {
             type="email"
             value={formData.email}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="your.email@example.com"
             className={styles.input}
             maxLength={100}
@@ -152,7 +160,7 @@ export default function IcebreakerForm() {
             value={searchTerm || formData.branch}
             onChange={handleBranchInputChange}
             onFocus={() => setShowSuggestions(searchTerm.length > 0)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            onBlur={handleBranchBlur}
             placeholder="Start typing (e.g., CSE, Computer Science)"
             className={styles.input}
             required
@@ -164,7 +172,10 @@ export default function IcebreakerForm() {
             {filteredDepts.map((dept, idx) => (
               <li 
                 key={idx}
-                onClick={() => selectDepartment(dept)}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // keep focus so blur doesn't fire before the pick
+                  selectDepartment(dept);
+                }}
                 className={styles.suggestionItem}
               >
                 <span className={styles.deptName}>{dept.name}</span>
@@ -186,6 +197,7 @@ export default function IcebreakerForm() {
             name="questionForClub"
             value={formData.questionForClub}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Ask us anything..."
             className={styles.textarea}
             maxLength={300}

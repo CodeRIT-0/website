@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connect } from "@/src/dbconfig/dbconfig";
 import Icebreaker from "@/src/models/icebreakerModel";
+import { validateForm } from "@/src/components/IcebreakerForm/validation";
+import { findDepartment } from "@/src/components/IcebreakerForm/departments";
 
 export async function POST(request) {
   try {
@@ -9,22 +11,37 @@ export async function POST(request) {
 
     if (!name || !usn || !email || !branch) {
       return NextResponse.json(
-        { 
-          success: false, 
-          message: 'All required fields must be filled' 
+        {
+          success: false,
+          message: 'All required fields must be filled'
         },
         { status: 400 }
       );
     }
 
+    // Same rules as the form, re-checked here because the browser check can be bypassed
+    const fieldErrors = validateForm({ name, usn, email, branch, questionForClub });
+    if ([name, usn, email, branch].some((v) => typeof v !== 'string') || Object.keys(fieldErrors).length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: Object.values(fieldErrors)[0] || 'Invalid input'
+        },
+        { status: 400 }
+      );
+    }
+
+    // One canonical form so 1ms25cs001_t and 1MS25CS001-T count as the same USN
+    const cleanUsn = usn.trim().toUpperCase().replace('_', '-');
+
     await connect();
 
     const existingUser = await Icebreaker.findOne({
-      $or: [{ email: email.toLowerCase() }, { usn: usn.toUpperCase() }]
+      $or: [{ email: email.toLowerCase() }, { usn: cleanUsn }]
     });
 
     if (existingUser) {
-      if (existingUser.usn === usn.toUpperCase()) {
+      if (existingUser.usn === cleanUsn) {
         return NextResponse.json(
           { 
             success: false, 
@@ -46,9 +63,9 @@ export async function POST(request) {
 
     const registrationData = {
       name: name.trim(),
-      usn: usn.trim().toUpperCase(),
+      usn: cleanUsn,
       email: email.trim().toLowerCase(),
-      branch: branch.trim()
+      branch: findDepartment(branch).short // always stored as the official short code, e.g. CSE
     };
 
     if (questionForClub && questionForClub.trim()) {
